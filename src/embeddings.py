@@ -21,7 +21,7 @@ def check_doc_dir():
     # Create document_directory if needed 
     if not os.path.exists(os.path.expanduser(document_directory)):
         os.makedirs(os.path.expanduser(document_directory))
-        print("Created document_directory. Add your documents there and rerun to embed them.")
+        print("\nCreated document_directory at: " + document_directory + ". Add your documents there and run 'nix develop github:camdenboren/chat-script --command bash -c \"python src/embeddings.py\" to embed them.")
     else:
         embeddings()
 
