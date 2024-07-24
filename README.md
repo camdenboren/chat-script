@@ -37,7 +37,7 @@ Executing the following will create this directory:
 
 Once you add your scripts, run the following to generate their associated embeddings:
 
-    nix develop github:camdenboren/chat-script --command bash -c ./embeddings.py
+    nix develop github:camdenboren/chat-script --command bash -c "python src/embeddings.py"
 
 Now, the nix run command can be rerun to run this app normally (no local install needed, though it may be convenient for dedicated servers, etc.).
 
