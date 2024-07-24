@@ -25,7 +25,6 @@ def check_doc_dir():
     else:
         embeddings()
 
-
 # Loads and chunks text documents, embeds them, then stores in persistent ChromaDB vectorstore
 def embeddings():
     # Load documents
