@@ -45,16 +45,17 @@ def format_context(context):
     formatted_context = "Relevant Sources (some may not have been used): "
     index = 0
     yield "\n\n"
-    while(index < len(context)):
-        formatted_context += "[" + str(index+1) + "] " + context[index].metadata["source"][doc_dir_len:]
-        for chunks in formatted_context.split():
-            yield chunks + " "
-            if((index == 0) and (chunks == "used):")):
-                yield "\n"
-            t.sleep(context_stream_delay)
-        yield "\n"
-        formatted_context = ""
-        index += 1
+    if context:
+        while(index < len(context)):
+            formatted_context += "[" + str(index+1) + "] " + context[index].metadata["source"][doc_dir_len:]
+            for chunks in formatted_context.split():
+                yield chunks + " "
+                if((index == 0) and (chunks == "used):")):
+                    yield "\n"
+                t.sleep(context_stream_delay)
+            yield "\n"
+            formatted_context = ""
+            index += 1
 
 # Retrieves context from vectorstore, includes this context in the prompt template, creates langchain w/ local LLM, then streams chain's text response
 def response(question,history):
