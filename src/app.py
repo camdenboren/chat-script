@@ -30,7 +30,7 @@ def app():
         ),
         fill_height=True,
         title="chat-script",
-        description="Chat locally with text documents (scripts) of your choice with this simple python app.",
+        description="Chat locally with scripts (documents) of your choice with this simple python app.",
         analytics_enabled=False,
         additional_inputs=[]
     ).queue()
