@@ -10,7 +10,7 @@ import time as t
 import os
 
 # Model options and directory, collection names
-document_directory = "~/.chat-script/transcripts"
+document_directory = "~/.chat-script/scripts"
 persist_directory = "~/.chat-script/embeddings"
 embeddings_model = "all-MiniLM-L6-v2"
 collection_name = "rag-chroma"

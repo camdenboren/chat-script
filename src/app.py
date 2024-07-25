@@ -7,7 +7,10 @@ import gradio as gr
 import response as r
 import os
 
-document_directory = "~/.chat-script/transcripts"
+# Directory names
+document_directory = "~/.chat-script/scripts"
+
+# Create document_directory if needed 
 def check_doc_dir():
     # Create document_directory if needed 
     if not os.path.exists(os.path.expanduser(document_directory)):
@@ -16,6 +19,7 @@ def check_doc_dir():
     else:
         app()
 
+# Launch app's Gradio UI
 def app():
     app = gr.ChatInterface(
         r.response,

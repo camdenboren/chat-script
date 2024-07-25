@@ -1,4 +1,4 @@
-# chat-scripts
+# chat-script
 
 Chat locally with scripts (documents) of your choice with this simple python app.
 
@@ -22,14 +22,14 @@ An optional setup step is to manually create the directory:
 With the subfolders:
 
     ~/.chat-script/embeddings
-    ~/.chat-script/transcripts
+    ~/.chat-script/scripts
 
-This allows you to prepare your transcripts before installing anything, but the folder creation itself is done automatically by the first 'nix run' command in the 'Usage' section.
+This allows you to prepare your scripts before installing anything, but the folder creation itself is done automatically by the first 'nix run' command in the 'Usage' section.
 </details>
 
 <details>
 <summary><b>Usage</b></summary>
-Before any context can be used by the LLM, these context "scripts" must be added to ~/.chat-script/transcripts
+Before any context can be used by the LLM, these context "scripts" must be added to ~/.chat-script/scripts
 
 Executing the following will create this directory:
 
@@ -60,7 +60,7 @@ To set 'share=True' in app.launch()
 
 Efficiently grab Youtube video transcripts
 
-    Use this link to put video transcripts in ./transcripts: https://youtubechanneltranscripts.com/
+    Use this link to put video transcripts in ~/.chat-script/scripts: https://youtubechanneltranscripts.com/
     copy video title from freetube into search bar there
     For transcripts, made it through the video: Worlds Hardest One Set Leg Workout (MUSCLE GROWTH FAST)
 </details>

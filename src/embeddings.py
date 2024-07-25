@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Refreshes/generates persistent embeddings in ./embeddings based on text files in document_directory
+# Refreshes/generates persistent embeddings in persist_directory based on text files in document_directory
 # Run before using (can be executed as a script), and run after adding more files to document_directory
 
 from langchain_community.document_loaders import DirectoryLoader
@@ -12,13 +12,13 @@ import os
 import shutil
 
 # Model options and directory, collection names
-document_directory = "~/.chat-script/transcripts"
+document_directory = "~/.chat-script/scripts"
 persist_directory = "~/.chat-script/embeddings"
 embeddings_model = "all-MiniLM-L6-v2"
 collection_name = "rag-chroma"
 
+# Create document_directory if needed 
 def check_doc_dir():
-    # Create document_directory if needed 
     if not os.path.exists(os.path.expanduser(document_directory)):
         os.makedirs(os.path.expanduser(document_directory))
         print("\nCreated document_directory at: " + document_directory + ". Add your documents there and run 'nix develop github:camdenboren/chat-script --command bash -c \"python src/embeddings.py\" to embed them.")
