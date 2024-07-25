@@ -50,7 +50,7 @@ Access app at link: http://127.0.0.1:7860/
 <summary><b>Advanced Usage</b></summary>
 To set 'share=True' in app.launch()
 
-    git clone github:camdenboren/chat-script.git
+    git clone https://github.com/camdenboren/chat-script.git
     cd chat-script
     modify app.py to include 'share=True'
     nix run .
