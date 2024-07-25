@@ -53,7 +53,7 @@
 
         meta = {
           description = "Chat locally with scripts (documents) of your choice with this simple python app.";
-          maintainers = "camdenboren";
+          maintainers = [ "camdenboren" ];
           mainProgram = "app.py";
         };
       };
