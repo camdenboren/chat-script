@@ -1,6 +1,6 @@
 # Returns response w/ citations from RAG-enabled LLM based on user question passed from app ui
 
-from langchain_community.embeddings import SentenceTransformerEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_core.output_parsers import StrOutputParser
 from langchain.prompts import ChatPromptTemplate
@@ -23,7 +23,7 @@ if document_directory[-1] != "/":
     doc_dir_len += 1
 
 # Set Embedding Function
-embeddings = SentenceTransformerEmbeddings(model_name=embeddings_model)
+embeddings = HuggingFaceEmbeddings(model_name=embeddings_model)
 
 # Set ChromaDB vectorstore as retriever
 vectorstore = Chroma(

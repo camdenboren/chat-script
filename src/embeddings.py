@@ -6,7 +6,7 @@
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import SentenceTransformerEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 import os
 import shutil
@@ -36,7 +36,7 @@ def embeddings():
     all_splits = text_splitter.split_documents(docs)
 
     # Set embedding function 
-    embeddings = SentenceTransformerEmbeddings(model_name=embeddings_model)
+    embeddings = HuggingFaceEmbeddings(model_name=embeddings_model)
 
     # Remove Vector Store if it exists
     if os.path.exists(os.path.expanduser(persist_directory)):

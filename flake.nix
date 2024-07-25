@@ -16,10 +16,10 @@
         langchain
         langchain-core
         langchain-community
+        langchain-huggingface
         beautifulsoup4
         chromadb
         tiktoken
-        sentence-transformers
         gradio
       ];
     });
