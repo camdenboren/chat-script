@@ -9,7 +9,7 @@
 
   outputs = { self, nixpkgs }: 
   let
-    supportedSystems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
+    supportedSystems = [ "x86_64-linux" "aarch64-darwin" ];
     forEachSupportedSystem = function: nixpkgs.lib.genAttrs supportedSystems (system: function {
       pkgs = nixpkgs.legacyPackages.${system};
       deps = with nixpkgs.legacyPackages.${system}.python311Packages; [
