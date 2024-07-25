@@ -1,5 +1,5 @@
 {
-  description = "Python Development Environment via Nix Flake";
+  description = "chat-script Development Environment and Package via Nix Flake";
 
   inputs = {
     nixpkgs = {
@@ -12,52 +12,44 @@
     supportedSystems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
     forEachSupportedSystem = function: nixpkgs.lib.genAttrs supportedSystems (system: function {
       pkgs = nixpkgs.legacyPackages.${system};
+      deps = with nixpkgs.legacyPackages.${system}.python311Packages; [
+        langchain
+        langchain-core
+        langchain-community
+        beautifulsoup4
+        chromadb
+        tiktoken
+        sentence-transformers
+        gradio
+      ];
     });
   in {
-    devShells = forEachSupportedSystem ({ pkgs }: {
+    devShells = forEachSupportedSystem ({ pkgs, deps }: {
       default = pkgs.mkShell {
         packages = with pkgs; [ 
           bashInteractive 
           python311 
-        ] ++
-          (with pkgs.python311Packages; [ 
-            langchain
-            langchain-core
-            langchain-community
-            beautifulsoup4
-            chromadb
-            tiktoken
-            sentence-transformers
-            gradio
-          ]);
+        ] ++ deps;
 
         ANONYMIZED_TELEMETRY = "False";
 
         shellHook = ''
-          echo -e "\nPython Development Environment via Nix Flake\n"
+          echo -e "\nchat-script Development Environment and Package via Nix Flake\n"
           echo -e "Run: python fileName.py\n" 
           python --version
           codium src
         '';
       };
     });
-    packages = forEachSupportedSystem ({ pkgs }: {
+    packages = forEachSupportedSystem ({ pkgs, deps }: {
       default = pkgs.python311Packages.buildPythonApplication {
         pname = "chat-script";
         version = "0.1";
-
-        propagatedBuildInputs = with pkgs.python311Packages; [
-          langchain
-          langchain-core
-          langchain-community
-          beautifulsoup4
-          chromadb
-          tiktoken
-          sentence-transformers 
-          gradio 
-        ];
-
         src = ./.;
+
+        propagatedBuildInputs = deps;
+
+        ANONYMIZED_TELEMETRY = "False";
 
         meta.mainProgram = "app.py";
       };
