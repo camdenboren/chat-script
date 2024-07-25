@@ -22,8 +22,9 @@ def app():
         chatbot=gr.Chatbot(
             show_copy_button=True, 
             bubble_full_width=False,
-            height=500
+            scale=1
         ),
+        fill_height=True,
         title="chat-script",
         description="Chat locally with text documents (scripts) of your choice with this simple python app.",
         analytics_enabled=False,
