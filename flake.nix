@@ -37,7 +37,6 @@
           echo -e "\nchat-script Development Environment and Package via Nix Flake\n"
           echo -e "Run: python fileName.py\n" 
           python --version
-          codium src
         '';
       };
     });

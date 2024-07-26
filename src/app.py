@@ -8,14 +8,14 @@ import response as r
 import os
 
 # Directory names
-document_directory = "~/.chat-script/scripts"
+scripts_directory = "~/.chat-script/scripts"
 
-# Create document_directory if needed 
-def check_doc_dir():
-    # Create document_directory if needed 
-    if not os.path.exists(os.path.expanduser(document_directory)):
-        os.makedirs(os.path.expanduser(document_directory))
-        print("\nCreated document_directory at: " + document_directory + ". Add your documents there and run 'nix develop github:camdenboren/chat-script --command bash -c \"python src/embeddings.py\" to embed them.")
+# Create scripts_directory if needed 
+def check_scripts_dir():
+    # Create scripts_directory if needed 
+    if not os.path.exists(os.path.expanduser(scripts_directory)):
+        os.makedirs(os.path.expanduser(scripts_directory))
+        print("\nCreated scripts_directory at: " + scripts_directory + ". Add your scripts there and run 'nix develop github:camdenboren/chat-script --command bash -c \"python src/embeddings.py\" to embed them.")
     else:
         app()
 
@@ -37,4 +37,4 @@ def app():
     app.launch()
 
 if __name__ == '__main__':
-    check_doc_dir()
+    check_scripts_dir()

@@ -8,10 +8,11 @@ Leverages Nix, Ollama, Langchain, ChromaDB, and Gradio to accomplish RAG (retrie
 <summary><b>Setup</b></summary>
 <b>Important: Must install Ollama and flake-enabled Nix before running anything.</b>
 
-Start Ollama server (second command only needs to be run if dolphin-mistral has not already been installed):
+Start Ollama server (second and third commands only need to be run if models have not already been installed):
 
     ollama serve
-    ollama run dolphin-mistral
+    ollama run mistral
+    ollama run mxbai-embed-large
 
 <i>Note: I recommend running Ollama as a system service to avoid needing to run 'ollama serve' every time I boot.</i>
 
