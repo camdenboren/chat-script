@@ -49,14 +49,18 @@ Access app at link: http://127.0.0.1:7860/
 
 <details>
 <summary><b>Advanced Usage</b></summary>
-To set 'share=True' in app.launch()
+To adjust various options:
 
     git clone https://github.com/camdenboren/chat-script.git
-    cd chat-script
-    modify app.py to include 'share=True'
-    nix run .
-    curl {given CDN link}
-    sudo cp frpc_platform_arch_v0.2  /nix/store/.../gradio
+    modify files in src as desired
+    nix run /path/to/chat-script
+
+Serve a public demo (builds upon immediately preceeding instructions):
+
+    set 'share = True' in app.py
+    nix run /path/to/chat-script
+    curl {given CDN link} /path/to/download
+    sudo cp /path/to/download/frpc_platform_arch_v0.2  /nix/store/.../gradio
     sudo chmod +x frpc_platform_arch_v0.2
 
 Efficiently grab Youtube video transcripts

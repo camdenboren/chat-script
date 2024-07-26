@@ -10,6 +10,9 @@ import os
 # Directory names
 scripts_directory = "~/.chat-script/scripts"
 
+# Misc options
+share = False
+
 def check_scripts_dir():
     """Create scripts_directory if needed"""
     if not os.path.exists(os.path.expanduser(scripts_directory)):
@@ -33,7 +36,7 @@ def app():
         analytics_enabled=False,
         additional_inputs=[]
     ).queue()
-    app.launch()
+    app.launch(share=share)
 
 if __name__ == '__main__':
     check_scripts_dir()
