@@ -20,22 +20,32 @@ collection_name = "rag-chroma"
 embeddings_model = "mxbai-embed-large"
 show_progress = True
 
-# Create scripts_directory if needed 
+# Misc options 
+use_multithreading = True
+chunk_size = 500
+chunk_overlap = 0
+
 def check_scripts_dir():
+    """Create scripts_directory if needed """
     if not os.path.exists(os.path.expanduser(scripts_directory)):
         os.makedirs(os.path.expanduser(scripts_directory))
         print("\nCreated scripts_directory at: " + scripts_directory + ". Add your scripts there and run 'nix develop github:camdenboren/chat-script --command bash -c \"python src/embeddings.py\" to embed them.")
     else:
         embeddings()
 
-# Loads and chunks text documents, embeds them, then stores in persistent ChromaDB vectorstore
 def embeddings():
+    """Loads and chunks text documents, embeds them, then stores in persistent ChromaDB vectorstore"""
     # Load documents
-    loader = DirectoryLoader(path=os.path.expanduser(scripts_directory), loader_cls=TextLoader, show_progress=show_progress, use_multithreading=True)
+    loader = DirectoryLoader(
+        path=os.path.expanduser(scripts_directory), 
+        loader_cls=TextLoader, 
+        show_progress=show_progress, 
+        use_multithreading=use_multithreading
+    )
     docs = loader.load()
 
     # Split documents
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
     all_splits = text_splitter.split_documents(docs)
 
     # Set embedding function 

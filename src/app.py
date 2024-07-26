@@ -10,17 +10,16 @@ import os
 # Directory names
 scripts_directory = "~/.chat-script/scripts"
 
-# Create scripts_directory if needed 
 def check_scripts_dir():
-    # Create scripts_directory if needed 
+    """Create scripts_directory if needed"""
     if not os.path.exists(os.path.expanduser(scripts_directory)):
         os.makedirs(os.path.expanduser(scripts_directory))
         print("\nCreated scripts_directory at: " + scripts_directory + ". Add your scripts there and run 'nix develop github:camdenboren/chat-script --command bash -c \"python src/embeddings.py\" to embed them.")
     else:
         app()
 
-# Launch app's Gradio UI
 def app():
+    """Launch app's Gradio UI"""
     app = gr.ChatInterface(
         r.response,
         chatbot=gr.Chatbot(
