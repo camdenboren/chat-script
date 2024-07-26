@@ -9,12 +9,18 @@ from langchain_core.runnables import RunnableLambda, RunnablePassthrough
 import time as t
 import os
 
-# Model options and directory, collection names
+# Directory, collection names
 scripts_directory = "~/.chat-script/scripts"
 embeddings_directory = "~/.chat-script/embeddings"
+collection_name = "rag-chroma"
+
+# Model options
 embeddings_model = "mxbai-embed-large"
 chat_model = "mistral"
-collection_name = "rag-chroma"
+temperature = 0.3
+top_k =  20
+top_p = 0.5
+show_progress=False
 context_stream_delay = 0.075
 
 # Calculate length of scripts_dir name for citation formatting later
@@ -23,7 +29,7 @@ if scripts_directory[-1] != "/":
     scripts_dir_len += 1
 
 # Set Embedding Function
-embeddings = OllamaEmbeddings(model=embeddings_model, show_progress=True)
+embeddings = OllamaEmbeddings(model=embeddings_model, show_progress=show_progress)
 
 # Set ChromaDB vectorstore as retriever
 vectorstore = Chroma(
@@ -42,7 +48,13 @@ Question: {question}
 prompt = ChatPromptTemplate.from_template(template)
 
 # Set LLM to local Ollama model
-model = ChatOllama(model=chat_model)
+model = ChatOllama(
+    model=chat_model,
+    temperature=temperature,
+    top_k=top_k,
+    top_p=top_p,
+    show_progress=show_progress
+)
 
 # Print state (includes question, context) - useful for debugging and finding exact quotes
 def inspect(state):

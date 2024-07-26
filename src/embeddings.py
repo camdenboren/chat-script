@@ -11,11 +11,14 @@ from langchain_community.vectorstores import Chroma
 import os
 import shutil
 
-# Model options and directory, collection names
+#  Directory, collection names
 scripts_directory = "~/.chat-script/scripts"
 embeddings_directory = "~/.chat-script/embeddings"
-embeddings_model = "mxbai-embed-large"
 collection_name = "rag-chroma"
+
+# Model options
+embeddings_model = "mxbai-embed-large"
+show_progress = True
 
 # Create scripts_directory if needed 
 def check_scripts_dir():
@@ -28,7 +31,7 @@ def check_scripts_dir():
 # Loads and chunks text documents, embeds them, then stores in persistent ChromaDB vectorstore
 def embeddings():
     # Load documents
-    loader = DirectoryLoader(path=os.path.expanduser(scripts_directory), loader_cls=TextLoader, show_progress=True, use_multithreading=True)
+    loader = DirectoryLoader(path=os.path.expanduser(scripts_directory), loader_cls=TextLoader, show_progress=show_progress, use_multithreading=True)
     docs = loader.load()
 
     # Split documents
@@ -36,7 +39,7 @@ def embeddings():
     all_splits = text_splitter.split_documents(docs)
 
     # Set embedding function 
-    embeddings = OllamaEmbeddings(model=embeddings_model, show_progress=True)
+    embeddings = OllamaEmbeddings(model=embeddings_model, show_progress=show_progress)
 
     # Remove Vector Store if it exists
     if os.path.exists(os.path.expanduser(embeddings_directory)):
