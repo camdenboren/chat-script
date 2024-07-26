@@ -44,7 +44,6 @@ prompt = ChatPromptTemplate.from_template(template)
 # Set LLM to local Ollama model
 model = ChatOllama(model=chat_model)
 
-
 # Print state (includes question, context) - useful for debugging and finding exact quotes
 def inspect(state):
     """Print the state passed between Runnables in a langchain and pass it on"""
@@ -57,17 +56,16 @@ def format_context(context):
     formatted_context = "Relevant Sources (some may not have been used): "
     index = 0
     yield "\n\n"
-    if context:
-        while(index < len(context)):
-            formatted_context += "[" + str(index+1) + "] " + context[index].metadata["source"][scripts_dir_len:]
-            for chunks in formatted_context.split():
-                yield chunks + " "
-                if((index == 0) and (chunks == "used):")):
-                    yield "\n"
-                t.sleep(context_stream_delay)
-            yield "\n"
-            formatted_context = ""
-            index += 1
+    while(index < len(context)):
+        formatted_context += "[" + str(index+1) + "] " + context[index].metadata["source"][scripts_dir_len:]
+        for chunks in formatted_context.split():
+            yield chunks + " "
+            if((index == 0) and (chunks == "used):")):
+                yield "\n"
+            t.sleep(context_stream_delay)
+        yield "\n"
+        formatted_context = ""
+        index += 1
 
 # Creates langchain w/ local LLM, then streams chain's text response
 def response(question,history):
@@ -81,7 +79,7 @@ def response(question,history):
     retrieve_docs = (lambda x: x["question"]) | retriever
     chain = RunnablePassthrough.assign(context=retrieve_docs).assign(answer=rag_chain_from_docs)
 
-    # Return/yield response and formatted context as a text stream
+    # Return/yield response and formatted context (if applicable) as a text stream
     result = chain.stream({"question": question})
     response_stream = ""
     context = None
@@ -93,7 +91,8 @@ def response(question,history):
         if(get_context):
             context = get_context
         yield response_stream
-    formatted_context = format_context(context)
-    for context_chunks in formatted_context:
-        response_stream += context_chunks
-        yield response_stream
+    if context:
+        formatted_context = format_context(context)
+        for context_chunks in formatted_context:
+            response_stream += context_chunks
+            yield response_stream
