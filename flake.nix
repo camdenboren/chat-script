@@ -34,8 +34,7 @@
         ANONYMIZED_TELEMETRY = "False";
 
         shellHook = ''
-          echo -e "\nchat-script Development Environment and Package via Nix Flake\n"
-          echo -e "Run: python fileName.py\n" 
+          echo -e "\nchat-script Development Environment via Nix Flake\n"
           python --version
         '';
       };

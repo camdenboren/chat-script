@@ -11,8 +11,8 @@ Leverages Nix, Ollama, Langchain, ChromaDB, and Gradio to accomplish RAG (retrie
 Start Ollama server (second and third commands only need to be run if models have not already been installed):
 
     ollama serve
-    ollama run mistral
-    ollama run mxbai-embed-large
+    ollama pull mistral
+    ollama pull mxbai-embed-large
 
 <i>Note: I recommend running Ollama as a system service to avoid needing to run 'ollama serve' every time I boot.</i>
 
