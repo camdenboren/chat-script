@@ -36,14 +36,6 @@ if scripts_directory[-1] != "/":
 # Set Embedding Function
 embeddings = OllamaEmbeddings(model=embeddings_model, show_progress=show_progress)
 
-# Set ChromaDB vectorstore as retriever
-vectorstore = Chroma(
-    collection_name=collection_name,
-    embedding_function=embeddings,
-    persist_directory=os.path.expanduser(embeddings_directory)
-)
-retriever = vectorstore.as_retriever(search_kwargs={'k': top_n_results})
-
 # Define the prompt via a template leveraging provided context
 template = """Answer the question using the following context. If you use any information in the context, include the index (like: [1]) of the relevant Document as an in-text citation in your answer, and nothing else. Remember that each Document has two sections: page_content, and metadata- don't confuse these for indexable objects.
 {context}
@@ -87,6 +79,14 @@ def format_context(context):
 
 def response(question,history):
     """Creates langchain w/ local LLM, then streams chain's text response"""
+    # Set ChromaDB vectorstore as retriever
+    vectorstore = Chroma(
+        collection_name=collection_name,
+        embedding_function=embeddings,
+        persist_directory=os.path.expanduser(embeddings_directory)
+    )
+    retriever = vectorstore.as_retriever(search_kwargs={'k': top_n_results})
+
     # Define the langchain
     rag_chain_from_docs = (
         RunnableLambda(inspect)
