@@ -33,11 +33,11 @@ def init():
                     print("Input must be one of: y/n\n")
                     user_embed = None
     else:
-        print("got here somehow...\n")
         app()
 
 def app():
     """Launch app's Gradio UI"""
+    r.set_vectorstore()
     app = gr.ChatInterface(
         r.response,
         chatbot=gr.Chatbot(

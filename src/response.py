@@ -54,6 +54,16 @@ model = ChatOllama(
     top_p=top_p
 )
 
+def set_vectorstore():
+    """Set ChromaDB vectorstore (w/ collection_name) as a retriever"""
+    vectorstore = Chroma(
+        collection_name=collection_name,
+        embedding_function=embeddings,
+        persist_directory=os.path.expanduser(embeddings_directory)
+    )
+    global retriever
+    retriever = vectorstore.as_retriever(search_kwargs={'k': top_n_results})
+
 def inspect(state):
     """Print state between runnables and pass it on (includes question, context) - useful for logs and finding exact quotes"""
     if print_state:
@@ -79,14 +89,6 @@ def format_context(context):
 
 def response(question,history):
     """Creates langchain w/ local LLM, then streams chain's text response"""
-    # Set ChromaDB vectorstore as retriever
-    vectorstore = Chroma(
-        collection_name=collection_name,
-        embedding_function=embeddings,
-        persist_directory=os.path.expanduser(embeddings_directory)
-    )
-    retriever = vectorstore.as_retriever(search_kwargs={'k': top_n_results})
-
     # Define the langchain
     rag_chain_from_docs = (
         RunnableLambda(inspect)
