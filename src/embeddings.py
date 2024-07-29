@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 # Refreshes/generates persistent embeddings in embeddings_directory based on text files in scripts_directory
 # Run before using (can be executed as a script), and run after adding more files to scripts_directory
 
@@ -26,10 +24,21 @@ chunk_size = 500
 chunk_overlap = 0
 
 def check_scripts_dir():
-    """Create scripts_directory if needed """
+    """Create scripts_directory if needed, otw run embeddings()"""
     if not os.path.exists(os.path.expanduser(scripts_directory)):
         os.makedirs(os.path.expanduser(scripts_directory))
-        print("\nCreated scripts_directory at: " + scripts_directory + ". Add your scripts there and run 'nix develop github:camdenboren/chat-script --command bash -c \"python src/embeddings.py\" to embed them.")
+        print("\nCreated scripts_directory at: " + scripts_directory)
+        user_embed = None
+        while not user_embed:
+            user_embed = str(input("Would you like to embed the scripts now (add your scripts to ~/.chat-script/scripts before submitting)? y/n: "))
+            if user_embed:
+                if user_embed[0] == "y" or user_embed[0] == "Y":
+                    embeddings()
+                elif user_embed[0] == "n" or user_embed[0] == "N":
+                    break
+                else:
+                    print("Input must be one of: y/n\n")
+                user_embed = None
     else:
         embeddings()
 

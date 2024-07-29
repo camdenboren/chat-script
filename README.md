@@ -15,28 +15,17 @@ Start Ollama server (second and third commands only need to be run if models hav
     ollama pull mxbai-embed-large
 
 <i>Note: I recommend running Ollama as a system service to avoid needing to run 'ollama serve' every time I boot.</i>
-
-An optional setup step is to manually create the directory:
-
-    ~/.chat-script
-
-With the subfolders:
-
-    ~/.chat-script/embeddings
-    ~/.chat-script/scripts
-
-This allows you to prepare your scripts before installing anything, but the folder creation itself is done automatically by the first 'nix run' command in the 'Usage' section.
 </details>
 
 <details>
 <summary><b>Usage</b></summary>
 Before any context can be used by the LLM, these context "scripts" must be added to ~/.chat-script/scripts
 
-Executing the following will create this directory:
+Executing the following will create this directory, generate embeddings (if desired), and run the app:
 
     nix run github:camdenboren/chat-script
 
-Once you add your scripts, run the following to generate their associated embeddings:
+Scripts can be reembeded at any time by executing the following:
 
     nix develop github:camdenboren/chat-script --command bash -c "python src/embeddings.py"
 
