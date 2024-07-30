@@ -13,13 +13,15 @@
     forEachSupportedSystem = function: nixpkgs.lib.genAttrs supportedSystems (system: function {
       pkgs = nixpkgs.legacyPackages.${system};
       deps = with nixpkgs.legacyPackages.${system}.python311Packages; [
+        chromadb
+        gradio
         langchain
         langchain-core
         langchain-community
-        beautifulsoup4
-        chromadb
-        tiktoken
-        gradio
+
+        # Seem unnecessary
+        #beautifulsoup4
+        #tiktoken
 
         # Needed for PDF processing - should work once paddlepaddle is updated - also need to rm loader_cls in embeddings()
         #unstructured
