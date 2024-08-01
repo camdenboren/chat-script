@@ -22,6 +22,7 @@ collection_name = "rag-chroma"
 # Model options - slightly more conservative output than default
 embeddings_model = "mxbai-embed-large"
 chat_model = "mistral"
+moderation_model = "xe/llamaguard3"
 show_progress = False
 keep_alive = "5m"  # default: 5m
 temperature = 0.6  # default: 0.8
@@ -29,6 +30,7 @@ top_k =  30        # default: 40
 top_p = 0.7        # default: 0.9
 
 # Misc options
+moderate = False
 top_n_results = 3
 context_stream_delay = 0.075
 print_state = True
@@ -38,7 +40,7 @@ scripts_dir_len = len(os.path.expanduser(scripts_directory))
 if scripts_directory[-1] != "/":
     scripts_dir_len += 1
 
-# Set Embedding Function
+# Set Embedding LLM to local Ollama model
 embeddings = OllamaEmbeddings(model=embeddings_model, show_progress=show_progress)
 
 # Set LLM to local Ollama model
@@ -50,6 +52,15 @@ model = ChatOllama(
     top_k=top_k,
     top_p=top_p
 )
+
+# Set Moderation LLM to local Ollama model
+if moderate:
+    moderation = ChatOllama(
+        model=moderation_model,
+        show_progress=show_progress,
+        keep_alive=keep_alive
+    )
+    moderation_chain = moderation | StrOutputParser()
 
 # Set chat_history store
 store = {}
@@ -124,33 +135,40 @@ def inspect(state):
     return state
 
 def response(question,history):
-    """Creates langchain w/ local LLM, then streams chain's text response"""
-    rag_chain = create_retrieval_chain(retriever, question_answer_chain)
-    chain = RunnableWithMessageHistory(
-        RunnableLambda(inspect) | rag_chain,
-        get_session_history,
-        input_messages_key="input",
-        history_messages_key="chat_history",
-        output_messages_key="answer",
-    )
-    # Old approach for including context in state - investigate this further to prevent separate context printing
-    #retrieve_docs = (lambda x: x["input"]) | retriever
-    #chain = RunnablePassthrough.assign(context=retrieve_docs).assign(answer=rag_chain_from_docs)
+    """Checks question for safety (if applicable) then creates langchain w/ local LLM and streams chain's text response"""
+    allow_response = True
+    if moderate:
+        check_question = moderation_chain.invoke(question)
+        allow_response = (check_question[2:6] == "safe")
+    if allow_response:
+        rag_chain = create_retrieval_chain(retriever, question_answer_chain)
+        chain = RunnableWithMessageHistory(
+            RunnableLambda(inspect) | rag_chain,
+            get_session_history,
+            input_messages_key="input",
+            history_messages_key="chat_history",
+            output_messages_key="answer",
+        )
+        # Old approach for including context in state - investigate this further to prevent separate context printing
+        #retrieve_docs = (lambda x: x["input"]) | retriever
+        #chain = RunnablePassthrough.assign(context=retrieve_docs).assign(answer=rag_chain_from_docs)
 
-    # Return/yield response and formatted context (if applicable) as a text stream
-    result = chain.stream({"input": question},config={"configurable": {"session_id": "abc123"}})
-    response_stream = ""
-    context = None
-    for chunks in result:
-        answer_chunks = chunks.get("answer")
-        get_context = chunks.get("context")
-        if(answer_chunks):
-            response_stream += answer_chunks
-        if(get_context):
-            context = get_context
-        yield response_stream
-    if context:
-        formatted_context = format_context(context)
-        for context_chunks in formatted_context:
-            response_stream += context_chunks
+        # Return/yield response and formatted context (if applicable) as a text stream
+        result = chain.stream({"input": question},config={"configurable": {"session_id": "abc123"}})
+        response_stream = ""
+        context = None
+        for chunks in result:
+            answer_chunks = chunks.get("answer")
+            get_context = chunks.get("context")
+            if(answer_chunks):
+                response_stream += answer_chunks
+            if(get_context):
+                context = get_context
             yield response_stream
+        if context:
+            formatted_context = format_context(context)
+            for context_chunks in formatted_context:
+                response_stream += context_chunks
+                yield response_stream
+    else:
+        yield "Your question is unsafe, so no response will be provided."
