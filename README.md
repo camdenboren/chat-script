@@ -1,18 +1,28 @@
 # chat-script
 
-Chat locally with scripts (documents) of your choice with this simple python app.
+Chat locally with scripts (documents) of your choice with this simple python app that features: 
+- Citations
+- Moderation
+- Chat History
 
-Leverages Nix, Ollama, Langchain, ChromaDB, and Gradio to accomplish RAG (retrieval-augmented generation) on local LLMs with a basic UI.
+This is accomplished by implementing RAG on local LLMs via:
+- Ollama
+- Langchain
+- ChromaDB
+- Gradio
+
+Package and development environment powered by Nix
 
 <details>
 <summary><b>Setup</b></summary>
 <b>Important: Must install Ollama and flake-enabled Nix before running anything.</b>
 
-Start Ollama server (second and third commands only need to be run if models have not already been installed):
+Start Ollama server (second and third commands only need to be run if models have not already been installed, fourth only applies if moderate is set to True):
 
     ollama serve
     ollama pull mistral
     ollama pull mxbai-embed-large
+    ollama pull xe/llamaguard3
 
 <i>Note: I recommend running Ollama as a system service to avoid needing to run 'ollama serve' every time I boot.</i>
 </details>
@@ -25,15 +35,13 @@ Executing the following will create this directory, generate embeddings (if desi
 
     nix run github:camdenboren/chat-script
 
-Scripts can be reembeded at any time by executing the following:
+Access app at link: http://127.0.0.1:7860/
+
+Scripts can be reembedded at any time by executing the following:
 
     nix develop github:camdenboren/chat-script --command bash -c "python src/embeddings.py"
 
-Now, the nix run command can be rerun to run this app normally (no local install needed, though it may be convenient for dedicated servers, etc.).
-
-Access app at link: http://127.0.0.1:7860/
-
-<i>*Note: Ollama must be running in the background in order for the app to actually get a response- see <b>Setup</b> for commands. It's also worthwhile to make sure the LLM is running on your GPU, otherwise responses are unbearably slow</i>
+<i>*Note: Ollama must be running in the background in order for the app to actually get a response- see <b>Setup</b> for commands. It's also worthwhile to make sure the LLMs are running on your GPU, otherwise responses are unbearably slow</i>
 </details>
 
 <details>
