@@ -1,11 +1,16 @@
 # Returns response w/ citations from RAG-enabled LLM based on user question passed from app ui
 
 from langchain_community.embeddings import OllamaEmbeddings
-from langchain_community.vectorstores import Chroma
-from langchain.prompts import ChatPromptTemplate
 from langchain_community.chat_models import ChatOllama
+from langchain_community.vectorstores import Chroma
+from langchain_community.chat_message_histories import ChatMessageHistory
+from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnableLambda, RunnablePassthrough
+from langchain_core.runnables import RunnableLambda
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain.chains import create_history_aware_retriever, create_retrieval_chain
+from langchain.chains.combine_documents import create_stuff_documents_chain
 import time as t
 import os
 
@@ -36,14 +41,6 @@ if scripts_directory[-1] != "/":
 # Set Embedding Function
 embeddings = OllamaEmbeddings(model=embeddings_model, show_progress=show_progress)
 
-# Define the prompt via a template leveraging provided context
-template = """Answer the question using the following context. If you use any information in the context, include the index (like: [1]) of the relevant Document as an in-text citation in your answer, and nothing else. Remember that each Document has two sections: page_content, and metadata- don't confuse these for indexable objects.
-{context}
-
-Question: {question}
-"""
-prompt = ChatPromptTemplate.from_template(template)
-
 # Set LLM to local Ollama model
 model = ChatOllama(
     model=chat_model,
@@ -54,6 +51,37 @@ model = ChatOllama(
     top_p=top_p
 )
 
+# Set chat_history store
+store = {}
+
+# Define the question_answer_chain 
+contextualize_q_system_prompt = (
+    "Given a chat history and the latest user question "
+    "which might reference context in the chat history, "
+    "formulate a standalone question which can be understood "
+    "without the chat history. Do NOT answer the question, "
+    "just reformulate it if needed and otherwise return it as is."
+)
+contextualize_q_prompt = ChatPromptTemplate.from_messages(
+    [
+        ("system", contextualize_q_system_prompt),
+        MessagesPlaceholder("chat_history"),
+        ("human", "{input}"),
+    ]
+)
+system_prompt = (
+    "Answer the question using the following context. If you use any information in the context, include the index (like: [1]) of the relevant Document as an in-text citation in your answer, and nothing else. Remember that each Document has two sections: page_content, and metadata- don't confuse these for indexable objects."
+    "{context}"
+)
+qa_prompt = ChatPromptTemplate.from_messages(
+    [
+        ("system", system_prompt),
+        MessagesPlaceholder("chat_history"),
+        ("human", "{input}"),
+    ]
+)
+question_answer_chain = create_stuff_documents_chain(model, qa_prompt)
+
 def set_vectorstore():
     """Set ChromaDB vectorstore (w/ collection_name) as a retriever"""
     vectorstore = Chroma(
@@ -62,17 +90,12 @@ def set_vectorstore():
         persist_directory=os.path.expanduser(embeddings_directory)
     )
     global retriever
-    retriever = vectorstore.as_retriever(search_kwargs={'k': top_n_results})
-
-def inspect(state):
-    """Print state between runnables and pass it on (includes question, context) - useful for logs and finding exact quotes"""
-    if print_state:
-        print("\n")
-        print(state)
-    return state
+    retriever = create_history_aware_retriever(model, vectorstore.as_retriever(search_kwargs={'k': top_n_results}), contextualize_q_prompt)
     
 def format_context(context):
     """Formats and yields context passed to LLM in human-readable format"""
+    if print_state:
+        print(context)
     formatted_context = "Relevant Sources (some may not have been used): "
     index = 0
     yield "\n\n"
@@ -87,20 +110,35 @@ def format_context(context):
         formatted_context = ""
         index += 1
 
+def get_session_history(session_id: str) -> BaseChatMessageHistory:
+    """Manage chat history"""
+    if session_id not in store:
+        store[session_id] = ChatMessageHistory()
+    return store[session_id]
+
+def inspect(state):
+    """Print state between runnables and pass it on (includes: input, chat_history)"""
+    if print_state:
+        print("\n")
+        print(state)
+    return state
+
 def response(question,history):
     """Creates langchain w/ local LLM, then streams chain's text response"""
-    # Define the langchain
-    rag_chain_from_docs = (
-        RunnableLambda(inspect)
-        | prompt
-        | model
-        | StrOutputParser()
+    rag_chain = create_retrieval_chain(retriever, question_answer_chain)
+    chain = RunnableWithMessageHistory(
+        RunnableLambda(inspect) | rag_chain,
+        get_session_history,
+        input_messages_key="input",
+        history_messages_key="chat_history",
+        output_messages_key="answer",
     )
-    retrieve_docs = (lambda x: x["question"]) | retriever
-    chain = RunnablePassthrough.assign(context=retrieve_docs).assign(answer=rag_chain_from_docs)
+    # Old approach for including context in state - investigate this further to prevent separate context printing
+    #retrieve_docs = (lambda x: x["input"]) | retriever
+    #chain = RunnablePassthrough.assign(context=retrieve_docs).assign(answer=rag_chain_from_docs)
 
     # Return/yield response and formatted context (if applicable) as a text stream
-    result = chain.stream({"question": question})
+    result = chain.stream({"input": question},config={"configurable": {"session_id": "abc123"}})
     response_stream = ""
     context = None
     for chunks in result:
