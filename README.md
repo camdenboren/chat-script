@@ -64,10 +64,9 @@ Efficiently grab Youtube video transcripts
 
 Priority
 - [ ] Implement app configuration
-- [ ] Improve print_state functionality (reimplement previous RunnablePassthrough approach)
-- [ ] Add moderation
-- [ ] Add few-shot prompting to improve citation formatting
 - [ ] Add vectorstore indexing to avoid embeddings dupes
+- [ ] Improve print_state functionality (reimplement previous RunnablePassthrough approach)
+- [ ] Add few-shot prompting to improve citation formatting
 
 Long-term
 - [ ] Investigate routing options for settings ui
