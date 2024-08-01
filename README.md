@@ -62,6 +62,15 @@ Efficiently grab Youtube video transcripts
 <details>
 <summary><b>ToDo</b></summary>
 
+Priority
+- [ ] Implement app configuration
+- [ ] Improve print_state functionality (reimplement previous RunnablePassthrough approach)
+- [ ] Add moderation
+- [ ] Add few-shot prompting to improve citation formatting
+- [ ] Add vectorstore indexing to avoid embeddings dupes
+
+Long-term
+- [ ] Investigate routing options for settings ui
 - [ ] Move to a more customizable UI via either gradio.Interface(), gradio.Blocks(), or a different framework like streamlit or flask
 - [ ] Add button to call embeddings()
 - [ ] Add dropdown to select available Ollama LLMs
