@@ -21,6 +21,7 @@ embeddings_directory = "~/.chat-script/embeddings"
 config_directory = "~/.config/chat-script"
 config_file = config_directory + "/chat-script.ini"
 
+# Set options
 if not os.path.exists(os.path.expanduser(config_directory)):
     # Model options - slightly more conservative output than default
     embeddings_model = "mxbai-embed-large"
