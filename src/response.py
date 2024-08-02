@@ -137,7 +137,7 @@ def inspect(state):
     return state
 
 def response(question,history):
-    """Checks question for safety (if applicable) then creates langchain w/ local LLM and streams chain's text response"""
+    """Checks question for safety (if applicable) then creates RAG + history chain w/ local LLM and streams chain's text response"""
     allow_response = True
     if moderate:
         check_question = moderation_chain.invoke(question)
