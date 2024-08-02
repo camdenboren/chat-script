@@ -37,7 +37,11 @@ Executing the following will create this directory, generate embeddings (if desi
 
 Access app at link: http://127.0.0.1:7860/
 
-Scripts can be reembedded at any time by executing the following:
+Scripts can be reembedded at any time by renaming/removing the scripts directory and rerunning:
+
+    nix run github:camdenboren/chat-script
+
+Or by executing the following (if you don't want to run the app):
 
     nix develop github:camdenboren/chat-script --command bash -c "python src/embeddings.py"
 
@@ -47,6 +51,10 @@ Scripts can be reembedded at any time by executing the following:
 <details>
 <summary><b>Advanced Usage</b></summary>
 To adjust various options:
+
+    Edit ~/.config/chat-script/chat-script.ini
+
+To edit the code itself:
 
     git clone https://github.com/camdenboren/chat-script.git
     modify files in src as desired
@@ -71,14 +79,16 @@ Efficiently grab Youtube video transcripts
 <summary><b>ToDo</b></summary>
 
 Priority
-- [ ] Implement app configuration
 - [ ] Add vectorstore indexing to avoid embeddings dupes
-- [ ] Improve print_state functionality (reimplement previous RunnablePassthrough approach)
 - [ ] Add few-shot prompting to improve citation formatting
+- [ ] Look into RAG-fusion for improving distance-based retrieval performance
+- [ ] Look into other splitting functions due to weirdness from book pdfs
+- [ ] Improve print_state functionality (reimplement previous RunnablePassthrough approach)
 
 Long-term
 - [ ] Investigate routing options for settings ui
 - [ ] Move to a more customizable UI via either gradio.Interface(), gradio.Blocks(), or a different framework like streamlit or flask
 - [ ] Add button to call embeddings()
 - [ ] Add dropdown to select available Ollama LLMs
+- [ ] Improve documentation
 </details>
