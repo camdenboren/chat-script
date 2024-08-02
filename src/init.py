@@ -17,7 +17,7 @@ config_file = config_directory + "/chat-script.ini"
 
 def init():
     """Create directories and embed scripts if needed, otw run app()"""
-    if not os.path.exists(os.path.expanduser(config_directory)):
+    if not os.path.exists(os.path.expanduser(config_file)):
         os.makedirs(os.path.expanduser(config_directory))
         configuration['APP'] = {'share': 'False'}
         configuration['RESPONSE'] = {'collection_name': 'rag-chroma',
@@ -41,7 +41,7 @@ def init():
                               'chunk_overlap': '0'}          
         with open(os.path.expanduser(config_file), 'w') as configfile:
             configuration.write(configfile)
-        print("\nCreated config_directory at: " + config_directory + " and populated it with default settings")
+        print("\nCreated config_file at: " + config_file + " and populated it with default settings")
         if os.path.exists(os.path.expanduser(scripts_directory)):
             a.app()
     elif not os.path.exists(os.path.expanduser(scripts_directory)):

@@ -12,11 +12,10 @@ from configparser import ConfigParser
 #  Directory names
 scripts_directory = "~/.chat-script/scripts"
 embeddings_directory = "~/.chat-script/embeddings"
-config_directory = "~/.config/chat-script"
-config_file = config_directory + "/chat-script.ini"
+config_file = "~/.config/chat-script/chat-script.ini"
 
 # Set options
-if not os.path.exists(os.path.expanduser(config_directory)):
+if not os.path.exists(os.path.expanduser(config_file)):
     # Model options
     embeddings_model = "mxbai-embed-large"
     show_progress = True

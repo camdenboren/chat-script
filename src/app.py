@@ -9,11 +9,10 @@ from configparser import ConfigParser
 configuration = ConfigParser()
 
 # Directory names
-config_directory = "~/.config/chat-script"
-config_file = config_directory + "/chat-script.ini"
+config_file = "~/.config/chat-script/chat-script.ini"
 
 # Misc options
-if not os.path.exists(os.path.expanduser(config_directory)):
+if not os.path.exists(os.path.expanduser(config_file)):
     share = False
 else:
     configuration.read(os.path.expanduser(config_file))
