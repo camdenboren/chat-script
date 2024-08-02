@@ -9,35 +9,20 @@ import os
 import shutil
 from configparser import ConfigParser
 
-#  Directory names
+# Directory and file names
 scripts_directory = "~/.chat-script/scripts"
 embeddings_directory = "~/.chat-script/embeddings"
 config_file = "~/.config/chat-script/chat-script.ini"
 
 # Set options
-if not os.path.exists(os.path.expanduser(config_file)):
-    # Model options
-    embeddings_model = "mxbai-embed-large"
-    show_progress = True
-
-    # Misc options 
-    collection_name = "rag-chroma"
-    use_multithreading = True
-    chunk_size = 500
-    chunk_overlap = 0
-else:
-    configuration = ConfigParser()
-    configuration.read(os.path.expanduser(config_file))
-
-    # Model Options
-    embeddings_model = configuration.get("EMBEDDINGS","embeddings_model")
-    show_progress = configuration.getboolean("EMBEDDINGS","show_progress")
-
-    # Misc options 
-    collection_name = configuration.get("EMBEDDINGS","collection_name")
-    use_multithreading = configuration.getboolean("EMBEDDINGS","use_multithreading")
-    chunk_size = configuration.getint("EMBEDDINGS","chunk_size")
-    chunk_overlap = configuration.getint("EMBEDDINGS","chunk_overlap")
+configuration = ConfigParser()
+configuration.read(os.path.expanduser(config_file))
+embeddings_model = configuration.get("EMBEDDINGS", "embeddings_model", fallback="mxbai-embed-large")
+show_progress = configuration.getboolean("EMBEDDINGS", "show_progress", fallback=True)
+collection_name = configuration.get("EMBEDDINGS", "collection_name", fallback="rag-chroma")
+use_multithreading = configuration.getboolean("EMBEDDINGS", "use_multithreading", fallback=True)
+chunk_size = configuration.getint("EMBEDDINGS", "chunk_size", fallback=500)
+chunk_overlap = configuration.getint("EMBEDDINGS", "chunk_overlap", fallback=0)
 
 def embeddings():
     """Loads and chunks text documents, embeds them, then stores in persistent ChromaDB vectorstore"""

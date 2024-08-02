@@ -9,7 +9,7 @@ from configparser import ConfigParser
 
 configuration = ConfigParser()
 
-# Directory names
+# Directory and file names
 scripts_directory = "~/.chat-script/scripts"
 embeddings_directory = "~/.chat-script/embeddings"
 config_directory = "~/.config/chat-script"
@@ -19,26 +19,31 @@ def init():
     """Create directories and embed scripts if needed, otw run app()"""
     if not os.path.exists(os.path.expanduser(config_file)):
         os.makedirs(os.path.expanduser(config_directory))
-        configuration['APP'] = {'share': 'False'}
-        configuration['RESPONSE'] = {'collection_name': 'rag-chroma',
-                              'embeddings_model': 'mxbai-embed-large',
-                              'chat_model': 'mistral',
-                              'moderation_model': 'xe/llamaguard3',
-                              'show_progress': 'False',
-                              'keep_alive': '5m',
-                              'temperature': '0.6',
-                              'top_k': '30',
-                              'top_p': '0.7',
-                              'moderate': 'False',
-                              'top_n_results': '3',
-                              'context_stream_delay': '0.075',
-                              'print_state': 'True'}
-        configuration['EMBEDDINGS'] = {'collection_name': 'rag-chroma',
-                              'embeddings_model': 'mxbai-embed-large',
-                              'show_progress': 'True',
-                              'use_multithreading': 'True',
-                              'chunk_size': '500',
-                              'chunk_overlap': '0'}          
+        configuration['APP'] = {
+            'share': 'False'
+        }
+        configuration['RESPONSE'] = {
+            'embeddings_model': 'mxbai-embed-large',
+            'chat_model': 'mistral',
+            'moderation_model': 'xe/llamaguard3',
+            'show_progress': 'False',
+            'keep_alive': '5m',
+            'temperature': '0.6',
+            'top_k': '30',
+            'top_p': '0.7','collection_name': 'rag-chroma',
+            'moderate': 'False',
+            'top_n_results': '3',
+            'context_stream_delay': '0.075',
+            'print_state': 'True'
+        }
+        configuration['EMBEDDINGS'] = {
+            'embeddings_model': 'mxbai-embed-large',
+            'show_progress': 'True',
+            'collection_name': 'rag-chroma',
+            'use_multithreading': 'True',
+            'chunk_size': '500',
+            'chunk_overlap': '0'
+        }
         with open(os.path.expanduser(config_file), 'w') as configfile:
             configuration.write(configfile)
         print("\nCreated config_file at: " + config_file + " and populated it with default settings")

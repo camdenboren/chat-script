@@ -6,17 +6,13 @@ import response as r
 import os
 from configparser import ConfigParser
 
-configuration = ConfigParser()
-
-# Directory names
+# Directory and file names
 config_file = "~/.config/chat-script/chat-script.ini"
 
-# Misc options
-if not os.path.exists(os.path.expanduser(config_file)):
-    share = False
-else:
-    configuration.read(os.path.expanduser(config_file))
-    share = configuration.getboolean("APP","share")
+# Set options
+configuration = ConfigParser()
+configuration.read(os.path.expanduser(config_file))
+share = configuration.getboolean("APP", "share", fallback=False)
 
 def app():
     """Launch app's Gradio UI"""

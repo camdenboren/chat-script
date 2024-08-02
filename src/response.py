@@ -15,49 +15,27 @@ import time as t
 import os
 from configparser import ConfigParser
 
-# Directory names
+# Directory and file names
 scripts_directory = "~/.chat-script/scripts"
 embeddings_directory = "~/.chat-script/embeddings"
 config_file = "~/.config/chat-script/chat-script.ini"
 
 # Set options
-if not os.path.exists(os.path.expanduser(config_file)):
-    # Model options - slightly more conservative output than default
-    embeddings_model = "mxbai-embed-large"
-    chat_model = "mistral"
-    moderation_model = "xe/llamaguard3"
-    show_progress = False
-    keep_alive = "5m"
-    temperature = 0.6
-    top_k =  30
-    top_p = 0.7
-
-    # Misc options
-    collection_name = "rag-chroma"
-    moderate = False
-    top_n_results = 3
-    context_stream_delay = 0.075
-    print_state = True
-else:
-    configuration = ConfigParser()
-    configuration.read(os.path.expanduser(config_file))
-
-    # Model options - slightly more conservative output than default
-    embeddings_model = configuration.get("RESPONSE","embeddings_model")
-    chat_model = configuration.get("RESPONSE","chat_model")
-    moderation_model = configuration.get("RESPONSE","moderation_model")
-    show_progress = configuration.getboolean("RESPONSE","show_progress")
-    keep_alive = configuration.get("RESPONSE","keep_alive")
-    temperature = configuration.getfloat("RESPONSE","temperature")
-    top_k =  configuration.getint("RESPONSE","top_k")
-    top_p = configuration.getfloat("RESPONSE","top_p")
-
-    # Misc options
-    collection_name = configuration.get("RESPONSE","collection_name")
-    moderate = configuration.getboolean("RESPONSE","moderate")
-    top_n_results = configuration.getint("RESPONSE","top_n_results")
-    context_stream_delay = configuration.getfloat("RESPONSE","context_stream_delay")
-    print_state = configuration.getboolean("RESPONSE","print_state")
+configuration = ConfigParser()
+configuration.read(os.path.expanduser(config_file))
+embeddings_model = configuration.get("RESPONSE", "embeddings_model", fallback="mxbai-embed-large")
+chat_model = configuration.get("RESPONSE", "chat_model", fallback="mistral")
+moderation_model = configuration.get("RESPONSE", "moderation_model", fallback="xe/llamaguard3")
+show_progress = configuration.getboolean("RESPONSE", "show_progress", fallback=False)
+keep_alive = configuration.get("RESPONSE", "keep_alive", fallback="5m")
+temperature = configuration.getfloat("RESPONSE", "temperature", fallback=0.6)
+top_k =  configuration.getint("RESPONSE", "top_k", fallback=30)
+top_p = configuration.getfloat("RESPONSE", "top_p", fallback=0.7)
+collection_name = configuration.get("RESPONSE", "collection_name", fallback="rag-chroma")
+moderate = configuration.getboolean("RESPONSE", "moderate", fallback=False)
+top_n_results = configuration.getint("RESPONSE", "top_n_results", fallback=3)
+context_stream_delay = configuration.getfloat("RESPONSE", "context_stream_delay", fallback=0.075)
+print_state = configuration.getboolean("RESPONSE", "print_state", fallback=True)
 
 # Calculate length of scripts_dir name for citation formatting later
 scripts_dir_len = len(os.path.expanduser(scripts_directory))
