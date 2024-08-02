@@ -8,8 +8,9 @@ setup(name='chat-script',
       packages=find_packages(),
       # Executables
       scripts=[
-        "src/app.py", 
-        "src/response.py", 
-        "src/embeddings.py"
+        "src/app.py",
+        "src/embeddings.py",
+        "src/init.py",
+        "src/response.py"
       ]
      )

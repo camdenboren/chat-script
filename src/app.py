@@ -1,39 +1,23 @@
-#!/usr/bin/env python
-
 # Gradio UI leveraging eponymous function in response
 
 import time
 import gradio as gr
 import response as r
-import embeddings as e
 import os
+from configparser import ConfigParser
+
+configuration = ConfigParser()
 
 # Directory names
-scripts_directory = "~/.chat-script/scripts"
-embeddings_directory = "~/.chat-script/embeddings"
+config_directory = "~/.config/chat-script"
+config_file = config_directory + "/chat-script.ini"
 
 # Misc options
-share = False
-
-def init():
-    """Create directories and embed scripts if needed, otw run app()"""
-    if not os.path.exists(os.path.expanduser(scripts_directory)):
-        os.makedirs(os.path.expanduser(scripts_directory))
-        print("\nCreated scripts_directory at: " + scripts_directory)
-        user_embed = None
-        while not user_embed:
-            user_embed = str(input("Would you like to embed the scripts now (if yes, then add your scripts to ~/.chat-script/scripts before submitting)? y/n: "))
-            if user_embed:
-                if user_embed[0] == "y" or user_embed[0] == "Y":
-                    e.embeddings()
-                    app()
-                elif user_embed[0] == "n" or user_embed[0] == "N":
-                    app()
-                else:
-                    print("Input must be one of: y/n\n")
-                    user_embed = None
-    else:
-        app()
+if not os.path.exists(os.path.expanduser(config_directory)):
+    share = False
+else:
+    configuration.read(os.path.expanduser(config_file))
+    share = configuration.getboolean("APP","share")
 
 def app():
     """Launch app's Gradio UI"""
@@ -51,6 +35,3 @@ def app():
         additional_inputs=[]
     ).queue()
     app.launch(share=share)
-
-if __name__ == '__main__':
-    init()
