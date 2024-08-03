@@ -7,8 +7,6 @@ import embeddings as e
 import os
 from configparser import ConfigParser
 
-configuration = ConfigParser()
-
 # Directory and file names
 scripts_directory = "~/.chat-script/scripts"
 embeddings_directory = "~/.chat-script/embeddings"
@@ -19,6 +17,7 @@ def init():
     """Create directories and embed scripts if needed, otw run app()"""
     if not os.path.exists(os.path.expanduser(config_file)):
         os.makedirs(os.path.expanduser(config_directory))
+        configuration = ConfigParser()
         configuration['APP'] = {
             'share': 'False'
         }
