@@ -5,16 +5,31 @@
     nixpkgs = {
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
+    linux-share = {
+      url = "https://cdn-media.huggingface.co/frpc-gradio-0.2/frpc_linux_amd64";
+      flake = false;
+    };
+    darwin-share = {
+      url = "https://cdn-media.huggingface.co/frpc-gradio-0.2/frpc_darwin_arm64";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs }: 
+  outputs = { self, nixpkgs, linux-share, darwin-share }: 
   let
     supportedSystems = [ "x86_64-linux" "aarch64-darwin" ];
     forEachSupportedSystem = function: nixpkgs.lib.genAttrs supportedSystems (system: function {
       pkgs = nixpkgs.legacyPackages.${system};
       deps = with nixpkgs.legacyPackages.${system}.python311Packages; [
         chromadb
-        gradio
+        (gradio.overrideAttrs (old: {
+          postInstall = (old.postInstall or "") + ''
+            cp -f ${linux-share} $out/lib/python3.11/site-packages/gradio/frpc_linux_amd64_v0.2
+            cp -f ${darwin-share} $out/lib/python3.11/site-packages/gradio/frpc_darwin_arm64_v0.2
+            chmod +x $out/lib/python3.11/site-packages/gradio/frpc_linux_amd64_v0.2
+            chmod +x $out/lib/python3.11/site-packages/gradio/frpc_darwin_arm64_v0.2
+          '';
+        }))
         langchain
         langchain-core
         langchain-community

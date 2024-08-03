@@ -50,23 +50,15 @@ Or by executing the following (if you don't want to run the app):
 
 <details>
 <summary><b>Advanced Usage</b></summary>
-To adjust various options:
+To adjust various options, edit values in:
 
-    Edit ~/.config/chat-script/chat-script.ini
+    ~/.config/chat-script/chat-script.ini
 
 To edit the code itself:
 
     git clone https://github.com/camdenboren/chat-script.git
     modify files in src as desired
     nix run /path/to/chat-script
-
-Serve a public demo (builds upon immediately preceeding instructions):
-
-    set 'share = True' in app.py
-    nix run /path/to/chat-script
-    curl {given CDN link} /path/to/download
-    sudo cp /path/to/download/frpc_platform_arch_v0.2  /nix/store/.../gradio
-    sudo chmod +x frpc_platform_arch_v0.2
 
 Efficiently grab Youtube video transcripts
 
