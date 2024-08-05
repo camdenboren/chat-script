@@ -107,7 +107,7 @@ def set_vectorstore():
 def format_context(context):
     """Formats and yields context passed to LLM in human-readable format"""
     if print_state:
-        print("Context: ", context)
+        print("Context: ", context, sep="")
     formatted_context = "Relevant Sources (some may not have been used): "
     index = 0
     yield "\n\n"
@@ -129,13 +129,13 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
 def inspect(state):
     """Print state between runnables and pass it on (includes: input, chat_history)"""
     if print_state:
-        print("State: ", state)
+        print("State: ", state, sep="")
     return state
 
 def response(question,history,request: Request):
     """Checks question for safety (if applicable) then creates RAG + history chain w/ local LLM and streams chain's text response"""
     if request and print_state:
-        print("\nIP address of user: ", request.client.host)
+        print("\nIP address of user: ", request.client.host, sep="")
     allow_response = True
     if moderate:
         check_question = moderation_chain.invoke(question)
@@ -183,3 +183,4 @@ def response(question,history,request: Request):
                 yield response_stream
     else:
         yield "Your question is unsafe, so no response will be provided."
+        print("Unsafe question: \'", question, "\'", sep="")
