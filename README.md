@@ -12,7 +12,7 @@ This is accomplished by implementing RAG on local LLMs via:
 - ChromaDB
 - Gradio
 
-Powered by Nix
+Powered by Nix ❄️
 
 <details>
 <summary><b>Setup</b></summary>
