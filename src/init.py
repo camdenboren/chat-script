@@ -33,6 +33,7 @@ def init():
             'moderate': 'False',
             'top_n_results': '3',
             'context_stream_delay': '0.075',
+            'max_history': '2',
             'print_state': 'True'
         }
         configuration['EMBEDDINGS'] = {

@@ -36,6 +36,7 @@ collection_name = configuration.get("RESPONSE", "collection_name", fallback="rag
 moderate = configuration.getboolean("RESPONSE", "moderate", fallback=False)
 top_n_results = configuration.getint("RESPONSE", "top_n_results", fallback=3)
 context_stream_delay = configuration.getfloat("RESPONSE", "context_stream_delay", fallback=0.075)
+max_history = configuration.getint("RESPONSE", "max_history", fallback=2)
 print_state = configuration.getboolean("RESPONSE", "print_state", fallback=True)
 
 # Calculate length of scripts_dir name for citation formatting later
@@ -64,9 +65,6 @@ if moderate:
         keep_alive=keep_alive
     )
     moderation_chain = moderation | StrOutputParser()
-
-# Set chat_history store
-store = {}
 
 # Define the question_answer_chain 
 contextualize_q_system_prompt = (
@@ -126,26 +124,34 @@ def format_context(context):
 
 def get_session_history(session_id: str) -> BaseChatMessageHistory:
     """Manage chat history"""
-    if session_id not in store:
-        store[session_id] = ChatMessageHistory()
-    return store[session_id]
+    return session_history
 
 def inspect(state):
     """Print state between runnables and pass it on (includes: input, chat_history)"""
     if print_state:
-        print("\n")
-        print(state)
+        print("State: ", state)
     return state
 
 def response(question,history,request: gr.Request):
     """Checks question for safety (if applicable) then creates RAG + history chain w/ local LLM and streams chain's text response"""
     if request and print_state:
-        print("\nIP address of user: ", request.client.host, "\n")
+        print("\nIP address of user: ", request.client.host)
     allow_response = True
     if moderate:
         check_question = moderation_chain.invoke(question)
         allow_response = (check_question[2:6] == "safe")
     if allow_response:
+        # Workaround for converting Gradio history to Langchain-compatible chat_history
+        # Separates chat_history by user and lets Clear on Gradio UI do its job
+        global session_history
+        session_history = ChatMessageHistory()
+        if len(history) > max_history:
+            history = history[-max_history:]
+        for msgs in history:
+            session_history.add_user_message(msgs[0])
+            session_history.add_ai_message(msgs[1].split("\n\nRelevant Sources")[0])
+        
+        # Define retrieval chain w/ history
         rag_chain = create_retrieval_chain(retriever, question_answer_chain)
         chain = RunnableWithMessageHistory(
             RunnableLambda(inspect) | rag_chain,
@@ -159,7 +165,7 @@ def response(question,history,request: gr.Request):
         #chain = RunnablePassthrough.assign(context=retrieve_docs).assign(answer=rag_chain_from_docs)
 
         # Return/yield response and formatted context (if applicable) as a text stream
-        result = chain.stream({"input": question},config={"configurable": {"session_id": "abc123"}})
+        result = chain.stream({"input": question},config={"configurable": {"session_id": "unused"}})
         response_stream = ""
         context = None
         for chunks in result:
