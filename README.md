@@ -1,9 +1,10 @@
 # chat-script
 
 Chat locally with scripts (documents) of your choice with this simple python app that features: 
+- Streaming
+- Chat History
 - Citations
 - Moderation
-- Chat History
 
 This is accomplished by implementing RAG on local LLMs via:
 - Ollama
@@ -11,7 +12,7 @@ This is accomplished by implementing RAG on local LLMs via:
 - ChromaDB
 - Gradio
 
-Package and development environment powered by Nix
+Powered by Nix
 
 <details>
 <summary><b>Setup</b></summary>
