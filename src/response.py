@@ -14,6 +14,7 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 import time as t
 import os
 from configparser import ConfigParser
+import gradio as gr
 
 # Directory and file names
 scripts_directory = "~/.chat-script/scripts"
@@ -108,7 +109,7 @@ def set_vectorstore():
 def format_context(context):
     """Formats and yields context passed to LLM in human-readable format"""
     if print_state:
-        print(context)
+        print("Context: ", context)
     formatted_context = "Relevant Sources (some may not have been used): "
     index = 0
     yield "\n\n"
@@ -136,8 +137,10 @@ def inspect(state):
         print(state)
     return state
 
-def response(question,history):
+def response(question,history,request: gr.Request):
     """Checks question for safety (if applicable) then creates RAG + history chain w/ local LLM and streams chain's text response"""
+    if request and print_state:
+        print("IP address of user: ", request.client.host, "\n")
     allow_response = True
     if moderate:
         check_question = moderation_chain.invoke(question)
