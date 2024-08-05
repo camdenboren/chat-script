@@ -140,7 +140,7 @@ def inspect(state):
 def response(question,history,request: gr.Request):
     """Checks question for safety (if applicable) then creates RAG + history chain w/ local LLM and streams chain's text response"""
     if request and print_state:
-        print("IP address of user: ", request.client.host, "\n")
+        print("\nIP address of user: ", request.client.host, "\n")
     allow_response = True
     if moderate:
         check_question = moderation_chain.invoke(question)
