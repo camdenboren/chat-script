@@ -1,13 +1,13 @@
 # Refreshes/generates persistent embeddings in embeddings_directory based on text files in scripts_directory
 
+import os
+import shutil
+from configparser import ConfigParser
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import Chroma
-import os
-import shutil
-from configparser import ConfigParser
 
 # Directory and file names
 scripts_directory = "~/.chat-script/scripts"

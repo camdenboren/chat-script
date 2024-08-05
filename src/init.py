@@ -2,10 +2,10 @@
 
 # Entry point that ensures necessary config and scripts are setup before handing off to app.py
 
-import app as a
-import embeddings as e
 import os
 from configparser import ConfigParser
+import app as a
+import embeddings as e
 
 # Directory and file names
 scripts_directory = "~/.chat-script/scripts"

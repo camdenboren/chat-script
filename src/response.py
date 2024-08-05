@@ -1,5 +1,8 @@
 # Returns response w/ citations from RAG-enabled LLM based on user question passed from app ui
 
+import os
+import time as t
+from configparser import ConfigParser
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.chat_models import ChatOllama
 from langchain_community.vectorstores import Chroma
@@ -11,10 +14,7 @@ from langchain_core.runnables import RunnableLambda
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
-import time as t
-import os
-from configparser import ConfigParser
-import gradio as gr
+from gradio import Request
 
 # Directory and file names
 scripts_directory = "~/.chat-script/scripts"
@@ -132,7 +132,7 @@ def inspect(state):
         print("State: ", state)
     return state
 
-def response(question,history,request: gr.Request):
+def response(question,history,request: Request):
     """Checks question for safety (if applicable) then creates RAG + history chain w/ local LLM and streams chain's text response"""
     if request and print_state:
         print("\nIP address of user: ", request.client.host)

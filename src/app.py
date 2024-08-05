@@ -1,10 +1,10 @@
 # Gradio UI leveraging eponymous function in response
 
+import os
 import time
+from configparser import ConfigParser
 import gradio as gr
 import response as r
-import os
-from configparser import ConfigParser
 
 # Directory and file names
 config_file = "~/.config/chat-script/chat-script.ini"
