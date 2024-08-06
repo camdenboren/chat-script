@@ -16,7 +16,8 @@ config_file = config_directory + "/chat-script.ini"
 def init():
     """Create directories and embed scripts if needed, otw run app()"""
     if not os.path.exists(os.path.expanduser(config_file)):
-        os.makedirs(os.path.expanduser(config_directory))
+        if not os.path.exists(os.path.expanduser(config_directory)):
+            os.makedirs(os.path.expanduser(config_directory))
         configuration = ConfigParser()
         configuration['APP'] = {
             'share': 'False',
