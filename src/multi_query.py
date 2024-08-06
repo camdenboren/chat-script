@@ -1,3 +1,6 @@
+# Slightly modified version of langchain's multi_query.py 
+# Adds num_queries config support by ensuring the generate_queries list is no longer than num_queries
+
 import asyncio
 import logging
 from typing import List, Optional, Sequence
@@ -15,8 +18,16 @@ from langchain_core.retrievers import BaseRetriever
 from langchain_core.runnables import Runnable
 
 from langchain.chains.llm import LLMChain
+import os
+from configparser import ConfigParser
 
-from chain import num_queries
+# Directory and file names
+config_file = "~/.config/chat-script/chat-script.ini"
+
+# Set options
+configuration = ConfigParser()
+configuration.read(os.path.expanduser(config_file))
+num_queries = configuration.getint("CHAIN", "num_queries", fallback=2)
 
 logger = logging.getLogger(__name__)
 
@@ -191,7 +202,7 @@ class MultiQueryRetriever(BaseRetriever):
             lines = response
         if self.verbose:
             logger.info(f"Generated queries: {lines}")
-        return lines[:num_queries-1]
+        return lines[:max(num_queries-1,0)]
 
     def retrieve_documents(
         self, queries: List[str], run_manager: CallbackManagerForRetrieverRun
