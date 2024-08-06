@@ -1,5 +1,6 @@
 # Define the moderation and question answer chains
 
+import os
 from configparser import ConfigParser
 from langchain_core.output_parsers import StrOutputParser
 from langchain.chains.combine_documents import create_stuff_documents_chain

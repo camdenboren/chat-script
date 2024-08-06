@@ -2,7 +2,6 @@
 
 import os
 import time as t
-import chain as c
 from configparser import ConfigParser
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.chat_models import ChatOllama
@@ -13,6 +12,7 @@ from langchain_core.runnables import RunnableLambda
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from gradio import Request
+import chain as c
 
 # Directory and file names
 scripts_directory = "~/.chat-script/scripts"
