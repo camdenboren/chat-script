@@ -9,6 +9,7 @@ setup(name='chat-script',
       # Executables
       scripts=[
         "src/app.py",
+        "src/chain.py",
         "src/embeddings.py",
         "src/init.py",
         "src/response.py"
