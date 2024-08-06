@@ -25,6 +25,11 @@ def init():
             'inbrowser': 'True'
         }
         configuration['RESPONSE'] = {
+            'context_stream_delay': '0.075',
+            'max_history': '2',
+            'print_state': 'True'
+        }
+        configuration['CHAIN'] = {
             'embeddings_model': 'mxbai-embed-large',
             'chat_model': 'mistral',
             'moderation_model': 'xe/llamaguard3',
@@ -36,11 +41,6 @@ def init():
             'top_k': '30',
             'top_p': '0.7','collection_name': 'rag-chroma',
             'top_n_results': '3',
-            'context_stream_delay': '0.075',
-            'max_history': '2',
-            'print_state': 'True'
-        }
-        configuration['CHAIN'] = {
             'moderate': 'False'
         }
         configuration['EMBEDDINGS'] = {

@@ -19,7 +19,7 @@ inbrowser = configuration.getboolean("APP", "inbrowser", fallback=True)
 
 def app():
     """Launch app's Gradio UI"""
-    r.set_vectorstore()
+    r.c.set_vectorstore()
     app = gr.ChatInterface(
         r.response,
         chatbot=gr.Chatbot(

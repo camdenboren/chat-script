@@ -3,37 +3,20 @@
 import os
 import time as t
 from configparser import ConfigParser
-from langchain_community.embeddings import OllamaEmbeddings
-from langchain_community.chat_models import ChatOllama
-from langchain_community.vectorstores import Chroma
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables import RunnableLambda
 from langchain_core.runnables.history import RunnableWithMessageHistory
-from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from gradio import Request
 import chain as c
 
 # Directory and file names
 scripts_directory = "~/.chat-script/scripts"
-embeddings_directory = "~/.chat-script/embeddings"
 config_file = "~/.config/chat-script/chat-script.ini"
 
 # Set options
 configuration = ConfigParser()
 configuration.read(os.path.expanduser(config_file))
-embeddings_model = configuration.get("RESPONSE", "embeddings_model", fallback="mxbai-embed-large")
-chat_model = configuration.get("RESPONSE", "chat_model", fallback="mistral")
-moderation_model = configuration.get("RESPONSE", "moderation_model", fallback="xe/llamaguard3")
-chat_url = configuration.get("RESPONSE", "chat_url", fallback="http://localhost:11434")
-moderation_url = configuration.get("RESPONSE", "moderation_url", fallback="http://localhost:11434")
-show_progress = configuration.getboolean("RESPONSE", "show_progress", fallback=False)
-keep_alive = configuration.get("RESPONSE", "keep_alive", fallback="5m")
-temperature = configuration.getfloat("RESPONSE", "temperature", fallback=0.6)
-top_k =  configuration.getint("RESPONSE", "top_k", fallback=30)
-top_p = configuration.getfloat("RESPONSE", "top_p", fallback=0.7)
-collection_name = configuration.get("RESPONSE", "collection_name", fallback="rag-chroma")
-top_n_results = configuration.getint("RESPONSE", "top_n_results", fallback=3)
 context_stream_delay = configuration.getfloat("RESPONSE", "context_stream_delay", fallback=0.075)
 max_history = configuration.getint("RESPONSE", "max_history", fallback=2)
 print_state = configuration.getboolean("RESPONSE", "print_state", fallback=True)
@@ -42,29 +25,6 @@ print_state = configuration.getboolean("RESPONSE", "print_state", fallback=True)
 scripts_dir_len = len(os.path.expanduser(scripts_directory))
 if scripts_directory[-1] != "/":
     scripts_dir_len += 1
-
-# Set Embedding LLM to local Ollama model
-embeddings = OllamaEmbeddings(model=embeddings_model, show_progress=show_progress)
-
-# Set LLM to local Ollama model
-model = ChatOllama(
-    model=chat_model,
-    show_progress=show_progress,
-    keep_alive=keep_alive,
-    temperature=temperature,
-    top_k=top_k,
-    top_p=top_p
-)
-
-def set_vectorstore():
-    """Set ChromaDB vectorstore (w/ collection_name) as a retriever"""
-    vectorstore = Chroma(
-        collection_name=collection_name,
-        embedding_function=embeddings,
-        persist_directory=os.path.expanduser(embeddings_directory)
-    )
-    global retriever
-    retriever = create_history_aware_retriever(model, vectorstore.as_retriever(search_kwargs={'k': top_n_results}), contextualize_q_prompt)
     
 def format_context(context):
     """Formats and yields context passed to LLM in human-readable format"""
@@ -114,9 +74,8 @@ def response(question,history,request: Request):
             session_history.add_ai_message(msgs[1].split("\n\nRelevant Sources")[0])
         
         # Define retrieval chain w/ history
-        rag_chain = create_retrieval_chain(retriever, c.question_answer_chain)
         chain = RunnableWithMessageHistory(
-            RunnableLambda(inspect) | rag_chain,
+            RunnableLambda(inspect) | c.rag_chain,
             get_session_history,
             input_messages_key="input",
             history_messages_key="chat_history",
