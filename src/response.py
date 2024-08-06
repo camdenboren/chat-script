@@ -2,18 +2,16 @@
 
 import os
 import time as t
+import chain as c
 from configparser import ConfigParser
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.chat_models import ChatOllama
 from langchain_community.vectorstores import Chroma
 from langchain_community.chat_message_histories import ChatMessageHistory
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.chat_history import BaseChatMessageHistory
-from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnableLambda
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
-from langchain.chains.combine_documents import create_stuff_documents_chain
 from gradio import Request
 
 # Directory and file names
@@ -35,7 +33,6 @@ temperature = configuration.getfloat("RESPONSE", "temperature", fallback=0.6)
 top_k =  configuration.getint("RESPONSE", "top_k", fallback=30)
 top_p = configuration.getfloat("RESPONSE", "top_p", fallback=0.7)
 collection_name = configuration.get("RESPONSE", "collection_name", fallback="rag-chroma")
-moderate = configuration.getboolean("RESPONSE", "moderate", fallback=False)
 top_n_results = configuration.getint("RESPONSE", "top_n_results", fallback=3)
 context_stream_delay = configuration.getfloat("RESPONSE", "context_stream_delay", fallback=0.075)
 max_history = configuration.getint("RESPONSE", "max_history", fallback=2)
@@ -58,44 +55,6 @@ model = ChatOllama(
     top_k=top_k,
     top_p=top_p
 )
-
-# Set Moderation LLM to local Ollama model
-if moderate:
-    moderation = ChatOllama(
-        model=moderation_model,
-        show_progress=show_progress,
-        keep_alive=keep_alive,
-        base_url=moderation_url
-    )
-    moderation_chain = moderation | StrOutputParser()
-
-# Define the question_answer_chain 
-contextualize_q_system_prompt = (
-    "Given a chat history and the latest user question "
-    "which might reference context in the chat history, "
-    "formulate a standalone question which can be understood "
-    "without the chat history. Do NOT answer the question, "
-    "just reformulate it if needed and otherwise return it as is."
-)
-contextualize_q_prompt = ChatPromptTemplate.from_messages(
-    [
-        ("system", contextualize_q_system_prompt),
-        MessagesPlaceholder("chat_history"),
-        ("human", "{input}"),
-    ]
-)
-system_prompt = (
-    "Answer the question using the following context. If you use any information in the context, include the index (like: [1]) of the relevant Document as an in-text citation in your answer, and nothing else. Remember that each Document has two sections: page_content, and metadata- don't confuse these for indexable objects."
-    "{context}"
-)
-qa_prompt = ChatPromptTemplate.from_messages(
-    [
-        ("system", system_prompt),
-        MessagesPlaceholder("chat_history"),
-        ("human", "{input}"),
-    ]
-)
-question_answer_chain = create_stuff_documents_chain(model, qa_prompt)
 
 def set_vectorstore():
     """Set ChromaDB vectorstore (w/ collection_name) as a retriever"""
@@ -140,8 +99,8 @@ def response(question,history,request: Request):
     if request and print_state:
         print("\nIP address of user: ", request.client.host, sep="")
     allow_response = True
-    if moderate:
-        check_question = moderation_chain.invoke(question)
+    if c.moderate:
+        check_question = c.moderation_chain.invoke(question)
         allow_response = (check_question[2:6] == "safe")
     if allow_response:
         # Workaround for converting Gradio history to Langchain-compatible chat_history
@@ -155,7 +114,7 @@ def response(question,history,request: Request):
             session_history.add_ai_message(msgs[1].split("\n\nRelevant Sources")[0])
         
         # Define retrieval chain w/ history
-        rag_chain = create_retrieval_chain(retriever, question_answer_chain)
+        rag_chain = create_retrieval_chain(retriever, c.question_answer_chain)
         chain = RunnableWithMessageHistory(
             RunnableLambda(inspect) | rag_chain,
             get_session_history,

@@ -35,11 +35,13 @@ def init():
             'temperature': '0.6',
             'top_k': '30',
             'top_p': '0.7','collection_name': 'rag-chroma',
-            'moderate': 'False',
             'top_n_results': '3',
             'context_stream_delay': '0.075',
             'max_history': '2',
             'print_state': 'True'
+        }
+        configuration['CHAIN'] = {
+            'moderate': 'False'
         }
         configuration['EMBEDDINGS'] = {
             'embeddings_model': 'mxbai-embed-large',
