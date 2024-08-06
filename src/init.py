@@ -42,7 +42,10 @@ def init():
             'top_k': '30',
             'top_p': '0.7','collection_name': 'rag-chroma',
             'top_n_results': '3',
-            'moderate': 'False'
+            'moderate': 'False',
+            'rag_fusion': 'True',
+            'num_queries': '2',
+            'top_n_results_fusion': '2'
         }
         configuration['EMBEDDINGS'] = {
             'embeddings_model': 'mxbai-embed-large',

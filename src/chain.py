@@ -6,9 +6,10 @@ from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.chat_models import ChatOllama
 from langchain_core.output_parsers import StrOutputParser
 from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder, PromptTemplate
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain_community.vectorstores import Chroma
+from multi_query import MultiQueryRetriever
 
 # Directory and file names
 embeddings_directory = "~/.chat-script/embeddings"
@@ -30,6 +31,9 @@ top_p = configuration.getfloat("CHAIN", "top_p", fallback=0.7)
 collection_name = configuration.get("CHAIN", "collection_name", fallback="rag-chroma")
 top_n_results = configuration.getint("CHAIN", "top_n_results", fallback=3)
 moderate = configuration.getboolean("CHAIN", "moderate", fallback=False)
+rag_fusion = configuration.getboolean("CHAIN", "rag_fusion", fallback=True)
+num_queries = configuration.getint("CHAIN", "num_queries", fallback=2)
+top_n_results_fusion = configuration.getint("CHAIN", "top_n_results_fusion", fallback=2)
 
 # Set Embedding LLM to local Ollama model
 embeddings = OllamaEmbeddings(model=embeddings_model, show_progress=show_progress)
@@ -82,6 +86,18 @@ qa_prompt = ChatPromptTemplate.from_messages(
 )
 question_answer_chain = create_stuff_documents_chain(model, qa_prompt)
 
+# Define the fusion prompt, enabling customization of number of queries
+fusion_prompt = PromptTemplate(
+    input_variables=["question"],
+    template="""You are an AI language model assistant. Your task is 
+    to generate """ + str(num_queries-1) + """ different versions of the given user 
+    question to retrieve relevant documents from a vector  database. 
+    By generating multiple perspectives on the user question, 
+    your goal is to help the user overcome some of the limitations 
+    of distance-based similarity search. Provide these alternative 
+    questions separated by newlines. Original question: {question}""",
+)
+
 def set_vectorstore():
     """Set ChromaDB vectorstore (w/ collection_name) as a retriever"""
     vectorstore = Chroma(
@@ -89,10 +105,23 @@ def set_vectorstore():
         embedding_function=embeddings,
         persist_directory=os.path.expanduser(embeddings_directory)
     )
-    retriever = create_history_aware_retriever(
-        model, 
-        vectorstore.as_retriever(search_kwargs={'k': top_n_results}), 
-        contextualize_q_prompt
-    )
+    if rag_fusion:
+        retriever_multi = MultiQueryRetriever.from_llm(
+            retriever=vectorstore.as_retriever(search_kwargs={'k': top_n_results_fusion}),
+            llm=model,
+            prompt = fusion_prompt,
+            include_original=True
+        )
+        retriever = create_history_aware_retriever(
+            model, 
+            retriever_multi, 
+            contextualize_q_prompt
+        )
+    else:
+        retriever = create_history_aware_retriever(
+            model, 
+            vectorstore.as_retriever(search_kwargs={'k': top_n_results}), 
+            contextualize_q_prompt
+        )
     global rag_chain
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
