@@ -19,12 +19,17 @@ def init():
         os.makedirs(os.path.expanduser(config_directory))
         configuration = ConfigParser()
         configuration['APP'] = {
-            'share': 'False'
+            'share': 'False',
+            'server_name': '127.0.0.1',
+            'server_port': '7860',
+            'inbrowser': 'True'
         }
         configuration['RESPONSE'] = {
             'embeddings_model': 'mxbai-embed-large',
             'chat_model': 'mistral',
             'moderation_model': 'xe/llamaguard3',
+            'chat_url': 'http://localhost:11434',
+            'moderation_url': 'http://localhost:11434',
             'show_progress': 'False',
             'keep_alive': '5m',
             'temperature': '0.6',

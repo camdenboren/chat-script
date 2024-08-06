@@ -36,13 +36,7 @@ Executing the following will create this directory, generate embeddings (if desi
 
     nix run github:camdenboren/chat-script
 
-Access app at link: http://127.0.0.1:7860/
-
-Scripts can be reembedded at any time by renaming/removing the scripts directory and rerunning:
-
-    nix run github:camdenboren/chat-script
-
-Or by executing the following (if you don't want to run the app):
+Scripts can be reembedded at any time by renaming/removing the scripts directory and rerunning the above command, or by executing the following (if you don't want to run the app):
 
     nix develop github:camdenboren/chat-script --command bash -c "python src/embeddings.py"
 

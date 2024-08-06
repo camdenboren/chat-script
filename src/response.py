@@ -27,6 +27,8 @@ configuration.read(os.path.expanduser(config_file))
 embeddings_model = configuration.get("RESPONSE", "embeddings_model", fallback="mxbai-embed-large")
 chat_model = configuration.get("RESPONSE", "chat_model", fallback="mistral")
 moderation_model = configuration.get("RESPONSE", "moderation_model", fallback="xe/llamaguard3")
+chat_url = configuration.get("RESPONSE", "chat_url", fallback="http://localhost:11434")
+moderation_url = configuration.get("RESPONSE", "moderation_url", fallback="http://localhost:11434")
 show_progress = configuration.getboolean("RESPONSE", "show_progress", fallback=False)
 keep_alive = configuration.get("RESPONSE", "keep_alive", fallback="5m")
 temperature = configuration.getfloat("RESPONSE", "temperature", fallback=0.6)
@@ -62,7 +64,8 @@ if moderate:
     moderation = ChatOllama(
         model=moderation_model,
         show_progress=show_progress,
-        keep_alive=keep_alive
+        keep_alive=keep_alive,
+        base_url=moderation_url
     )
     moderation_chain = moderation | StrOutputParser()
 
