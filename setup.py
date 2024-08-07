@@ -12,7 +12,6 @@ setup(name='chat-script',
         "src/chain.py",
         "src/embeddings.py",
         "src/init.py",
-        "src/multi_query.py",
         "src/response.py"
       ]
      )
