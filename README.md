@@ -6,7 +6,7 @@ Chat locally with scripts (documents) of your choice with this simple python app
 - Citations
 - Moderation
 
-This is accomplished by implementing RAG on local LLMs via:
+This is accomplished by implementing RAG-Fusion on local LLMs via:
 - Ollama
 - Langchain
 - ChromaDB
@@ -63,13 +63,57 @@ Efficiently grab Youtube video transcripts
 </details>
 
 <details>
+<summary><b>Architecture</b></summary>
+Chain:
+
+    User Query + Chat History
+            ↓
+    Moderation Check
+            ↓
+    Generate Similar Queries
+            ↓
+    Retrieve Scripts for each Query
+            ↓
+    Pass User Query and Unique Union of Retrieved Scripts to Chat Model
+            ↓
+    Stream Response
+            ↓
+    Append Metadata of Retrieved Scripts
+
+<i>Note: If query deemed unsafe, stream a refusal response, skip following stages, and remove question from history on further iterations</i>
+
+Src Files:
+
+    app.py
+    -Launches Gradio UI leveraging response() in response.py
+
+    chain.py
+    -Prepares language models
+    -Creates multi-query retriever (if applicable) and moderation, rag chains
+
+    embeddings.py
+    -Generates script embeddings via embeddings model
+    -Stores embeddings in persistent directory
+
+    init.py
+    -Entry point of app
+    -Sets up resources and directories if needed
+    -Runs embeddings() from embeddings.py if needed
+    -Launches app() from app.py
+
+    response.py
+    -Streams chat-model response with source-formatting
+    -Uses chain constructed in chain.py
+</details>
+
+<details>
 <summary><b>ToDo</b></summary>
 
 Priority
-- [ ] Add vectorstore indexing to avoid embeddings dupes
-- [ ] Add few-shot prompting to improve citation formatting
-- [ ] Look into RAG-fusion for improving distance-based retrieval performance
+- [ ] Add tool-call or few-shot prompting to improve citation formatting
+- [x] Look into RAG-fusion for improving distance-based retrieval performance
 - [ ] Look into other splitting functions due to weirdness from book pdfs
+- [ ] Add vectorstore indexing to avoid embeddings dupes
 - [ ] Improve print_state functionality (reimplement previous RunnablePassthrough approach)
 
 Long-term
@@ -77,5 +121,5 @@ Long-term
 - [ ] Move to a more customizable UI via either gradio.Interface(), gradio.Blocks(), or a different framework like streamlit or flask
 - [ ] Add button to call embeddings()
 - [ ] Add dropdown to select available Ollama LLMs
-- [ ] Improve documentation
+- [ ] Improve options documentation
 </details>

@@ -1,4 +1,4 @@
-# Setup language models and retriever, define the moderation and rag chains
+# Setup language models and multi-query retriever, define the moderation and rag chains
 
 import os
 from configparser import ConfigParser
