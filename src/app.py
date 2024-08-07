@@ -4,7 +4,8 @@ import os
 import time
 from configparser import ConfigParser
 import gradio as gr
-import response as r
+from response import response
+from chain import create_chain
 
 # Directory and file names
 config_file = "~/.config/chat-script/chat-script.ini"
@@ -19,9 +20,9 @@ inbrowser = configuration.getboolean("APP", "inbrowser", fallback=True)
 
 def app():
     """Launch app's Gradio UI"""
-    r.c.set_vectorstore()
+    create_chain()
     app = gr.ChatInterface(
-        r.response,
+        response,
         chatbot=gr.Chatbot(
             show_copy_button=True, 
             bubble_full_width=False,

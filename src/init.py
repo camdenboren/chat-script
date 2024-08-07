@@ -4,8 +4,8 @@
 
 import os
 from configparser import ConfigParser
-import app as a
-import embeddings as e
+from app import app
+from embeddings import embeddings
 
 # Directory and file names
 scripts_directory = "~/.chat-script/scripts"
@@ -59,7 +59,7 @@ def init():
             configuration.write(configfile)
         print("\nCreated config_file at: " + config_file + " and populated it with default settings")
         if os.path.exists(os.path.expanduser(scripts_directory)):
-            a.app()
+            app()
     elif not os.path.exists(os.path.expanduser(scripts_directory)):
         os.makedirs(os.path.expanduser(scripts_directory))
         print("\nCreated scripts_directory at: " + scripts_directory)
@@ -68,15 +68,15 @@ def init():
             user_embed = str(input("Would you like to embed the scripts now (if yes, then add your scripts to ~/.chat-script/scripts before submitting)? y/n: "))
             if user_embed:
                 if user_embed[0] == "y" or user_embed[0] == "Y":
-                    e.embeddings()
-                    a.app()
+                    embeddings()
+                    app()
                 elif user_embed[0] == "n" or user_embed[0] == "N":
-                    a.app()
+                    app()
                 else:
                     print("Input must be one of: y/n\n")
                     user_embed = None
     else:
-        a.app()
+        app()
 
 if __name__ == '__main__':
     init()

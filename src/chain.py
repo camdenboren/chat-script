@@ -161,8 +161,8 @@ qa_prompt = ChatPromptTemplate.from_messages(
 )
 question_answer_chain = create_stuff_documents_chain(model, qa_prompt)
 
-def set_vectorstore():
-    """Set ChromaDB vectorstore (w/ collection_name) as a retriever"""
+def create_chain():
+    """Set ChromaDB vectorstore (w/ collection_name) as a retriever and create rag_chain"""
     vectorstore = Chroma(
         collection_name=collection_name,
         embedding_function=embeddings,
