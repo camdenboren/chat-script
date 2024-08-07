@@ -52,16 +52,19 @@ def convert_session_history(history):
     Separates chat_history by user and lets Clear on Gradio UI do its job"""
     global session_history
     session_history = ChatMessageHistory()
+
+    # Remove unsafe messages from history if applicable
+    if c.moderate:
+        for msgs in history:
+            if (msgs[1] == unsafe_response + " "):
+                history.remove(msgs)
+    
+    # Trim history before converting to langchain format
     if len(history) > max_history:
         history = history[-max_history:]
     for msgs in history:
-        allow_msg_in_history = True
-        if c.moderate:
-            if (msgs[1] == unsafe_response):
-                allow_msg_in_history = False
-        if allow_msg_in_history:
-            session_history.add_user_message(msgs[0])
-            session_history.add_ai_message(msgs[1].split("\n\nRelevant Sources")[0])
+        session_history.add_user_message(msgs[0])
+        session_history.add_ai_message(msgs[1].split("\n\nRelevant Sources")[0])
 
 def get_session_history(session_id: str) -> BaseChatMessageHistory:
     """Manage chat history"""
@@ -115,6 +118,8 @@ def response(question,history,request: Request):
                 yield response_stream
     else:
         print("Unsafe question: \'", question, "\'", sep="")
+        response_stream = ""
         for chunks in unsafe_response.split():
-            yield chunks + " "
+            response_stream += chunks + " "
+            yield response_stream
             t.sleep(context_stream_delay)
