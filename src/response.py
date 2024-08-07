@@ -25,6 +25,9 @@ print_state = configuration.getboolean("RESPONSE", "print_state", fallback=True)
 scripts_dir_len = len(os.path.expanduser(scripts_directory))
 if scripts_directory[-1] != "/":
     scripts_dir_len += 1
+
+# Message sent when unsafe question is asked and c.moderate = True
+unsafe_response = "Your question is unsafe, so no response will be provided."
     
 def format_context(context):
     """Formats and yields context passed to LLM in human-readable format"""
@@ -52,8 +55,13 @@ def convert_session_history(history):
     if len(history) > max_history:
         history = history[-max_history:]
     for msgs in history:
-        session_history.add_user_message(msgs[0])
-        session_history.add_ai_message(msgs[1].split("\n\nRelevant Sources")[0])
+        allow_msg_in_history = True
+        if c.moderate:
+            if (msgs[1] == unsafe_response):
+                allow_msg_in_history = False
+        if allow_msg_in_history:
+            session_history.add_user_message(msgs[0])
+            session_history.add_ai_message(msgs[1].split("\n\nRelevant Sources")[0])
 
 def get_session_history(session_id: str) -> BaseChatMessageHistory:
     """Manage chat history"""
@@ -106,5 +114,7 @@ def response(question,history,request: Request):
                 response_stream += context_chunks
                 yield response_stream
     else:
-        yield "Your question is unsafe, so no response will be provided."
         print("Unsafe question: \'", question, "\'", sep="")
+        for chunks in unsafe_response.split():
+            yield chunks + " "
+            t.sleep(context_stream_delay)
