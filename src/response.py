@@ -44,6 +44,17 @@ def format_context(context):
         formatted_context = ""
         index += 1
 
+def convert_session_history(history):
+    """Workaround for converting Gradio history to Langchain-compatible chat_history.
+    Separates chat_history by user and lets Clear on Gradio UI do its job"""
+    global session_history
+    session_history = ChatMessageHistory()
+    if len(history) > max_history:
+        history = history[-max_history:]
+    for msgs in history:
+        session_history.add_user_message(msgs[0])
+        session_history.add_ai_message(msgs[1].split("\n\nRelevant Sources")[0])
+
 def get_session_history(session_id: str) -> BaseChatMessageHistory:
     """Manage chat history"""
     return session_history
@@ -63,15 +74,7 @@ def response(question,history,request: Request):
         check_question = c.moderation_chain.invoke(question)
         allow_response = (check_question[2:6] == "safe")
     if allow_response:
-        # Workaround for converting Gradio history to Langchain-compatible chat_history
-        # Separates chat_history by user and lets Clear on Gradio UI do its job
-        global session_history
-        session_history = ChatMessageHistory()
-        if len(history) > max_history:
-            history = history[-max_history:]
-        for msgs in history:
-            session_history.add_user_message(msgs[0])
-            session_history.add_ai_message(msgs[1].split("\n\nRelevant Sources")[0])
+        convert_session_history(history)
         
         # Define retrieval chain w/ history
         chain = RunnableWithMessageHistory(
