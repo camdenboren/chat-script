@@ -52,8 +52,8 @@ def init():
             'show_progress': 'True',
             'collection_name': 'rag-chroma',
             'use_multithreading': 'True',
-            'chunk_size': '500',
-            'chunk_overlap': '0'
+            'chunk_size': '300',
+            'chunk_overlap': '100'
         }
         with open(os.path.expanduser(config_file), 'w') as configfile:
             configuration.write(configfile)

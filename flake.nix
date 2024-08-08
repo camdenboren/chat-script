@@ -33,10 +33,10 @@
         langchain
         langchain-core
         langchain-community
+        tiktoken
 
         # Seem unnecessary
         #beautifulsoup4
-        #tiktoken
 
         # Needed for PDF processing - should work once paddlepaddle is updated - also need to rm loader_cls in embeddings()
         #unstructured

@@ -5,7 +5,7 @@ import shutil
 from configparser import ConfigParser
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_community.document_loaders import TextLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_text_splitters import TokenTextSplitter
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import Chroma
 
@@ -21,8 +21,8 @@ embeddings_model = configuration.get("EMBEDDINGS", "embeddings_model", fallback=
 show_progress = configuration.getboolean("EMBEDDINGS", "show_progress", fallback=True)
 collection_name = configuration.get("EMBEDDINGS", "collection_name", fallback="rag-chroma")
 use_multithreading = configuration.getboolean("EMBEDDINGS", "use_multithreading", fallback=True)
-chunk_size = configuration.getint("EMBEDDINGS", "chunk_size", fallback=500)
-chunk_overlap = configuration.getint("EMBEDDINGS", "chunk_overlap", fallback=0)
+chunk_size = configuration.getint("EMBEDDINGS", "chunk_size", fallback=300)
+chunk_overlap = configuration.getint("EMBEDDINGS", "chunk_overlap", fallback=100)
 
 def embeddings():
     """Loads and chunks text documents, embeds them, then stores in persistent ChromaDB vectorstore"""
@@ -36,7 +36,7 @@ def embeddings():
     docs = loader.load()
 
     # Split documents
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+    text_splitter = TokenTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
     all_splits = text_splitter.split_documents(docs)
 
     # Set embedding function 
