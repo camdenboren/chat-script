@@ -42,9 +42,20 @@ moderate = configuration.getboolean("CHAIN", "moderate", fallback=False)
 rag_fusion = configuration.getboolean("CHAIN", "rag_fusion", fallback=True)
 num_queries = configuration.getint("CHAIN", "num_queries", fallback=2)
 top_n_results_fusion = configuration.getint("CHAIN", "top_n_results_fusion", fallback=2)
+embeddings_gpu = configuration.getboolean("CHAIN", "embeddings_gpu", fallback=True)
+
+# Set num_gpu depending on whether embeddings_gpu is True or False
+if embeddings_gpu:
+    num_gpu = None
+else:
+    num_gpu = 0
 
 # Set Embedding LLM to local Ollama model
-embeddings = OllamaEmbeddings(model=embeddings_model, show_progress=show_progress)
+embeddings = OllamaEmbeddings(
+    model=embeddings_model, 
+    show_progress=show_progress, 
+    num_gpu=num_gpu
+)
 
 # Set LLM to local Ollama model
 model = ChatOllama(
@@ -149,7 +160,7 @@ contextualize_q_prompt = ChatPromptTemplate.from_messages([
 
 # Define the question_answer_chain 
 system_prompt = (
-    "Answer the question using the following context. If you use any information in the context, include the index (like: [1]) of the relevant Document as an in-text citation in your answer, and nothing else. Remember that each Document has two sections: page_content, and metadata- don't confuse these for indexable objects."
+    "Answer the question using the following context. If you use any information in the context, include the index like: [1] of the relevant Document as an in-text citation in your answer, and nothing else. Remember that each Document has two sections: page_content, and metadata- don't confuse these for indexable objects."
     "{context}"
 )
 qa_prompt = ChatPromptTemplate.from_messages([

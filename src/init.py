@@ -45,7 +45,8 @@ def init():
             'moderate': 'False',
             'rag_fusion': 'True',
             'num_queries': '2',
-            'top_n_results_fusion': '2'
+            'top_n_results_fusion': '2',
+            'embeddings_gpu': 'True'
         }
         configuration['EMBEDDINGS'] = {
             'embeddings_model': 'mxbai-embed-large',
