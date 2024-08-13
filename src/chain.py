@@ -1,10 +1,9 @@
 # Setup language models and multi-query retriever, define the moderation and rag chains
 
-import os
-from configparser import ConfigParser
+from options import options
 from typing import List, Optional, Sequence
 from langchain_community.embeddings import OllamaEmbeddings
-from langchain_community.chat_models import ChatOllama
+from langchain_community.options.chain.chat_models import ChatOllama
 from langchain_core.callbacks import CallbackManagerForRetrieverRun
 from langchain_core.documents import Document
 from langchain_core.language_models import BaseLanguageModel
@@ -21,59 +20,37 @@ from langchain_community.vectorstores import Chroma
 
 # Directory and file names
 embeddings_directory = "~/.chat-script/embeddings"
-config_file = "~/.config/chat-script/chat-script.ini"
 
-# Set options
-configuration = ConfigParser()
-configuration.read(os.path.expanduser(config_file))
-embeddings_model = configuration.get("CHAIN", "embeddings_model", fallback="mxbai-embed-large")
-chat_model = configuration.get("CHAIN", "chat_model", fallback="mistral")
-moderation_model = configuration.get("CHAIN", "moderation_model", fallback="xe/llamaguard3")
-chat_url = configuration.get("CHAIN", "chat_url", fallback="http://localhost:11434")
-moderation_url = configuration.get("CHAIN", "moderation_url", fallback="http://localhost:11434")
-show_progress = configuration.getboolean("CHAIN", "show_progress", fallback=False)
-keep_alive = configuration.get("CHAIN", "keep_alive", fallback="5m")
-temperature = configuration.getfloat("CHAIN", "temperature", fallback=0.6)
-top_k =  configuration.getint("CHAIN", "top_k", fallback=30)
-top_p = configuration.getfloat("CHAIN", "top_p", fallback=0.7)
-collection_name = configuration.get("CHAIN", "collection_name", fallback="rag-chroma")
-top_n_results = configuration.getint("CHAIN", "top_n_results", fallback=3)
-moderate = configuration.getboolean("CHAIN", "moderate", fallback=False)
-rag_fusion = configuration.getboolean("CHAIN", "rag_fusion", fallback=True)
-num_queries = configuration.getint("CHAIN", "num_queries", fallback=2)
-top_n_results_fusion = configuration.getint("CHAIN", "top_n_results_fusion", fallback=2)
-embeddings_gpu = configuration.getboolean("CHAIN", "embeddings_gpu", fallback=True)
-
-# Set num_gpu depending on whether embeddings_gpu is True or False
-if embeddings_gpu:
+# Set num_gpu depending on whether options.chain.embeddings_gpu is True or False
+if options.chain.embeddings_gpu:
     num_gpu = None
 else:
     num_gpu = 0
 
 # Set Embedding LLM to local Ollama model
 embeddings = OllamaEmbeddings(
-    model=embeddings_model, 
-    show_progress=show_progress, 
+    model=options.chain.embeddings_model, 
+    show_progress=options.chain.show_progress, 
     num_gpu=num_gpu
 )
 
 # Set LLM to local Ollama model
 model = ChatOllama(
-    model=chat_model,
-    show_progress=show_progress,
-    keep_alive=keep_alive,
-    temperature=temperature,
-    top_k=top_k,
-    top_p=top_p
+    model=options.chain.chat_model,
+    progress=options.chain.show_progress,
+    keep_alive=options.chain.keep_alive,
+    temperature=options.chain.temperature,
+    top_k=options.chain.top_k,
+    top_p=options.chain.top_p
 )
 
 # Set Moderation LLM to local Ollama model
-if moderate:
+if options.chain.moderate:
     moderation = ChatOllama(
-        model=moderation_model,
-        show_progress=show_progress,
-        keep_alive=keep_alive,
-        base_url=moderation_url
+        model=options.chain.moderation_model,
+        show_progress=options.chain.show_progress,
+        keep_alive=options.chain.keep_alive,
+        base_url=options.chain.moderation_url
     )
     moderation_chain = moderation | StrOutputParser()
 
@@ -88,7 +65,7 @@ class LineListOutputParser(BaseOutputParser[List[str]]):
 DEFAULT_QUERY_PROMPT = PromptTemplate(
     input_variables=["question"],
     template="""You are an AI language model assistant. Your task is 
-    to generate """ + str(num_queries-1) + """ different versions of the given user 
+    to generate """ + str(options.chain.num_queries-1) + """ different versions of the given user 
     question to retrieve relevant documents from a vector  database. 
     By generating multiple perspectives on the user question, 
     your goal is to help the user overcome some of the limitations 
@@ -131,7 +108,7 @@ class MultiQueryRetriever(BaseRetriever):
             lines = response["text"]
         else:
             lines = response
-        queries = lines[:max(num_queries-1,0)]
+        queries = lines[:max(options.chain.num_queries-1,0)]
         if self.include_original:
             queries.append(query)
 
@@ -171,15 +148,15 @@ qa_prompt = ChatPromptTemplate.from_messages([
 question_answer_chain = create_stuff_documents_chain(model, qa_prompt)
 
 def create_chain():
-    """Set ChromaDB vectorstore (w/ collection_name) as a retriever and create rag_chain"""
+    """Set ChromaDB vectorstore (w/ options.chain.collection_name) as a retriever and create rag_chain"""
     vectorstore = Chroma(
-        collection_name=collection_name,
+        collection_name=options.chain.collection_name,
         embedding_function=embeddings,
         persist_directory=os.path.expanduser(embeddings_directory)
     )
-    if rag_fusion:
+    if options.chain.rag_fusion:
         retriever_multi = MultiQueryRetriever.from_llm(
-            retriever=vectorstore.as_retriever(search_kwargs={'k': top_n_results_fusion}),
+            retriever=vectorstore.as_retriever(search_kwargs={'k': options.chain.top_n_results_fusion}),
             llm=model,
             include_original=True
         )
@@ -191,7 +168,7 @@ def create_chain():
     else:
         retriever = create_history_aware_retriever(
             model, 
-            vectorstore.as_retriever(search_kwargs={'k': top_n_results}), 
+            vectorstore.as_retriever(search_kwargs={'k': options.chain.top_n_results}), 
             contextualize_q_prompt
         )
     global rag_chain

@@ -3,7 +3,7 @@
 # Entry point that ensures necessary config and scripts are setup before handing off to app.py
 
 import os
-from configparser import ConfigParser
+from options import create_options, read_options
 from app import app
 from embeddings import embeddings
 
@@ -18,48 +18,9 @@ def init():
     if not os.path.exists(os.path.expanduser(config_file)):
         if not os.path.exists(os.path.expanduser(config_directory)):
             os.makedirs(os.path.expanduser(config_directory))
-        configuration = ConfigParser()
-        configuration['APP'] = {
-            'share': 'False',
-            'server_name': '127.0.0.1',
-            'server_port': '7860',
-            'inbrowser': 'True'
-        }
-        configuration['RESPONSE'] = {
-            'context_stream_delay': '0.075',
-            'max_history': '2',
-            'print_state': 'True'
-        }
-        configuration['CHAIN'] = {
-            'embeddings_model': 'mxbai-embed-large',
-            'chat_model': 'mistral',
-            'moderation_model': 'xe/llamaguard3',
-            'chat_url': 'http://localhost:11434',
-            'moderation_url': 'http://localhost:11434',
-            'show_progress': 'False',
-            'keep_alive': '5m',
-            'temperature': '0.6',
-            'top_k': '30',
-            'top_p': '0.7','collection_name': 'rag-chroma',
-            'top_n_results': '3',
-            'moderate': 'False',
-            'rag_fusion': 'True',
-            'num_queries': '2',
-            'top_n_results_fusion': '2',
-            'embeddings_gpu': 'True'
-        }
-        configuration['EMBEDDINGS'] = {
-            'embeddings_model': 'mxbai-embed-large',
-            'show_progress': 'True',
-            'collection_name': 'rag-chroma',
-            'use_multithreading': 'True',
-            'chunk_size': '300',
-            'chunk_overlap': '100'
-        }
-        with open(os.path.expanduser(config_file), 'w') as configfile:
-            configuration.write(configfile)
-        print("\nCreated config_file at: " + config_file + " and populated it with default settings")
+            create_options()
         if os.path.exists(os.path.expanduser(scripts_directory)):
+            read_options()
             app()
     elif not os.path.exists(os.path.expanduser(scripts_directory)):
         os.makedirs(os.path.expanduser(scripts_directory))
@@ -70,13 +31,16 @@ def init():
             if user_embed:
                 if user_embed[0] == "y" or user_embed[0] == "Y":
                     embeddings()
+                    read_options()
                     app()
                 elif user_embed[0] == "n" or user_embed[0] == "N":
+                    read_options()
                     app()
                 else:
                     print("Input must be one of: y/n\n")
                     user_embed = None
     else:
+        read_options()
         app()
 
 if __name__ == '__main__':

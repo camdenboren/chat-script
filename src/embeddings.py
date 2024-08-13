@@ -2,7 +2,7 @@
 
 import os
 import shutil
-from configparser import ConfigParser
+from options import options
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import TokenTextSplitter
@@ -12,17 +12,6 @@ from langchain_community.vectorstores import Chroma
 # Directory and file names
 scripts_directory = "~/.chat-script/scripts"
 embeddings_directory = "~/.chat-script/embeddings"
-config_file = "~/.config/chat-script/chat-script.ini"
-
-# Set options
-configuration = ConfigParser()
-configuration.read(os.path.expanduser(config_file))
-embeddings_model = configuration.get("EMBEDDINGS", "embeddings_model", fallback="mxbai-embed-large")
-show_progress = configuration.getboolean("EMBEDDINGS", "show_progress", fallback=True)
-collection_name = configuration.get("EMBEDDINGS", "collection_name", fallback="rag-chroma")
-use_multithreading = configuration.getboolean("EMBEDDINGS", "use_multithreading", fallback=True)
-chunk_size = configuration.getint("EMBEDDINGS", "chunk_size", fallback=300)
-chunk_overlap = configuration.getint("EMBEDDINGS", "chunk_overlap", fallback=100)
 
 def embeddings():
     """Loads and chunks text documents, embeds them, then stores in persistent ChromaDB vectorstore"""
@@ -30,17 +19,17 @@ def embeddings():
     loader = DirectoryLoader(
         path=os.path.expanduser(scripts_directory), 
         loader_cls=TextLoader, 
-        show_progress=show_progress, 
-        use_multithreading=use_multithreading
+        show_progress=options.embeddings.show_progress, 
+        use_multithreading=options.embeddings.use_multithreading
     )
     docs = loader.load()
 
     # Split documents
-    text_splitter = TokenTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+    text_splitter = TokenTextSplitter(chunk_size=options.embeddings.chunk_size, chunk_overlap=options.embeddings.chunk_overlap)
     all_splits = text_splitter.split_documents(docs)
 
     # Set embedding function 
-    embeddings = OllamaEmbeddings(model=embeddings_model, show_progress=show_progress)
+    embeddings = OllamaEmbeddings(model=options.embeddings.embeddings_model, show_progress=options.embeddings.show_progress)
 
     # Remove Vector Store if it exists
     if os.path.exists(os.path.expanduser(embeddings_directory)):
@@ -49,7 +38,7 @@ def embeddings():
     # Save to persistent ChromaDB Vector Store
     vectorstore = Chroma.from_documents(
         documents=all_splits,
-        collection_name=collection_name,
+        collection_name=options.embeddings.collection_name,
         embedding=embeddings,
         persist_directory=os.path.expanduser(embeddings_directory)
     )
