@@ -1,3 +1,5 @@
+# Creates and reads options at ~/.config/chat-script/chat-script.ini
+
 import os
 from configparser import ConfigParser
 
@@ -5,6 +7,7 @@ config_directory = "~/.config/chat-script"
 config_file = config_directory + "/chat-script.ini"
 
 def create_options():
+    """Create options file at ~/.config/chat-script/chat-script.ini with defaults"""
     configuration = ConfigParser()
     configuration['APP'] = {
         'share': 'False',
@@ -48,6 +51,7 @@ def create_options():
     print("\nCreated config_file at: " + config_file + " and populated it with default settings")
 
 def read_options():
+    """Read options from ~/.config/chat-script/chat-script.ini and save in global dict: options"""
     configuration = ConfigParser()
     configuration.read(os.path.expanduser(config_file))
     global options

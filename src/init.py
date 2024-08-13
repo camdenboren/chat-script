@@ -4,8 +4,6 @@
 
 import os
 from options import create_options, read_options
-from app import app
-from embeddings import embeddings
 
 # Directory and file names
 scripts_directory = "~/.chat-script/scripts"
@@ -21,6 +19,7 @@ def init():
             create_options()
         if os.path.exists(os.path.expanduser(scripts_directory)):
             read_options()
+            from app import app
             app()
     elif not os.path.exists(os.path.expanduser(scripts_directory)):
         os.makedirs(os.path.expanduser(scripts_directory))
@@ -30,17 +29,21 @@ def init():
             user_embed = str(input("Would you like to embed the scripts now (if yes, then add your scripts to ~/.chat-script/scripts before submitting)? y/n: "))
             if user_embed:
                 if user_embed[0] == "y" or user_embed[0] == "Y":
-                    embeddings()
                     read_options()
+                    from embeddings import embeddings
+                    embeddings()
+                    from app import app
                     app()
                 elif user_embed[0] == "n" or user_embed[0] == "N":
                     read_options()
+                    from app import app
                     app()
                 else:
                     print("Input must be one of: y/n\n")
                     user_embed = None
     else:
         read_options()
+        from app import app
         app()
 
 if __name__ == '__main__':

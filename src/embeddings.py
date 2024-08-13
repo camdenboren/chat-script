@@ -19,17 +19,23 @@ def embeddings():
     loader = DirectoryLoader(
         path=os.path.expanduser(scripts_directory), 
         loader_cls=TextLoader, 
-        show_progress=options.embeddings.show_progress, 
-        use_multithreading=options.embeddings.use_multithreading
+        show_progress=options['embeddings']['show_progress'], 
+        use_multithreading=options['embeddings']['use_multithreading']
     )
     docs = loader.load()
 
     # Split documents
-    text_splitter = TokenTextSplitter(chunk_size=options.embeddings.chunk_size, chunk_overlap=options.embeddings.chunk_overlap)
+    text_splitter = TokenTextSplitter(
+        chunk_size=options['embeddings']['chunk_size'], 
+        chunk_overlap=options['embeddings']['chunk_overlap']
+    )
     all_splits = text_splitter.split_documents(docs)
 
     # Set embedding function 
-    embeddings = OllamaEmbeddings(model=options.embeddings.embeddings_model, show_progress=options.embeddings.show_progress)
+    embeddings = OllamaEmbeddings(
+        model=options['embeddings']['embeddings_model'], 
+        show_progress=options['embeddings']['show_progress']
+    )
 
     # Remove Vector Store if it exists
     if os.path.exists(os.path.expanduser(embeddings_directory)):
@@ -38,7 +44,7 @@ def embeddings():
     # Save to persistent ChromaDB Vector Store
     vectorstore = Chroma.from_documents(
         documents=all_splits,
-        collection_name=options.embeddings.collection_name,
+        collection_name=options['embeddings']['collection_name'],
         embedding=embeddings,
         persist_directory=os.path.expanduser(embeddings_directory)
     )

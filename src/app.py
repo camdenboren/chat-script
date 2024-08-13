@@ -22,8 +22,8 @@ def app():
         additional_inputs=[]
     ).queue()
     app.launch(
-        share=options.app.share, 
-        server_name=options.app.server_name, 
-        server_port=options.app.server_port,
-        inbrowser=options.app.inbrowser
+        share=options['app']['share'], 
+        server_name=options['app']['server_name'], 
+        server_port=options['app']['server_port'],
+        inbrowser=options['app']['inbrowser']
     )
