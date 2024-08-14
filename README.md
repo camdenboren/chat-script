@@ -52,19 +52,25 @@ To adjust various options, edit values in:
 To edit the code itself:
 
     git clone https://github.com/camdenboren/chat-script.git
-    modify files in src as desired
+    modify files in src as desired (and add new files to setup.py)
     nix run /path/to/chat-script
-
-Efficiently grab Youtube video transcripts
-
-    Use this link to put video transcripts in ~/.chat-script/scripts: https://youtubechanneltranscripts.com/
-    copy video title from freetube into search bar there
-    For transcripts, made it through the video: Worlds Hardest One Set Leg Workout (MUSCLE GROWTH FAST)
 </details>
 
 <details>
 <summary><b>Architecture</b></summary>
-Chain:
+Basic Flow:
+
+                                          init.py
+                                             |
+                ↓----------------------------↓---------------------------↓
+    Create and/or Read options      Generate Embeddings            Launch App UI
+          (options.py)                (embeddings.py)                (app.py)
+                                                                         |
+                                             ↓---------------------------↓
+                                        Create chain      Pass response.generate to app UI
+                                         (chain.py)                (response.py)
+
+Chain Details (history, moderation, and rag-flow are optional):
 
     User Query + Chat History
             ↓
@@ -74,18 +80,14 @@ Chain:
             ↓
     Retrieve Scripts for each Query
             ↓
-    Pass User Query and Unique Union of Retrieved Scripts to Chat Model
-            ↓
-    Stream Response
-            ↓
-    Append Metadata of Retrieved Scripts
+    Pass User Query and Scripts to Chat Model
 
 <i>Note: If query deemed unsafe, stream a refusal response, skip following stages, and remove question from history on further iterations</i>
 
 Src Files:
 
     app.py
-    -Launches Gradio UI leveraging response() in response.py
+    -Launches Gradio UI leveraging generate() in response.py
 
     chain.py
     -Prepares language models
@@ -98,8 +100,12 @@ Src Files:
     init.py
     -Entry point of app
     -Sets up resources and directories if needed
-    -Runs embeddings() from embeddings.py if needed
-    -Launches app() from app.py
+    -Runs generate() from embeddings.py if needed
+    -Runs launch() from app.py
+
+    options.py
+    -Creates and reads options for entire app
+    -Accessed via global dict
 
     response.py
     -Streams chat-model response with source-formatting
@@ -112,14 +118,14 @@ Src Files:
 Priority
 - [ ] Add tool-call or few-shot prompting to improve citation formatting
 - [x] Look into RAG-fusion for improving distance-based retrieval performance
-- [ ] Look into other splitting functions due to weirdness from book pdfs
+- [x] Look into other splitting functions due to weirdness from book pdfs
 - [ ] Add vectorstore indexing to avoid embeddings dupes
-- [ ] Improve print_state functionality (reimplement previous RunnablePassthrough approach)
 
 Long-term
 - [ ] Investigate routing options for settings ui
 - [ ] Move to a more customizable UI via either gradio.Interface(), gradio.Blocks(), or a different framework like streamlit or flask
 - [ ] Add button to call embeddings()
 - [ ] Add dropdown to select available Ollama LLMs
-- [ ] Improve options documentation
+- [ ] Improve print_state functionality (reimplement previous RunnablePassthrough approach)
+- [ ] Improve options and documentation
 </details>

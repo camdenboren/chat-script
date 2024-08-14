@@ -2,15 +2,15 @@
 
 import time
 import gradio as gr
-from options import options
-from response import response
-from chain import create_chain
+import chain
+import options
+import response
 
-def app():
+def launch():
     """Launch app's Gradio UI"""
-    create_chain()
+    chain.create()
     app = gr.ChatInterface(
-        response,
+        response.generate,
         chatbot=gr.Chatbot(
             show_copy_button=True, 
             bubble_full_width=False,
@@ -22,8 +22,8 @@ def app():
         additional_inputs=[]
     ).queue()
     app.launch(
-        share=options['app']['share'], 
-        server_name=options['app']['server_name'], 
-        server_port=options['app']['server_port'],
-        inbrowser=options['app']['inbrowser']
+        share=options.options['app']['share'], 
+        server_name=options.options['app']['server_name'], 
+        server_port=options.options['app']['server_port'],
+        inbrowser=options.options['app']['inbrowser']
     )
