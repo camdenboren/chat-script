@@ -22,10 +22,14 @@ import options
 # Directory and file names
 embeddings_directory = "~/.chat-script/embeddings"
 
+def opt(option_name):
+    """Syntactic sugar for retrieving options"""
+    return options.options['chain'][option_name]
+
 def prepare_models():
-    # Set num_gpu depending on whether options.options['chain']['embeddings_gpu'] is True or False
+    # Set num_gpu depending on whether opt('embeddings_gpu') is True or False
     global num_gpu
-    if options.options['chain']['embeddings_gpu']:
+    if opt('embeddings_gpu'):
         num_gpu = None
     else:
         num_gpu = 0
@@ -33,30 +37,30 @@ def prepare_models():
     # Set Embedding LLM to local Ollama model
     global embeddings
     embeddings = OllamaEmbeddings(
-        model=options.options['chain']['embeddings_model'], 
-        show_progress=options.options['chain']['show_progress'], 
+        model=opt('embeddings_model'), 
+        show_progress=opt('show_progress'), 
         num_gpu=num_gpu
     )
 
     # Set LLM to local Ollama model
     global model
     model = ChatOllama(
-        model=options.options['chain']['chat_model'],
-        progress=options.options['chain']['show_progress'],
-        keep_alive=options.options['chain']['keep_alive'],
-        base_url=options.options['chain']['chat_url'],
-        temperature=options.options['chain']['temperature'],
-        top_k=options.options['chain']['top_k'],
-        top_p=options.options['chain']['top_p']
+        model=opt('chat_model'),
+        progress=opt('show_progress'),
+        keep_alive=opt('keep_alive'),
+        base_url=opt('chat_url'),
+        temperature=opt('temperature'),
+        top_k=opt('top_k'),
+        top_p=opt('top_p')
     )
 
     # Set Moderation LLM to local Ollama model
-    if options.options['chain']['moderate']:
+    if opt('moderate'):
         moderation = ChatOllama(
-            model=options.options['chain']['moderation_model'],
-            show_progress=options.options['chain']['show_progress'],
-            keep_alive=options.options['chain']['keep_alive'],
-            base_url=options.options['chain']['moderation_url']
+            model=opt('moderation_model'),
+            show_progress=opt('show_progress'),
+            keep_alive=opt('keep_alive'),
+            base_url=opt('moderation_url')
         )
         global moderation_chain
         moderation_chain = moderation | StrOutputParser()
@@ -100,7 +104,7 @@ def prepare_prompts():
     DEFAULT_QUERY_PROMPT = PromptTemplate(
         input_variables=["question"],
         template="""You are an AI language model assistant. Your task is 
-        to generate """ + str(options.options['chain']['num_queries']-1) + """ different versions of the given user 
+        to generate """ + str(opt('num_queries')-1) + """ different versions of the given user 
         question to retrieve relevant documents from a vector  database. 
         By generating multiple perspectives on the user question, 
         your goal is to help the user overcome some of the limitations 
@@ -144,7 +148,7 @@ def prepare_prompts():
                 lines = response["text"]
             else:
                 lines = response
-            queries = lines[:max(options.options['chain']['num_queries']-1,0)]
+            queries = lines[:max(opt('num_queries')-1,0)]
             if self.include_original:
                 queries.append(query)
 
@@ -158,18 +162,18 @@ def prepare_prompts():
             return [doc for i, doc in enumerate(documents) if doc not in documents[:i]]
 
 def create():
-    """Set ChromaDB vectorstore (w/ options.options['chain']['collection_name']) as a retriever and create rag_chain"""
+    """Set ChromaDB vectorstore (w/ opt('collection_name')) as a retriever and create rag_chain"""
     prepare_models()
     prepare_prompts()
     
     vectorstore = Chroma(
-        collection_name=options.options['chain']['collection_name'],
+        collection_name=opt('collection_name'),
         embedding_function=embeddings,
         persist_directory=os.path.expanduser(embeddings_directory)
     )
-    if options.options['chain']['rag_fusion']:
+    if opt('rag_fusion'):
         retriever_multi = MultiQueryRetriever.from_llm(
-            retriever=vectorstore.as_retriever(search_kwargs={'k': options.options['chain']['top_n_results_fusion']}),
+            retriever=vectorstore.as_retriever(search_kwargs={'k': opt('top_n_results_fusion')}),
             llm=model,
             include_original=True
         )
@@ -181,7 +185,7 @@ def create():
     else:
         retriever = create_history_aware_retriever(
             model, 
-            vectorstore.as_retriever(search_kwargs={'k': options.options['chain']['top_n_results']}), 
+            vectorstore.as_retriever(search_kwargs={'k': opt('top_n_results')}), 
             contextualize_q_prompt
         )
     global rag_chain

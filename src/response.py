@@ -20,10 +20,14 @@ if scripts_directory[-1] != "/":
 
 # Message sent when unsafe question is asked and options.options['chain']['moderate'] = True
 unsafe_response = "Your question is unsafe, so no response will be provided."
+
+def opt(option_name):
+    """Syntactic sugar for retrieving options"""
+    return options.options['response'][option_name]
     
 def format_context(context):
     """Formats and yields context passed to LLM in human-readable format"""
-    if options.options['response']['print_state']:
+    if opt('print_state'):
         print("Context: ", context, sep="")
     formatted_context = "Relevant Sources (some may not have been used): "
     index = 0
@@ -34,7 +38,7 @@ def format_context(context):
             yield chunks + " "
             if((index == 0) and (chunks == "used):")):
                 yield "\n"
-            time.sleep(options.options['response']['context_stream_delay'])
+            time.sleep(opt('context_stream_delay'))
         yield "\n"
         formatted_context = ""
         index += 1
@@ -52,8 +56,8 @@ def convert_session_history(history):
                 history.remove(msgs)
     
     # Trim history before converting to langchain format
-    if len(history) > options.options['response']['max_history']:
-        history = history[-options.options['response']['max_history']:]
+    if len(history) > opt('max_history'):
+        history = history[-opt('max_history'):]
     for msgs in history:
         session_history.add_user_message(msgs[0])
         session_history.add_ai_message(msgs[1].split("\n\nRelevant Sources")[0])
@@ -64,13 +68,13 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
 
 def inspect(state):
     """Print state between runnables and pass it on (includes: input, chat_history)"""
-    if options.options['response']['print_state']:
+    if opt('print_state'):
         print("State: ", state, sep="")
     return state
 
 def generate(question,history,request: Request):
     """Checks question for safety (if applicable) then creates RAG + history chain w/ local LLM and streams chain's text response"""
-    if request and options.options['response']['print_state']:
+    if request and opt('print_state'):
         print("\nIP address of user: ", request.client.host, sep="")
     allow_response = True
     if options.options['chain']['moderate']:
@@ -114,4 +118,4 @@ def generate(question,history,request: Request):
         for chunks in unsafe_response.split():
             response_stream += chunks + " "
             yield response_stream
-            time.sleep(options.options['response']['context_stream_delay'])
+            time.sleep(opt('context_stream_delay'))

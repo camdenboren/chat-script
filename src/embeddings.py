@@ -13,28 +13,32 @@ import options
 scripts_directory = "~/.chat-script/scripts"
 embeddings_directory = "~/.chat-script/embeddings"
 
+def opt(option_name):
+    """Syntactic sugar for retrieving options"""
+    return options.options['embeddings'][option_name]
+
 def generate():
     """Loads and chunks text documents, embeds them, then stores in persistent ChromaDB vectorstore"""
     # Load documents
     loader = DirectoryLoader(
         path=os.path.expanduser(scripts_directory), 
         loader_cls=TextLoader, 
-        show_progress=options.options['embeddings']['show_progress'], 
-        use_multithreading=options.options['embeddings']['use_multithreading']
+        show_progress=opt('show_progress'), 
+        use_multithreading=opt('use_multithreading')
     )
     docs = loader.load()
 
     # Split documents
     text_splitter = TokenTextSplitter(
-        chunk_size=options.options['embeddings']['chunk_size'], 
-        chunk_overlap=options.options['embeddings']['chunk_overlap']
+        chunk_size=opt('chunk_size'), 
+        chunk_overlap=opt('chunk_overlap')
     )
     all_splits = text_splitter.split_documents(docs)
 
     # Set embedding function 
     embeddings = OllamaEmbeddings(
-        model=options.options['embeddings']['embeddings_model'], 
-        show_progress=options.options['embeddings']['show_progress']
+        model=opt('embeddings_model'), 
+        show_progress=opt('show_progress')
     )
 
     # Remove Vector Store if it exists
@@ -44,7 +48,7 @@ def generate():
     # Save to persistent ChromaDB Vector Store
     vectorstore = Chroma.from_documents(
         documents=all_splits,
-        collection_name=options.options['embeddings']['collection_name'],
+        collection_name=opt('collection_name'),
         embedding=embeddings,
         persist_directory=os.path.expanduser(embeddings_directory)
     )
