@@ -11,13 +11,15 @@ import options
 scripts_directory = "~/.chat-script/scripts"
 embeddings_directory = "~/.chat-script/embeddings"
 config_directory = "~/.config/chat-script"
-config_file = config_directory + "/chat-script.ini"
+config_file = f"{config_directory}/chat-script.ini"
 
 def init():
-    """Create directories and embed scripts if needed, otw run launch()"""
+    """Create directories and embed scripts if needed, otw run options.read() and app.launch()"""
     if not os.path.exists(os.path.expanduser(config_file)):
         if not os.path.exists(os.path.expanduser(config_directory)):
             os.makedirs(os.path.expanduser(config_directory))
+            options.create()
+        else:
             options.create()
         if os.path.exists(os.path.expanduser(scripts_directory)):
             options.read()

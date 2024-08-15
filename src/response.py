@@ -30,18 +30,16 @@ def format_context(context):
     if opt('print_state'):
         print("Context: ", context, sep="")
     formatted_context = "Relevant Sources (some may not have been used): "
-    index = 0
     yield "\n\n"
-    while(index < len(context)):
-        formatted_context += "[" + str(index+1) + "] " + context[index].metadata["source"][scripts_dir_len:]
-        for chunks in formatted_context.split():
-            yield chunks + " "
-            if (index == 0) and (chunks == "used):"):
+    for index, chunk in enumerate(context):
+        formatted_context += f"[{str(index+1)}] {chunk.metadata['source'][scripts_dir_len:]}"
+        for fmt_chunks in formatted_context.split():
+            yield f"{fmt_chunks} "
+            if (index == 0) and (fmt_chunks == "used):"):
                 yield "\n"
             time.sleep(opt('context_stream_delay'))
         yield "\n"
         formatted_context = ""
-        index += 1
 
 def convert_session_history(history):
     """Workaround for converting Gradio history to Langchain-compatible chat_history.
@@ -52,7 +50,7 @@ def convert_session_history(history):
     # Remove unsafe messages from history if applicable
     if options.options['chain']['moderate']:
         for msgs in history:
-            if (msgs[1] == unsafe_response + " "):
+            if (msgs[1] == f"{unsafe_response} "):
                 history.remove(msgs)
     
     # Trim history before converting to langchain format
@@ -116,6 +114,6 @@ def generate(question,history,request: Request):
         print("Unsafe question: \'", question, "\'", sep="")
         response_stream = ""
         for chunks in unsafe_response.split():
-            response_stream += chunks + " "
+            response_stream += f"{chunks} "
             yield response_stream
             time.sleep(opt('context_stream_delay'))

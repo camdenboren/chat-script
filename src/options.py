@@ -4,7 +4,7 @@ import os
 from configparser import ConfigParser
 
 config_directory = "~/.config/chat-script"
-config_file = config_directory + "/chat-script.ini"
+config_file = f"{config_directory}/chat-script.ini"
 
 def create():
     """Create options file at ~/.config/chat-script/chat-script.ini with defaults"""
@@ -48,7 +48,7 @@ def create():
     }
     with open(os.path.expanduser(config_file), 'w') as configfile:
         configuration.write(configfile)
-    print("\nCreated config_file at: " + config_file + " and populated it with default settings")
+    print(f"\nCreated config_file at: {config_file} and populated it with default settings")
 
 def read():
     """Read options from ~/.config/chat-script/chat-script.ini and save in global dict: options"""
