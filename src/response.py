@@ -36,7 +36,7 @@ def format_context(context):
         formatted_context += "[" + str(index+1) + "] " + context[index].metadata["source"][scripts_dir_len:]
         for chunks in formatted_context.split():
             yield chunks + " "
-            if((index == 0) and (chunks == "used):")):
+            if (index == 0) and (chunks == "used):"):
                 yield "\n"
             time.sleep(opt('context_stream_delay'))
         yield "\n"
@@ -102,9 +102,9 @@ def generate(question,history,request: Request):
         for chunks in result:
             answer_chunks = chunks.get("answer")
             get_context = chunks.get("context")
-            if(answer_chunks):
+            if answer_chunks:
                 response_stream += answer_chunks
-            if(get_context):
+            if get_context:
                 context = get_context
             yield response_stream
         if context:
