@@ -28,7 +28,6 @@ def opt(option_name):
 
 def prepare_models():
     # Set num_gpu depending on whether opt('embeddings_gpu') is True or False
-    global num_gpu
     if opt('embeddings_gpu'):
         num_gpu = None
     else:
