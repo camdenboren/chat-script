@@ -17,6 +17,11 @@ def opt(option_name):
     """Syntactic sugar for retrieving options"""
     return options.options['embeddings'][option_name]
 
+def create_batches(all_splits, batch_size):
+    """Breaks all_splits into batches of size <= batch_size"""
+    for i in range(0, len(all_splits), batch_size):
+        yield all_splits[i:i + batch_size]
+
 def generate():
     """Loads and chunks text documents, embeds them, then stores in persistent ChromaDB vectorstore"""
     # Load documents
@@ -28,12 +33,13 @@ def generate():
     )
     docs = loader.load()
 
-    # Split documents
+    # Split documents, then divide into batches to avoid ChromaDB/SQLite batch size limitations
     text_splitter = TokenTextSplitter(
         chunk_size=opt('chunk_size'), 
         chunk_overlap=opt('chunk_overlap')
     )
     all_splits = text_splitter.split_documents(docs)
+    all_splits = create_batches(all_splits, opt('batch_size'))
 
     # Set embedding function 
     embeddings = OllamaEmbeddings(
@@ -46,12 +52,14 @@ def generate():
         shutil.rmtree(os.path.expanduser(embeddings_directory))
 
     # Save to persistent ChromaDB Vector Store
-    vectorstore = Chroma.from_documents(
-        documents=all_splits,
-        collection_name=opt('collection_name'),
-        embedding=embeddings,
-        persist_directory=os.path.expanduser(embeddings_directory)
-    )
+    for batch in all_splits:
+        vectorstore = Chroma.from_documents(
+            documents=batch,
+            collection_name=opt('collection_name'),
+            embedding=embeddings,
+            persist_directory=os.path.expanduser(embeddings_directory)
+        )
 
 if __name__ == '__main__':
+    options.read()
     generate()

@@ -43,8 +43,9 @@ def create():
         'show_progress': 'True',
         'collection_name': 'rag-chroma',
         'use_multithreading': 'True',
-        'chunk_size': '300',
-        'chunk_overlap': '100'
+        'chunk_size': '200',
+        'chunk_overlap': '50',
+        'batch_size': '41666'
     }
     with open(os.path.expanduser(config_file), 'w') as configfile:
         configuration.write(configfile)
@@ -86,8 +87,9 @@ def read():
             'show_progress': configuration.getboolean("EMBEDDINGS", "show_progress", fallback=True),
             'collection_name': configuration.get("EMBEDDINGS", "collection_name", fallback="rag-chroma"),
             'use_multithreading': configuration.getboolean("EMBEDDINGS", "use_multithreading", fallback=True),
-            'chunk_size': configuration.getint("EMBEDDINGS", "chunk_size", fallback=300),
-            'chunk_overlap': configuration.getint("EMBEDDINGS", "chunk_overlap", fallback=100)
+            'chunk_size': configuration.getint("EMBEDDINGS", "chunk_size", fallback=200),
+            'chunk_overlap': configuration.getint("EMBEDDINGS", "chunk_overlap", fallback=50),
+            'batch_size': configuration.getint("EMBEDDINGS", "batch_size", fallback=41666)
         },
         'response': {
             'context_stream_delay': configuration.getfloat("RESPONSE", "context_stream_delay", fallback=0.075),
