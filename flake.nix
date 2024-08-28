@@ -21,7 +21,6 @@
     forEachSupportedSystem = function: nixpkgs.lib.genAttrs supportedSystems (system: function rec {
       pkgs = nixpkgs.legacyPackages.${system};
       deps = with pkgs.python311Packages; [
-        chromadb
         (gradio.overrideAttrs (old: {
           postInstall = (old.postInstall or "") + ''
             cp -f ${linux-share} $out/lib/python3.11/site-packages/gradio/frpc_linux_amd64_v0.2

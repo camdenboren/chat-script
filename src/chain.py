@@ -3,7 +3,7 @@
 import os
 from typing import List, Optional, Sequence
 from langchain_community.embeddings import OllamaEmbeddings
-from langchain_community.chat_models import ChatOllama
+from langchain_ollama import ChatOllama
 from langchain_core.callbacks import CallbackManagerForRetrieverRun
 from langchain_core.documents import Document
 from langchain_core.language_models import BaseLanguageModel
@@ -16,7 +16,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder, PromptTemplate
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 import options
 
 # Directory and file names
@@ -45,7 +45,6 @@ def prepare_models():
     global model
     model = ChatOllama(
         model=opt('chat_model'),
-        progress=opt('show_progress'),
         keep_alive=opt('keep_alive'),
         base_url=opt('chat_url'),
         temperature=opt('temperature'),
@@ -57,7 +56,6 @@ def prepare_models():
     if opt('moderate'):
         moderation = ChatOllama(
             model=opt('moderation_model'),
-            show_progress=opt('show_progress'),
             keep_alive=opt('keep_alive'),
             base_url=opt('moderation_url')
         )
@@ -82,7 +80,7 @@ def prepare_prompts():
 
     # Define the question_answer_chain 
     system_prompt = (
-        "Answer the question using the following context. If you use any information in the context, include the index like: [1] of the relevant Document as an in-text citation in your answer, and nothing else. Remember that each Document has two sections: page_content, and metadata- don't confuse these for indexable objects."
+        "Answer the question using the following context: "
         "{context}"
     )
     qa_prompt = ChatPromptTemplate.from_messages([

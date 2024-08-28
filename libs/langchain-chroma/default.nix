@@ -7,7 +7,7 @@
   langchain-standard-tests,
   tiktoken,
   lark,
-  chroma,
+  chromadb,
   pandas,
   poetry-core,
   pytest-asyncio,
@@ -41,7 +41,7 @@ buildPythonPackage rec {
 
   dependencies = [
     langchain-core
-    chroma
+    chromadb
     tiktoken
   ];
 
