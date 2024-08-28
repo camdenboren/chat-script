@@ -18,9 +18,9 @@
   outputs = { self, nixpkgs, linux-share, darwin-share }: 
   let
     supportedSystems = [ "x86_64-linux" "aarch64-darwin" ];
-    forEachSupportedSystem = function: nixpkgs.lib.genAttrs supportedSystems (system: function {
+    forEachSupportedSystem = function: nixpkgs.lib.genAttrs supportedSystems (system: function rec {
       pkgs = nixpkgs.legacyPackages.${system};
-      deps = with nixpkgs.legacyPackages.${system}.python311Packages; [
+      deps = with pkgs.python311Packages; [
         chromadb
         (gradio.overrideAttrs (old: {
           postInstall = (old.postInstall or "") + ''
@@ -33,6 +33,8 @@
         langchain
         langchain-core
         langchain-community
+        (callPackage ./libs/langchain-chroma {})
+        (callPackage ./libs/langchain-ollama {})
         tiktoken
 
         # Seem unnecessary
