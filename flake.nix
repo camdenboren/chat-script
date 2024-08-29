@@ -28,17 +28,6 @@
         langchain-chroma
         langchain-ollama
         tiktoken
-
-        # Seem unnecessary
-        #beautifulsoup4
-
-        # Needed for PDF processing - should work once paddlepaddle is updated - also need to rm loader_cls in embeddings()
-        #unstructured
-        #emoji
-        #iso-639
-        #langdetect
-        #pillow-heif
-        #unstructured-inference
       ];
     });
   in {

@@ -120,6 +120,7 @@ Priority
 - [x] Look into RAG-fusion for improving distance-based retrieval performance
 - [x] Look into other splitting functions due to weirdness from book pdfs
 - [ ] Add vectorstore indexing to avoid embeddings dupes
+- [ ] Add support for non-text documents (relevant packages below)
 
 Long-term
 - [ ] Investigate routing options for settings ui
@@ -128,4 +129,17 @@ Long-term
 - [ ] Add dropdown to select available Ollama LLMs
 - [ ] Improve print_state functionality (reimplement previous RunnablePassthrough approach)
 - [ ] Improve options and documentation
+
+Relevant pkgs:
+
+    # Needed for PDF processing - should work once paddlepaddle is updated - also need to rm loader_cls in embeddings()
+    unstructured
+    emoji
+    iso-639
+    langdetect
+    pillow-heif
+    unstructured-inference
+
+    # Seems unnecessary
+    beautifulsoup4
 </details>
