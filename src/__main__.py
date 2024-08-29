@@ -1,8 +1,7 @@
-#!/usr/bin/env python
-
 # Entry point that ensures necessary config and scripts are setup before handing off to app.py
 
 import os
+import sys
 import app
 import embeddings
 import options
@@ -13,7 +12,7 @@ embeddings_directory = "~/.chat-script/embeddings"
 config_directory = "~/.config/chat-script"
 config_file = f"{config_directory}/chat-script.ini"
 
-def init():
+def main():
     """Create directories and embed scripts if needed, otw run options.read() and app.launch()"""
     if not os.path.exists(os.path.expanduser(config_file)):
         if not os.path.exists(os.path.expanduser(config_directory)):
@@ -46,4 +45,4 @@ def init():
         app.launch()
 
 if __name__ == '__main__':
-    init()
+    sys.exit(main())
