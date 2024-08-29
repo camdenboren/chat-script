@@ -34,7 +34,6 @@ def prepare_models():
         num_gpu = 0
 
     # Set Embedding LLM to local Ollama model
-    global embeddings
     embeddings = OllamaEmbeddings(
         model=opt('embeddings_model'), 
         show_progress=opt('show_progress'), 
@@ -42,7 +41,6 @@ def prepare_models():
     )
 
     # Set LLM to local Ollama model
-    global model
     model = ChatOllama(
         model=opt('chat_model'),
         keep_alive=opt('keep_alive'),
@@ -52,15 +50,7 @@ def prepare_models():
         top_p=opt('top_p')
     )
 
-    # Set Moderation LLM to local Ollama model
-    if opt('moderate'):
-        moderation = ChatOllama(
-            model=opt('moderation_model'),
-            keep_alive=opt('keep_alive'),
-            base_url=opt('moderation_url')
-        )
-        global moderation_chain
-        moderation_chain = moderation | StrOutputParser()
+    return embeddings, model
 
 def prepare_prompts():
     # Define the contextualization prompt for summarizing chat history
@@ -71,7 +61,6 @@ def prepare_prompts():
         "without the chat history. Do NOT answer the question, "
         "just reformulate it if needed and otherwise return it as is."
     )
-    global contextualize_q_prompt
     contextualize_q_prompt = ChatPromptTemplate.from_messages([
         ("system", contextualize_q_system_prompt),
         MessagesPlaceholder("chat_history"),
@@ -88,15 +77,17 @@ def prepare_prompts():
         MessagesPlaceholder("chat_history"),
         ("human", "{input}"),
     ])
-    global question_answer_chain
-    question_answer_chain = create_stuff_documents_chain(model, qa_prompt)
+    return qa_prompt, contextualize_q_prompt
 
+def prepare_retriever():
+    """Define output parser and MultiQueryRetriever"""
     # Define the output parser for rag-fusion. Adapted from multi_query.py
     class LineListOutputParser(BaseOutputParser[List[str]]):
         """Output parser for a list of lines."""
         def parse(self, text: str) -> List[str]:
             lines = text.strip().split("\n")
             return lines
+
     # Set the rag-fusion prompt, enabling customization of number of queries. Adapted from multi_query.py
     DEFAULT_QUERY_PROMPT = PromptTemplate(
         input_variables=["question"],
@@ -110,7 +101,6 @@ def prepare_prompts():
     )
 
     # Define the retriever for rag-fusion. Adapted from multi_query.py
-    global MultiQueryRetriever
     class MultiQueryRetriever(BaseRetriever):
         """Given a query, use an LLM to write a set of queries. Retrieve docs for each query. Return the unique union of all retrieved docs."""
         retriever: BaseRetriever
@@ -158,17 +148,21 @@ def prepare_prompts():
             # Return unique union of retrieved documents
             return [doc for i, doc in enumerate(documents) if doc not in documents[:i]]
 
+    return MultiQueryRetriever
+
 def create():
     """Set ChromaDB vectorstore (w/ opt('collection_name')) as a retriever and create rag_chain"""
-    prepare_models()
-    prepare_prompts()
-    
+    embeddings, model = prepare_models()
+    qa_prompt, contextualize_q_prompt = prepare_prompts()
+    question_answer_chain = create_stuff_documents_chain(model, qa_prompt)
+
     vectorstore = Chroma(
         collection_name=opt('collection_name'),
         embedding_function=embeddings,
         persist_directory=os.path.expanduser(embeddings_directory)
     )
     if opt('rag_fusion'):
+        MultiQueryRetriever = prepare_retriever()
         retriever_multi = MultiQueryRetriever.from_llm(
             retriever=vectorstore.as_retriever(search_kwargs={'k': opt('top_n_results_fusion')}),
             llm=model,
@@ -187,3 +181,13 @@ def create():
         )
     global rag_chain
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
+
+def create_moderation():
+    """Set Moderation LLM to local Ollama model, construct and return chain"""
+    moderation = ChatOllama(
+        model=opt('moderation_model'),
+        keep_alive=opt('keep_alive'),
+        base_url=opt('moderation_url')
+    )
+    moderation_chain = moderation | StrOutputParser()
+    return moderation_chain

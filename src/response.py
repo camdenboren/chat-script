@@ -48,7 +48,7 @@ def convert_session_history(history):
     session_history = ChatMessageHistory()
 
     # Remove unsafe messages from history if applicable
-    if options.options['chain']['moderate']:
+    if opt('moderate'):
         for msgs in history:
             if (msgs[1] == f"{unsafe_response} "):
                 history.remove(msgs)
@@ -75,8 +75,9 @@ def generate(question,history,request: Request):
     if request and opt('print_state'):
         print("\nIP address of user: ", request.client.host, sep="")
     allow_response = True
-    if options.options['chain']['moderate']:
-        check_question = chain.moderation_chain.invoke(question)
+    if opt('moderate'):
+        moderation_chain = chain.create_moderation()
+        check_question = moderation_chain.invoke(question)
         allow_response = (check_question[2:6] == "safe")
     if allow_response:
         convert_session_history(history)

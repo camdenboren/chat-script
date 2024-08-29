@@ -15,11 +15,6 @@ def create():
         'server_port': '7860',
         'inbrowser': 'True'
     }
-    configuration['RESPONSE'] = {
-        'context_stream_delay': '0.075',
-        'max_history': '2',
-        'print_state': 'True'
-    }
     configuration['CHAIN'] = {
         'embeddings_model': 'mxbai-embed-large',
         'chat_model': 'mistral',
@@ -32,7 +27,6 @@ def create():
         'top_k': '30',
         'top_p': '0.7','collection_name': 'rag-chroma',
         'top_n_results': '3',
-        'moderate': 'False',
         'rag_fusion': 'True',
         'num_queries': '2',
         'top_n_results_fusion': '2',
@@ -46,6 +40,12 @@ def create():
         'chunk_size': '200',
         'chunk_overlap': '50',
         'batch_size': '41666'
+    }
+    configuration['RESPONSE'] = {
+        'context_stream_delay': '0.075',
+        'max_history': '2',
+        'print_state': 'True',
+        'moderate': 'False'
     }
     with open(os.path.expanduser(config_file), 'w') as configfile:
         configuration.write(configfile)
@@ -76,7 +76,6 @@ def read():
             'top_p': configuration.getfloat("CHAIN", "top_p", fallback=0.7),
             'collection_name': configuration.get("CHAIN", "collection_name", fallback="rag-chroma"),
             'top_n_results': configuration.getint("CHAIN", "top_n_results", fallback=3),
-            'moderate': configuration.getboolean("CHAIN", "moderate", fallback=False),
             'rag_fusion': configuration.getboolean("CHAIN", "rag_fusion", fallback=True),
             'num_queries': configuration.getint("CHAIN", "num_queries", fallback=2),
             'top_n_results_fusion': configuration.getint("CHAIN", "top_n_results_fusion", fallback=2),
@@ -94,6 +93,7 @@ def read():
         'response': {
             'context_stream_delay': configuration.getfloat("RESPONSE", "context_stream_delay", fallback=0.075),
             'max_history': configuration.getint("RESPONSE", "max_history", fallback=2),
-            'print_state': configuration.getboolean("RESPONSE", "print_state", fallback=True)
+            'print_state': configuration.getboolean("RESPONSE", "print_state", fallback=True),
+            'moderate': configuration.getboolean("RESPONSE", "moderate", fallback=False),
         }
     }
