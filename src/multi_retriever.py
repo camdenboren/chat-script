@@ -7,6 +7,7 @@ from langchain_core.prompts import BasePromptTemplate
 from langchain_core.retrievers import BaseRetriever
 from langchain_core.runnables import Runnable
 from langchain.chains.llm import LLMChain
+from langchain.prompts import PromptTemplate
 
 def prepare(num_queries):
     """Define output parser and MultiQueryRetriever"""
@@ -64,7 +65,7 @@ def prepare(num_queries):
                 lines = response["text"]
             else:
                 lines = response
-            queries = lines[:max(opt('num_queries')-1,0)]
+            queries = lines[:max(num_queries-1,0)]
             if self.include_original:
                 queries.append(query)
 
