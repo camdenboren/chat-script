@@ -75,13 +75,13 @@ def create():
     """Set ChromaDB vectorstore (w/ opt('collection_name')) as a retriever and create rag_chain"""
     embeddings, model = prepare_models()
     qa_prompt, contextualize_q_prompt = prepare_prompts()
-    question_answer_chain = create_stuff_documents_chain(model, qa_prompt)
 
     vectorstore = Chroma(
         collection_name=opt('collection_name'),
         embedding_function=embeddings,
         persist_directory=os.path.expanduser(embeddings_directory)
     )
+
     if opt('rag_fusion'):
         MultiQueryRetriever = multi_retriever.prepare(opt('num_queries'))
         retriever_fusion = MultiQueryRetriever.from_llm(
@@ -100,7 +100,9 @@ def create():
             vectorstore.as_retriever(search_kwargs={'k': opt('top_n_results')}), 
             contextualize_q_prompt
         )
+
     global rag_chain
+    question_answer_chain = create_stuff_documents_chain(model, qa_prompt)
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
 def create_moderation():
