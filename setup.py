@@ -13,7 +13,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "chatbot-util = src.__main__:main"
+            "chat-script = src.__main__:main"
         ]
     }
 )
