@@ -8,6 +8,7 @@ setup(
         "src/app.py",
         "src/chain.py",
         "src/embeddings.py",
+        "src/multi_retriever.py",
         "src/options.py",
         "src/response.py"
     ],
