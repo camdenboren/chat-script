@@ -19,8 +19,7 @@
         '';
       });
       # Adds integration pkgs not yet in nixpkgs
-      langchain-chroma = prev.python311Packages.callPackage ./libs/langchain-chroma {};
-      langchain-ollama = prev.python311Packages.callPackage ./libs/langchain-ollama {};
+      langchain-ollama = prev.python311Packages.callPackage ./lib/langchain-ollama {};
     };
   };
 })
