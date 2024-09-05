@@ -37,7 +37,7 @@ def create():
         'show_progress': 'True',
         'collection_name': 'rag-chroma',
         'use_multithreading': 'True',
-        'chunk_size': '200',
+        'chunk_size': '250',
         'chunk_overlap': '50',
         'batch_size': '41666'
     }
@@ -86,7 +86,7 @@ def read():
             'show_progress': configuration.getboolean("EMBEDDINGS", "show_progress", fallback=True),
             'collection_name': configuration.get("EMBEDDINGS", "collection_name", fallback="rag-chroma"),
             'use_multithreading': configuration.getboolean("EMBEDDINGS", "use_multithreading", fallback=True),
-            'chunk_size': configuration.getint("EMBEDDINGS", "chunk_size", fallback=200),
+            'chunk_size': configuration.getint("EMBEDDINGS", "chunk_size", fallback=250),
             'chunk_overlap': configuration.getint("EMBEDDINGS", "chunk_overlap", fallback=50),
             'batch_size': configuration.getint("EMBEDDINGS", "batch_size", fallback=41666)
         },
