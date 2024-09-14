@@ -1,4 +1,4 @@
-# Entry point that ensures necessary config and scripts are setup before handing off to app.py
+"""Entry point that ensures necessary config and scripts are setup before handing off to app.py"""
 
 import os
 import sys

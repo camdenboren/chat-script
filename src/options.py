@@ -1,4 +1,4 @@
-# Creates and reads options at ~/.config/chat-script/chat-script.ini
+"""Creates and reads options at ~/.config/chat-script/chat-script.ini"""
 
 import os
 from configparser import ConfigParser
@@ -65,11 +65,23 @@ def read():
             'inbrowser': configuration.getboolean("APP", "inbrowser", fallback=True)
         },
         'chain': {
-            'embeddings_model': configuration.get("CHAIN", "embeddings_model", fallback="mxbai-embed-large"),
+            'embeddings_model': configuration.get(
+                "CHAIN",
+                "embeddings_model",
+                fallback="mxbai-embed-large"
+            ),
             'chat_model': configuration.get("CHAIN", "chat_model", fallback="mistral"),
-            'moderation_model': configuration.get("CHAIN", "moderation_model", fallback="xe/llamaguard3"),
+            'moderation_model': configuration.get(
+                "CHAIN",
+                "moderation_model",
+                fallback="xe/llamaguard3"
+            ),
             'chat_url': configuration.get("CHAIN", "chat_url", fallback="http://localhost:11434"),
-            'moderation_url': configuration.get("CHAIN", "moderation_url", fallback="http://localhost:11434"),
+            'moderation_url': configuration.get(
+                "CHAIN",
+                "moderation_url",
+                fallback="http://localhost:11434"
+            ),
             'show_progress': configuration.getboolean("CHAIN", "show_progress", fallback=False),
             'keep_alive': configuration.get("CHAIN", "keep_alive", fallback="5m"),
             'temperature': configuration.getfloat("CHAIN", "temperature", fallback=0.6),
@@ -79,20 +91,40 @@ def read():
             'top_n_results': configuration.getint("CHAIN", "top_n_results", fallback=3),
             'rag_fusion': configuration.getboolean("CHAIN", "rag_fusion", fallback=True),
             'num_queries': configuration.getint("CHAIN", "num_queries", fallback=2),
-            'top_n_results_fusion': configuration.getint("CHAIN", "top_n_results_fusion", fallback=2),
+            'top_n_results_fusion': configuration.getint(
+                "CHAIN",
+                "top_n_results_fusion",
+                fallback=2
+            ),
             'embeddings_gpu': configuration.getboolean("CHAIN", "embeddings_gpu", fallback=True)
         },
         'embeddings': {
-            'embeddings_model': configuration.get("EMBEDDINGS", "embeddings_model", fallback="mxbai-embed-large"),
+            'embeddings_model': configuration.get(
+                "EMBEDDINGS",
+                "embeddings_model",
+                fallback="mxbai-embed-large"
+            ),
             'show_progress': configuration.getboolean("EMBEDDINGS", "show_progress", fallback=True),
-            'collection_name': configuration.get("EMBEDDINGS", "collection_name", fallback="rag-chroma"),
-            'use_multithreading': configuration.getboolean("EMBEDDINGS", "use_multithreading", fallback=True),
+            'collection_name': configuration.get(
+                "EMBEDDINGS",
+                "collection_name",
+                fallback="rag-chroma"
+            ),
+            'use_multithreading': configuration.getboolean(
+                "EMBEDDINGS",
+                "use_multithreading",
+                fallback=True
+            ),
             'chunk_size': configuration.getint("EMBEDDINGS", "chunk_size", fallback=250),
             'chunk_overlap': configuration.getint("EMBEDDINGS", "chunk_overlap", fallback=50),
             'batch_size': configuration.getint("EMBEDDINGS", "batch_size", fallback=41666)
         },
         'response': {
-            'context_stream_delay': configuration.getfloat("RESPONSE", "context_stream_delay", fallback=0.075),
+            'context_stream_delay': configuration.getfloat(
+                "RESPONSE",
+                "context_stream_delay",
+                fallback=0.075
+            ),
             'max_history': configuration.getint("RESPONSE", "max_history", fallback=2),
             'print_state': configuration.getboolean("RESPONSE", "print_state", fallback=True),
             'moderate': configuration.getboolean("RESPONSE", "moderate", fallback=False),

@@ -1,4 +1,4 @@
-# Setup language models and multi-query retriever, define the moderation and rag chains
+"""Setup language models and multi-query retriever, define the moderation and rag chains"""
 
 import os
 from langchain_community.embeddings import OllamaEmbeddings
@@ -19,7 +19,7 @@ def opt(option_name):
     return options.options['chain'][option_name]
 
 def prepare_models():
-    # Set num_gpu depending on whether opt('embeddings_gpu') is True or False
+    """Set num_gpu depending on whether opt('embeddings_gpu') is True or False"""
     if opt('embeddings_gpu'):
         num_gpu = None
     else:
@@ -45,7 +45,7 @@ def prepare_models():
     return embeddings, model
 
 def prepare_prompts():
-    # Define the contextualization prompt for summarizing chat history
+    """Define the contextualization prompt for summarizing chat history"""
     contextualize_q_system_prompt = (
         "Given a chat history and the latest user question "
         "which might reference context in the chat history, "
@@ -90,14 +90,14 @@ def create():
             include_original=True
         )
         retriever = create_history_aware_retriever(
-            model, 
-            retriever_fusion, 
+            model,
+            retriever_fusion,
             contextualize_q_prompt
         )
     else:
         retriever = create_history_aware_retriever(
-            model, 
-            vectorstore.as_retriever(search_kwargs={'k': opt('top_n_results')}), 
+            model,
+            vectorstore.as_retriever(search_kwargs={'k': opt('top_n_results')}),
             contextualize_q_prompt
         )
 

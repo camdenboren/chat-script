@@ -1,3 +1,5 @@
+"""Define and return the rag-fusion retirever and output parser"""
+
 from typing import List, Optional, Sequence
 from langchain_core.callbacks import CallbackManagerForRetrieverRun
 from langchain_core.documents import Document
@@ -18,7 +20,8 @@ def prepare(num_queries):
             lines = text.strip().split("\n")
             return lines
 
-    # Set the rag-fusion prompt, enabling customization of number of queries. Adapted from multi_query.py
+    # Set the rag-fusion prompt, enabling customization 
+    # of number of queries. Adapted from multi_query.py
     DEFAULT_QUERY_PROMPT = PromptTemplate(
         input_variables=["question"],
         template="""You are an AI language model assistant. Your task is 
@@ -32,7 +35,9 @@ def prepare(num_queries):
 
     # Define the retriever for rag-fusion. Adapted from multi_query.py
     class MultiQueryRetriever(BaseRetriever):
-        """Given a query, use an LLM to write a set of queries. Retrieve docs for each query. Return the unique union of all retrieved docs."""
+        """Given a query, use an LLM to write a set of queries. Retrieve 
+        docs for each query. Return the unique union of all retrieved docs.
+        """
         retriever: BaseRetriever
         llm_chain: Runnable
         verbose: bool = True
@@ -57,10 +62,20 @@ def prepare(num_queries):
                 include_original=include_original,
             )
 
-        def _get_relevant_documents(self, query: str, *, run_manager: CallbackManagerForRetrieverRun) -> List[Document]:
-            """Get relevant and unique documents from multiple derived queries given a single user query."""
+        def _get_relevant_documents(
+            self,
+            query: str,
+            *,
+            run_manager: CallbackManagerForRetrieverRun
+        ) -> List[Document]:
+            """Get relevant and unique documents from multiple 
+            derived queries given a single user query.
+            """
             # Generate queries
-            response = self.llm_chain.invoke({"question": query}, config={"callbacks": run_manager.get_child()})
+            response = self.llm_chain.invoke(
+                {"question": query}, 
+                config={"callbacks": run_manager.get_child()}
+            )
             if isinstance(self.llm_chain, LLMChain):
                 lines = response["text"]
             else:

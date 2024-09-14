@@ -1,3 +1,5 @@
+"""Declare app name, ver, scripts, and entry point"""
+
 from setuptools import setup
 
 setup(

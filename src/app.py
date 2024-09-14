@@ -1,4 +1,4 @@
-# Gradio UI leveraging eponymous function in response
+"""Gradio UI leveraging eponymous function in response"""
 
 import time
 import gradio as gr
