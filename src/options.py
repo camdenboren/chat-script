@@ -3,8 +3,9 @@
 import os
 from configparser import ConfigParser
 
-config_directory = "~/.config/chat-script"
-config_file = f"{config_directory}/chat-script.ini"
+CONFIG_DIR = "~/.config/chat-script"
+CONFIG_FILE = f"{CONFIG_DIR}/chat-script.ini"
+OPTIONS = None
 
 def create():
     """Create options file at ~/.config/chat-script/chat-script.ini with defaults"""
@@ -48,21 +49,37 @@ def create():
         'print_state': 'True',
         'moderate': 'False'
     }
-    with open(os.path.expanduser(config_file), 'w') as configfile:
+    with open(os.path.expanduser(CONFIG_FILE), 'w', encoding='UTF-8') as configfile:
         configuration.write(configfile)
-    print(f"\nCreated config_file at: {config_file} and populated it with default settings")
+    print(f"\nCreated CONFIG_FILE at: {CONFIG_FILE} and populated it with default settings")
 
 def read():
     """Read options from ~/.config/chat-script/chat-script.ini and save in global dict: options"""
     configuration = ConfigParser()
-    configuration.read(os.path.expanduser(config_file))
-    global options
-    options = {
+    configuration.read(os.path.expanduser(CONFIG_FILE))
+    global OPTIONS
+    OPTIONS = {
         'app': {
-            'share': configuration.getboolean("APP", "share", fallback=False),
-            'server_name': configuration.get("APP", "server_name", fallback="127.0.0.1"),
-            'server_port': configuration.getint("APP", "server_port", fallback=7860),
-            'inbrowser': configuration.getboolean("APP", "inbrowser", fallback=True)
+            'share': configuration.getboolean(
+                "APP",
+                "share",
+                fallback=False
+            ),
+            'server_name': configuration.get(
+                "APP",
+                "server_name",
+                fallback="127.0.0.1"
+            ),
+            'server_port': configuration.getint(
+                "APP",
+                "server_port",
+                fallback=7860
+            ),
+            'inbrowser': configuration.getboolean(
+                "APP",
+                "inbrowser",
+                fallback=True
+            )
         },
         'chain': {
             'embeddings_model': configuration.get(
@@ -70,33 +87,81 @@ def read():
                 "embeddings_model",
                 fallback="mxbai-embed-large"
             ),
-            'chat_model': configuration.get("CHAIN", "chat_model", fallback="mistral"),
+            'chat_model': configuration.get(
+                "CHAIN",
+                "chat_model",
+                fallback="mistral"
+            ),
             'moderation_model': configuration.get(
                 "CHAIN",
                 "moderation_model",
                 fallback="xe/llamaguard3"
             ),
-            'chat_url': configuration.get("CHAIN", "chat_url", fallback="http://localhost:11434"),
+            'chat_url': configuration.get(
+                "CHAIN",
+                "chat_url",
+                fallback="http://localhost:11434"
+            ),
             'moderation_url': configuration.get(
                 "CHAIN",
                 "moderation_url",
                 fallback="http://localhost:11434"
             ),
-            'show_progress': configuration.getboolean("CHAIN", "show_progress", fallback=False),
-            'keep_alive': configuration.get("CHAIN", "keep_alive", fallback="5m"),
-            'temperature': configuration.getfloat("CHAIN", "temperature", fallback=0.6),
-            'top_k':  configuration.getint("CHAIN", "top_k", fallback=30),
-            'top_p': configuration.getfloat("CHAIN", "top_p", fallback=0.7),
-            'collection_name': configuration.get("CHAIN", "collection_name", fallback="rag-chroma"),
-            'top_n_results': configuration.getint("CHAIN", "top_n_results", fallback=3),
-            'rag_fusion': configuration.getboolean("CHAIN", "rag_fusion", fallback=True),
-            'num_queries': configuration.getint("CHAIN", "num_queries", fallback=2),
+            'show_progress': configuration.getboolean(
+                "CHAIN",
+                "show_progress",
+                fallback=False
+            ),
+            'keep_alive': configuration.get(
+                "CHAIN",
+                "keep_alive",
+                fallback="5m"
+            ),
+            'temperature': configuration.getfloat(
+                "CHAIN",
+                "temperature",
+                fallback=0.6
+            ),
+            'top_k':  configuration.getint(
+                "CHAIN",
+                "top_k",
+                fallback=30
+            ),
+            'top_p': configuration.getfloat(
+                "CHAIN",
+                "top_p",
+                fallback=0.7
+            ),
+            'collection_name': configuration.get(
+                "CHAIN",
+                "collection_name",
+                fallback="rag-chroma"
+            ),
+            'top_n_results': configuration.getint(
+                "CHAIN",
+                "top_n_results",
+                fallback=3
+            ),
+            'rag_fusion': configuration.getboolean(
+                "CHAIN",
+                "rag_fusion",
+                fallback=True
+            ),
+            'num_queries': configuration.getint(
+                "CHAIN",
+                "num_queries",
+                fallback=2
+            ),
             'top_n_results_fusion': configuration.getint(
                 "CHAIN",
                 "top_n_results_fusion",
                 fallback=2
             ),
-            'embeddings_gpu': configuration.getboolean("CHAIN", "embeddings_gpu", fallback=True)
+            'embeddings_gpu': configuration.getboolean(
+                "CHAIN",
+                "embeddings_gpu",
+                fallback=True
+            )
         },
         'embeddings': {
             'embeddings_model': configuration.get(
@@ -104,7 +169,11 @@ def read():
                 "embeddings_model",
                 fallback="mxbai-embed-large"
             ),
-            'show_progress': configuration.getboolean("EMBEDDINGS", "show_progress", fallback=True),
+            'show_progress': configuration.getboolean(
+                "EMBEDDINGS",
+                "show_progress",
+                fallback=True
+            ),
             'collection_name': configuration.get(
                 "EMBEDDINGS",
                 "collection_name",
@@ -115,9 +184,21 @@ def read():
                 "use_multithreading",
                 fallback=True
             ),
-            'chunk_size': configuration.getint("EMBEDDINGS", "chunk_size", fallback=250),
-            'chunk_overlap': configuration.getint("EMBEDDINGS", "chunk_overlap", fallback=50),
-            'batch_size': configuration.getint("EMBEDDINGS", "batch_size", fallback=41666)
+            'chunk_size': configuration.getint(
+                "EMBEDDINGS",
+                "chunk_size",
+                fallback=250
+            ),
+            'chunk_overlap': configuration.getint(
+                "EMBEDDINGS",
+                "chunk_overlap",
+                fallback=50
+            ),
+            'batch_size': configuration.getint(
+                "EMBEDDINGS",
+                "batch_size",
+                fallback=41666
+            )
         },
         'response': {
             'context_stream_delay': configuration.getfloat(
@@ -125,8 +206,20 @@ def read():
                 "context_stream_delay",
                 fallback=0.075
             ),
-            'max_history': configuration.getint("RESPONSE", "max_history", fallback=2),
-            'print_state': configuration.getboolean("RESPONSE", "print_state", fallback=True),
-            'moderate': configuration.getboolean("RESPONSE", "moderate", fallback=False),
+            'max_history': configuration.getint(
+                "RESPONSE",
+                "max_history",
+                fallback=2
+            ),
+            'print_state': configuration.getboolean(
+                "RESPONSE",
+                "print_state",
+                fallback=True
+            ),
+            'moderate': configuration.getboolean(
+                "RESPONSE",
+                "moderate",
+                fallback=False
+            )
         }
     }

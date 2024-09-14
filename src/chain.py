@@ -12,11 +12,11 @@ import options
 import multi_retriever
 
 # Directory and file names
-embeddings_directory = "~/.chat-script/embeddings"
+EMBED_DIR = "~/.chat-script/embeddings"
 
 def opt(option_name):
     """Syntactic sugar for retrieving options"""
-    return options.options['chain'][option_name]
+    return options.OPTIONS['chain'][option_name]
 
 def prepare_models():
     """Set num_gpu depending on whether opt('embeddings_gpu') is True or False"""
@@ -27,8 +27,8 @@ def prepare_models():
 
     # Set Embedding LLM to local Ollama model
     embeddings = OllamaEmbeddings(
-        model=opt('embeddings_model'), 
-        show_progress=opt('show_progress'), 
+        model=opt('embeddings_model'),
+        show_progress=opt('show_progress'),
         num_gpu=num_gpu
     )
 
@@ -56,10 +56,10 @@ def prepare_prompts():
     contextualize_q_prompt = ChatPromptTemplate.from_messages([
         ("system", contextualize_q_system_prompt),
         MessagesPlaceholder("chat_history"),
-        ("human", "{input}"),    
+        ("human", "{input}")
     ])
 
-    # Define the question_answer_chain 
+    # Define the question_answer_chain
     system_prompt = (
         "Answer the question using the following context: "
         "{context}"
@@ -67,7 +67,7 @@ def prepare_prompts():
     qa_prompt = ChatPromptTemplate.from_messages([
         ("system", system_prompt),
         MessagesPlaceholder("chat_history"),
-        ("human", "{input}"),
+        ("human", "{input}")
     ])
     return qa_prompt, contextualize_q_prompt
 
@@ -79,7 +79,7 @@ def create():
     vectorstore = Chroma(
         collection_name=opt('collection_name'),
         embedding_function=embeddings,
-        persist_directory=os.path.expanduser(embeddings_directory)
+        persist_directory=os.path.expanduser(EMBED_DIR)
     )
 
     if opt('rag_fusion'):

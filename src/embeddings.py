@@ -1,6 +1,4 @@
-"""Refreshes/generates persistent embeddings in 
-embeddings_directory based on text files in scripts_directory
-"""
+"""Refreshes/generates embeddings in based on scripts"""
 
 import os
 import shutil
@@ -11,12 +9,12 @@ from langchain_chroma import Chroma
 import options
 
 # Directory and file names
-scripts_directory = "~/.chat-script/scripts"
-embeddings_directory = "~/.chat-script/embeddings"
+SCRIPTS_DIR = "~/.chat-script/scripts"
+EMBED_DIR = "~/.chat-script/embeddings"
 
 def opt(option_name):
     """Syntactic sugar for retrieving options"""
-    return options.options['embeddings'][option_name]
+    return options.OPTIONS['embeddings'][option_name]
 
 def create_batches(all_splits, batch_size):
     """Breaks all_splits into batches of size <= batch_size"""
@@ -24,12 +22,10 @@ def create_batches(all_splits, batch_size):
         yield all_splits[i:i + batch_size]
 
 def generate():
-    """Loads and chunks text documents, embeds them, 
-    then stores in persistent ChromaDB vectorstore
-    """
+    """Loads, chunks, embeds, stores text documents"""
     # Load documents
     loader = DirectoryLoader(
-        path=os.path.expanduser(scripts_directory),
+        path=os.path.expanduser(SCRIPTS_DIR),
         loader_cls=TextLoader,
         show_progress=opt('show_progress'),
         use_multithreading=opt('use_multithreading')
@@ -51,8 +47,8 @@ def generate():
     )
 
     # Remove Vector Store if it exists
-    if os.path.exists(os.path.expanduser(embeddings_directory)):
-        shutil.rmtree(os.path.expanduser(embeddings_directory))
+    if os.path.exists(os.path.expanduser(EMBED_DIR)):
+        shutil.rmtree(os.path.expanduser(EMBED_DIR))
 
     # Save to persistent ChromaDB Vector Store
     for batch in all_splits:
@@ -60,7 +56,7 @@ def generate():
             documents=batch,
             collection_name=opt('collection_name'),
             embedding=embeddings,
-            persist_directory=os.path.expanduser(embeddings_directory)
+            persist_directory=os.path.expanduser(EMBED_DIR)
         )
 
 if __name__ == '__main__':

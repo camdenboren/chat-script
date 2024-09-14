@@ -7,28 +7,31 @@ import embeddings
 import options
 
 # Directory and file names
-scripts_directory = "~/.chat-script/scripts"
-embeddings_directory = "~/.chat-script/embeddings"
-config_directory = "~/.config/chat-script"
-config_file = f"{config_directory}/chat-script.ini"
+SCRIPTS_DIR = "~/.chat-script/scripts"
+EMBED_DIR = "~/.chat-script/embeddings"
+CONFIG_DIR = "~/.config/chat-script"
+CONFIG_FILE = f"{CONFIG_DIR}/chat-script.ini"
 
 def main():
     """Create directories and embed scripts if needed, otw run options.read() and app.launch()"""
-    if not os.path.exists(os.path.expanduser(config_file)):
-        if not os.path.exists(os.path.expanduser(config_directory)):
-            os.makedirs(os.path.expanduser(config_directory))
+    if not os.path.exists(os.path.expanduser(CONFIG_FILE)):
+        if not os.path.exists(os.path.expanduser(CONFIG_DIR)):
+            os.makedirs(os.path.expanduser(CONFIG_DIR))
             options.create()
         else:
             options.create()
-        if os.path.exists(os.path.expanduser(scripts_directory)):
+        if os.path.exists(os.path.expanduser(SCRIPTS_DIR)):
             options.read()
             app.launch()
-    elif not os.path.exists(os.path.expanduser(scripts_directory)):
-        os.makedirs(os.path.expanduser(scripts_directory))
-        print("\nCreated scripts_directory at: " + scripts_directory)
+    elif not os.path.exists(os.path.expanduser(SCRIPTS_DIR)):
+        os.makedirs(os.path.expanduser(SCRIPTS_DIR))
+        print("\nCreated SCRIPTS_DIR at: " + SCRIPTS_DIR)
         user_embed = None
         while not user_embed:
-            user_embed = str(input("Would you like to embed the scripts now (if yes, then add your scripts to ~/.chat-script/scripts before submitting)? y/n: "))
+            user_embed = str(input(
+                """Would you like to embed the scripts now (if yes, then add your 
+                scripts to ~/.chat-script/scripts before submitting)? y/n: """
+            ))
             if user_embed:
                 if user_embed[0] == "y" or user_embed[0] == "Y":
                     options.read()

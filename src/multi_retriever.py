@@ -1,6 +1,6 @@
 """Define and return the rag-fusion retirever and output parser"""
 
-from typing import List, Optional, Sequence
+from typing import List
 from langchain_core.callbacks import CallbackManagerForRetrieverRun
 from langchain_core.documents import Document
 from langchain_core.language_models import BaseLanguageModel
@@ -22,7 +22,7 @@ def prepare(num_queries):
 
     # Set the rag-fusion prompt, enabling customization 
     # of number of queries. Adapted from multi_query.py
-    DEFAULT_QUERY_PROMPT = PromptTemplate(
+    default_query_prompt = PromptTemplate(
         input_variables=["question"],
         template="""You are an AI language model assistant. Your task is 
         to generate """ + str(num_queries-1) + """ different versions of the given user 
@@ -35,9 +35,7 @@ def prepare(num_queries):
 
     # Define the retriever for rag-fusion. Adapted from multi_query.py
     class MultiQueryRetriever(BaseRetriever):
-        """Given a query, use an LLM to write a set of queries. Retrieve 
-        docs for each query. Return the unique union of all retrieved docs.
-        """
+        """Given a query, use an LLM to write several and retrieve unique docs."""
         retriever: BaseRetriever
         llm_chain: Runnable
         verbose: bool = True
@@ -49,8 +47,7 @@ def prepare(num_queries):
             cls,
             retriever: BaseRetriever,
             llm: BaseLanguageModel,
-            prompt: BasePromptTemplate = DEFAULT_QUERY_PROMPT,
-            parser_key: Optional[str] = None,
+            prompt: BasePromptTemplate = default_query_prompt,
             include_original: bool = False,
         ) -> "MultiQueryRetriever":
             """Initialize from llm using default template."""
@@ -68,9 +65,7 @@ def prepare(num_queries):
             *,
             run_manager: CallbackManagerForRetrieverRun
         ) -> List[Document]:
-            """Get relevant and unique documents from multiple 
-            derived queries given a single user query.
-            """
+            """Get relevant docs from multiple derived queries"""
             # Generate queries
             response = self.llm_chain.invoke(
                 {"question": query}, 

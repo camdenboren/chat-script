@@ -11,19 +11,19 @@ import chain
 import options
 
 # Directory and file names
-scripts_directory = "~/.chat-script/scripts"
+SCRIPTS_DIR = "~/.chat-script/scripts"
 
 # Calculate length of scripts_dir name for citation formatting later
-scripts_dir_len = len(os.path.expanduser(scripts_directory))
-if scripts_directory[-1] != "/":
-    scripts_dir_len += 1
+SCRIPTS_DIR_LEN = len(os.path.expanduser(SCRIPTS_DIR))
+if SCRIPTS_DIR[-1] != "/":
+    SCRIPTS_DIR_LEN += 1
 
-# Message sent when unsafe question is asked and options.options['chain']['moderate'] = True
-unsafe_response = "Your question is unsafe, so no response will be provided."
+# Message sent when unsafe question is asked and options.OPTIONS['chain']['moderate'] = True
+UNSAFE_RESPONSE = "Your question is unsafe, so no response will be provided."
 
 def opt(option_name):
     """Syntactic sugar for retrieving options"""
-    return options.options['response'][option_name]
+    return options.OPTIONS['response'][option_name]
 
 def format_context(context):
     """Formats and yields context passed to LLM in human-readable format"""
@@ -32,7 +32,7 @@ def format_context(context):
     formatted_context = "Relevant Sources (some may not have been used): "
     yield "\n\n"
     for index, chunk in enumerate(context):
-        formatted_context += f"[{str(index+1)}] {chunk.metadata['source'][scripts_dir_len:]}"
+        formatted_context += f"[{str(index+1)}] {chunk.metadata['source'][SCRIPTS_DIR_LEN:]}"
         for fmt_chunks in formatted_context.split():
             yield f"{fmt_chunks} "
             if (index == 0) and (fmt_chunks == "used):"):
@@ -42,25 +42,24 @@ def format_context(context):
         formatted_context = ""
 
 def convert_session_history(history):
-    """Workaround for converting Gradio history to Langchain-compatible chat_history.
-    Separates chat_history by user and lets Clear on Gradio UI do its job"""
+    """Workaround for converting Gradio history to Langchain-compatible chat_history."""
     global session_history
     session_history = ChatMessageHistory()
 
     # Remove unsafe messages from history if applicable
     if opt('moderate'):
         for msgs in history:
-            if msgs[1] == f"{unsafe_response} ":
+            if msgs[1] == f"{UNSAFE_RESPONSE} ":
                 history.remove(msgs)
 
     # Trim history before converting to langchain format
     if len(history) > opt('max_history'):
-        history = history[-opt('max_history'):]
+        history = history[-int(opt('max_history')):]
     for msgs in history:
         session_history.add_user_message(msgs[0])
         session_history.add_ai_message(msgs[1].split("\n\nRelevant Sources")[0])
 
-def get_session_history(session_id: str) -> BaseChatMessageHistory:
+def get_session_history() -> BaseChatMessageHistory:
     """Manage chat history"""
     return session_history
 
@@ -71,9 +70,7 @@ def inspect(state):
     return state
 
 def generate(question,history,request: Request):
-    """Checks question for safety (if applicable) then creates RAG + 
-    history chain w/ local LLM and streams chain's text response
-    """
+    """Creates RAG + history chain w/ local LLM and streams chain's text response"""
     if request and opt('print_state'):
         print("\nIP address of user: ", request.client.host, sep="")
     allow_response = True
@@ -124,7 +121,7 @@ def generate(question,history,request: Request):
     else:
         print("Unsafe question: \'", question, "\'", sep="")
         response_stream = ""
-        for chunks in unsafe_response.split():
+        for chunks in UNSAFE_RESPONSE.split():
             response_stream += f"{chunks} "
             yield response_stream
             time.sleep(opt('context_stream_delay'))
