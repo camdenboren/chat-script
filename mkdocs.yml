@@ -1,0 +1,18 @@
+site_name: chat-script docs
+
+theme:
+  name: "material"
+  palette:
+    primary: black
+    scheme: slate
+
+plugins:
+  - mkdocstrings
+
+markdown_extensions:
+  - tables
+
+nav:
+  - Welcome: index.md
+  - options.md
+  - reference.md

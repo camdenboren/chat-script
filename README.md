@@ -54,6 +54,10 @@ To edit the code itself:
     git clone https://github.com/camdenboren/chat-script.git
     modify files in src as desired (and add new files to setup.py)
     nix run /path/to/chat-script
+
+To generate documenation in site/ from docs/:
+
+    mkdocs build
 </details>
 
 <details>
@@ -123,10 +127,6 @@ Priority
 - [ ] Add support for non-text documents (relevant packages below)
 
 Long-term
-- [ ] Investigate routing options for settings ui
-- [ ] Move to a more customizable UI via either gradio.Interface(), gradio.Blocks(), or a different framework like streamlit or flask
-- [ ] Add button to call embeddings()
-- [ ] Add dropdown to select available Ollama LLMs
 - [ ] Improve print_state functionality (reimplement previous RunnablePassthrough approach)
 - [ ] Improve options and documentation
 

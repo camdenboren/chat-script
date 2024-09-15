@@ -36,7 +36,12 @@
         packages = with pkgs; [ 
           bashInteractive 
           python311 
-        ] ++ deps;
+        ] ++ (with pkgs.python311Packages; [
+          mkdocs
+          mkdocs-material
+          mkdocstrings
+          mkdocstrings-python
+        ]) ++ deps;
 
         ANONYMIZED_TELEMETRY = "False";
 
