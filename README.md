@@ -62,17 +62,21 @@ To generate documenation in site/ from docs/:
 
 <details>
 <summary><b>ToDo</b></summary>
+Contributions welcome!
 
 Priority
-- [ ] Add tool-call or few-shot prompting to improve citation formatting
 - [x] Look into RAG-fusion for improving distance-based retrieval performance
 - [x] Look into other splitting functions due to weirdness from book pdfs
 - [ ] Add vectorstore indexing to avoid embeddings dupes
-- [ ] Add support for non-text documents (relevant packages below)
+- [ ] Add documentation for common option use-cases
+- [ ] Add moderation sub-options for privacy-preservation and system alerts
 
 Long-term
-- [ ] Improve print_state functionality (reimplement previous RunnablePassthrough approach)
-- [ ] Improve options and documentation
+- [ ] Add support for non-text documents (relevant packages below)
+- [ ] Add tool-call or few-shot prompting to improve citation formatting
+- [ ] Eliminate globals
+- [ ] Reimplement previous RunnablePassthrough approach for print_state
+- [ ] Add logging
 
 Relevant pkgs:
 
