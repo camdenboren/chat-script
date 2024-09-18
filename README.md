@@ -12,6 +12,8 @@ This is accomplished by implementing RAG-Fusion on local LLMs via:
 - ChromaDB
 - Gradio
 
+Documentation available at: 
+
 Powered by Nix ❄️
 
 <details>
@@ -41,79 +43,21 @@ Scripts can be reembedded at any time by renaming/removing the scripts directory
     nix develop github:camdenboren/chat-script --command bash -c "python src/embeddings.py"
 
 <i>*Note: Ollama must be running in the background in order for the app to actually get a response- see <b>Setup</b> for commands. It's also worthwhile to make sure the LLMs are running on your GPU, otherwise responses are unbearably slow</i>
+
+For option documentation, see the docs: 
 </details>
 
 <details>
 <summary><b>Advanced Usage</b></summary>
-To adjust various options, edit values in:
-
-    ~/.config/chat-script/chat-script.ini
-
 To edit the code itself:
 
     git clone https://github.com/camdenboren/chat-script.git
-    modify files in src as desired (and add new files to setup.py)
+    modify files in src as desired (and add new files to setup.py and stage to prevent flake from ignoring their existence)
     nix run /path/to/chat-script
 
 To generate documenation in site/ from docs/:
 
     mkdocs build
-</details>
-
-<details>
-<summary><b>Architecture</b></summary>
-Basic Flow:
-
-                                          init.py
-                                             |
-                ↓----------------------------↓---------------------------↓
-    Create and/or Read options      Generate Embeddings            Launch App UI
-          (options.py)                (embeddings.py)                (app.py)
-                                                                         |
-                                             ↓---------------------------↓
-                                        Create chain      Pass response.generate to app UI
-                                         (chain.py)                (response.py)
-
-Chain Details (history, moderation, and rag-flow are optional):
-
-    User Query + Chat History
-            ↓
-    Moderation Check
-            ↓
-    Generate Similar Queries
-            ↓
-    Retrieve Scripts for each Query
-            ↓
-    Pass User Query and Scripts to Chat Model
-
-<i>Note: If query deemed unsafe, stream a refusal response, skip following stages, and remove question from history on further iterations</i>
-
-Src Files:
-
-    app.py
-    -Launches Gradio UI leveraging generate() in response.py
-
-    chain.py
-    -Prepares language models
-    -Creates multi-query retriever (if applicable) and moderation, rag chains
-
-    embeddings.py
-    -Generates script embeddings via embeddings model
-    -Stores embeddings in persistent directory
-
-    init.py
-    -Entry point of app
-    -Sets up resources and directories if needed
-    -Runs generate() from embeddings.py if needed
-    -Runs launch() from app.py
-
-    options.py
-    -Creates and reads options for entire app
-    -Accessed via global dict
-
-    response.py
-    -Streams chat-model response with source-formatting
-    -Uses chain constructed in chain.py
 </details>
 
 <details>

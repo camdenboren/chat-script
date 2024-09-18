@@ -15,4 +15,5 @@ markdown_extensions:
 nav:
   - Welcome: index.md
   - options.md
+  - architecture.md
   - reference.md
