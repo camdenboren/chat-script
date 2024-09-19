@@ -68,10 +68,9 @@ Priority
 - [x] Look into RAG-fusion for improving distance-based retrieval performance
 - [x] Look into other splitting functions due to weirdness from book pdfs
 - [ ] Add vectorstore indexing to avoid embeddings dupes
-- [ ] Add documentation for common option use-cases
 - [ ] Add moderation sub-option for system alerts
 
-Long-term
+Nice to have
 - [ ] Add support for non-text documents (relevant packages below)
 - [ ] Add tool-call or few-shot prompting to improve citation formatting
 - [ ] Eliminate globals
