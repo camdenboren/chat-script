@@ -55,7 +55,7 @@ To edit the code itself:
     modify files in src as desired (and add new files to setup.py and stage to prevent flake from ignoring their existence)
     nix run /path/to/chat-script
 
-To generate documenation in site/ from docs/:
+To generate documenation in docs/ from md/:
 
     mkdocs build
 </details>
