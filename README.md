@@ -69,7 +69,7 @@ Priority
 - [x] Look into other splitting functions due to weirdness from book pdfs
 - [ ] Add vectorstore indexing to avoid embeddings dupes
 - [ ] Add documentation for common option use-cases
-- [ ] Add moderation sub-options for privacy-preservation and system alerts
+- [ ] Add moderation sub-option for system alerts
 
 Long-term
 - [ ] Add support for non-text documents (relevant packages below)
