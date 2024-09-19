@@ -49,9 +49,9 @@ To adjust these options, edit:
 
 ## Response
 
-| Option               | Desc          | Default       |
-| -------------------- | ------------- | ------------- |
-| context_stream_delay | Amount of time in s to delay tokens streamed for non-LLM text (sources, moderation notice) | 0.075         |
-| max_history          | Maximum number of previous user messages to include as context                             | 2             |
-| print_state          | Whether to print app state for each query. Includes: IP address, chat history, and context | True          |
-| moderate             | Whether to moderate user queries before allowing responses                                 | False         |
+| Option               | Desc                                                                                                                                                                      | Default       |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| context_stream_delay | Amount of time in s to delay tokens streamed for non-LLM text (sources, moderation notice)                                                                                | 0.075         |
+| max_history          | Maximum number of previous user messages to include as context                                                                                                            | 2             |
+| print_state          | Whether to print app state for each query. Includes: IP address, chat history, and context                                                                                | True          |
+| moderate             | Whether to moderate user queries before allowing responses. Prints IP address and offending query even if print_state is false (allows for privacy-preserving moderation) | False         |

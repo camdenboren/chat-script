@@ -119,6 +119,8 @@ def generate(question,history,request: Request):
                 response_stream += context_chunks
                 yield response_stream
     else:
+        if request and not opt('print_state'):
+            print("\nIP address of user: ", request.client.host, sep="")
         print("Unsafe question: \'", question, "\'", sep="")
         response_stream = ""
         for chunks in UNSAFE_RESPONSE.split():
