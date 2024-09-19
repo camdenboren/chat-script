@@ -12,7 +12,7 @@ This is accomplished by implementing RAG-Fusion on local LLMs via:
 - ChromaDB
 - Gradio
 
-Documentation available at: 
+Documentation available at: https://camdenboren.github.io/chat-script
 
 Powered by Nix ❄️
 
