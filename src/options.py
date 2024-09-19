@@ -5,7 +5,6 @@ from configparser import ConfigParser
 
 CONFIG_DIR = "~/.config/chat-script"
 CONFIG_FILE = f"{CONFIG_DIR}/chat-script.ini"
-OPTIONS = None
 
 def create():
     """Create options file at ~/.config/chat-script/chat-script.ini with defaults"""
