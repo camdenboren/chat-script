@@ -67,8 +67,8 @@ Contributions welcome!
 Priority
 - [x] Look into RAG-fusion for improving distance-based retrieval performance
 - [x] Look into other splitting functions due to weirdness from book pdfs
+- [x] Add moderation sub-option for system alerts
 - [ ] Add vectorstore indexing to avoid embeddings dupes
-- [ ] Add moderation sub-option for system alerts
 
 Nice to have
 - [ ] Add support for non-text documents (relevant packages below)

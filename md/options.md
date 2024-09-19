@@ -55,3 +55,4 @@ To adjust these options, edit:
 | max_history          | Maximum number of previous user messages to include as context                                                                                                            | 2             |
 | print_state          | Whether to print app state for each query. Includes: IP address, chat history, and context                                                                                | True          |
 | moderate             | Whether to moderate user queries before allowing responses. Prints IP address and offending query even if print_state is false (allows for privacy-preserving moderation) | False         |
+| moderate_alert       | Whether to display system alerts when an unsafe question is received                                                                                                      | False         |

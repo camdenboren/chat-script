@@ -27,6 +27,7 @@
         langchain-community
         langchain-chroma
         langchain-ollama
+        notify2
         tiktoken
       ];
     });

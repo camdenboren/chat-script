@@ -46,7 +46,8 @@ def create():
         'context_stream_delay': '0.075',
         'max_history': '2',
         'print_state': 'True',
-        'moderate': 'False'
+        'moderate': 'False',
+        'moderate_alert': 'False'
     }
     with open(os.path.expanduser(CONFIG_FILE), 'w', encoding='UTF-8') as configfile:
         configuration.write(configfile)
@@ -218,6 +219,11 @@ def read():
             'moderate': configuration.getboolean(
                 "RESPONSE",
                 "moderate",
+                fallback=False
+            ),
+            'moderate_alert': configuration.getboolean(
+                "RESPONSE",
+                "moderate_alert",
                 fallback=False
             )
         }

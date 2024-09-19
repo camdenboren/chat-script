@@ -7,6 +7,7 @@ from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables import RunnableLambda
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from gradio import Request
+import notify2
 import chain
 import options
 
@@ -18,7 +19,7 @@ SCRIPTS_DIR_LEN = len(os.path.expanduser(SCRIPTS_DIR))
 if SCRIPTS_DIR[-1] != "/":
     SCRIPTS_DIR_LEN += 1
 
-# Message sent when unsafe question is asked and options.OPTIONS['chain']['moderate'] = True
+# Message sent when unsafe question is asked and options.OPTIONS['response']['moderate'] = True
 UNSAFE_RESPONSE = "Your question is unsafe, so no response will be provided."
 
 def opt(option_name):
@@ -119,6 +120,10 @@ def generate(question,history,request: Request):
                 response_stream += context_chunks
                 yield response_stream
     else:
+        if opt('moderate_alert'):
+            notify2.init("chat-script")
+            alert = notify2.Notification("Unsafe question received")
+            alert.show()
         if request and not opt('print_state'):
             print("\nIP address of user: ", request.client.host, sep="")
         print("Unsafe question: \'", question, "\'", sep="")
