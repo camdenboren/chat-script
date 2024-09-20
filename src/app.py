@@ -21,6 +21,7 @@ def launch():
         ),
         fill_height=True,
         title="chat-script",
+        theme="Monochrome",
         analytics_enabled=False,
         additional_inputs=[]
     ).queue()
