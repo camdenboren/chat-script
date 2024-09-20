@@ -16,7 +16,7 @@ This is accomplished by implementing RAG-Fusion on local LLMs via:
 - Gradio
 
 Docs deployed at: https://camdenboren.github.io/chat-script<br>
-<i>Docs include: options, architecture, and reference</i>
+<i>Docs cover: options, architecture, and reference</i>
 
 ## Setup
 <b>Must install Ollama and flake-enabled Nix before running anything.</b>
