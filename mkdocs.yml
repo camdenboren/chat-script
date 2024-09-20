@@ -17,6 +17,3 @@ nav:
   - options.md
   - architecture.md
   - reference.md
-
-docs_dir: "md"
-site_dir: "docs"
