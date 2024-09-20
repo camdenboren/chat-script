@@ -12,13 +12,17 @@ This is accomplished by implementing RAG-Fusion on local LLMs via:
 - ChromaDB
 - Gradio
 
-Documentation available at: https://camdenboren.github.io/chat-script
+Docs deployed at: https://camdenboren.github.io/chat-script<br>
+<i>Docs include: options, architecture, and reference</i>
 
-Powered by Nix ❄️
+<a>
+    <img src="https://img.shields.io/badge/Powered_by_Nix-grey?logo=nixOS&logoColor=white">
+    <img src="https://img.shields.io/badge/linux-grey?logo=Linux&logoColor=white">
+    <img src="https://img.shields.io/badge/macOS-grey?logo=Apple">
+</a>
 
-<details>
-<summary><b>Setup</b></summary>
-<b>Important: Linux, MacOS, and WSL are supported. Must install Ollama and flake-enabled Nix before running anything.</b>
+## Setup
+<b>Must install Ollama and flake-enabled Nix before running anything.</b>
 
 Start Ollama server (second and third commands only need to be run if models have not already been installed, fourth only applies if moderate is set to True):
 
@@ -28,10 +32,8 @@ Start Ollama server (second and third commands only need to be run if models hav
     ollama pull xe/llamaguard3
 
 <i>Note: I recommend running Ollama as a system service to avoid needing to run 'ollama serve' every time I boot.</i>
-</details>
 
-<details>
-<summary><b>Usage</b></summary>
+## Usage
 Before any context can be used by the LLM, these context "scripts" must be added to ~/.chat-script/scripts
 
 Executing the following will create this directory, generate embeddings (if desired), and run the app:
@@ -44,30 +46,22 @@ Scripts can be reembedded at any time by renaming/removing the scripts directory
 
 <i>*Note: Ollama must be running in the background in order for the app to actually get a response- see <b>Setup</b> for commands. It's also worthwhile to make sure the LLMs are running on your GPU, otherwise responses are unbearably slow</i>
 
-For option documentation, see the docs: 
-</details>
-
-<details>
-<summary><b>Advanced Usage</b></summary>
+## Advanced Usage
 To edit the code itself:
 
     git clone https://github.com/camdenboren/chat-script.git
-    modify files in src as desired (and add new files to setup.py and stage to prevent flake from ignoring their existence)
+
+Modify files in src as desired (and add new files to setup.py and stage), then:
+
     nix run /path/to/chat-script
 
-To generate documenation in docs/ from md/:
-
-    mkdocs build
-</details>
-
-<details>
-<summary><b>ToDo</b></summary>
+## ToDo
 Contributions welcome!
 
 Priority
 - [x] Look into RAG-fusion for improving distance-based retrieval performance
 - [x] Look into other splitting functions due to weirdness from book pdfs
-- [x] Add moderation sub-option for system alerts
+- [x] Add moderation sub-option for system alerts (Linux-only)
 - [ ] Add vectorstore indexing to avoid embeddings dupes
 
 Nice to have
