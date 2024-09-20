@@ -1,7 +1,7 @@
 # chat-script
-<a>
-    <img src="https://img.shields.io/badge/Powered_by_Nix-grey?logo=nixOS&logoColor=white"><img src="https://img.shields.io/badge/linux-grey?logo=Linux&logoColor=white"><img src="https://img.shields.io/badge/macOS-grey?logo=Apple">
-</a><br>
+![Static Badge](https://img.shields.io/badge/Powered_by_Nix-grey?logo=nixOS&logoColor=white)
+![Static Badge](https://img.shields.io/badge/linux-grey?logo=Linux&logoColor=white)
+![Static Badge](https://img.shields.io/badge/macOS-grey?logo=Apple)<br>
 Chat locally with scripts (documents) of your choice with this simple python app that features: 
 - Streaming
 - Chat History
