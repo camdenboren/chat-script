@@ -2,6 +2,7 @@
 
 import os
 import time
+import platform
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables import RunnableLambda
@@ -120,7 +121,7 @@ def generate(question,history,request: Request):
                 response_stream += context_chunks
                 yield response_stream
     else:
-        if opt('moderate_alert'):
+        if opt('moderate_alert') and platform.system() == "Linux":
             notify2.init("chat-script")
             alert = notify2.Notification("Unsafe question received")
             alert.show()
