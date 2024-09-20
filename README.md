@@ -1,5 +1,7 @@
 # chat-script
-
+<a>
+    <img src="https://img.shields.io/badge/Powered_by_Nix-grey?logo=nixOS&logoColor=white"><img src="https://img.shields.io/badge/linux-grey?logo=Linux&logoColor=white"><img src="https://img.shields.io/badge/macOS-grey?logo=Apple">
+</a><br>
 Chat locally with scripts (documents) of your choice with this simple python app that features: 
 - Streaming
 - Chat History
@@ -14,12 +16,6 @@ This is accomplished by implementing RAG-Fusion on local LLMs via:
 
 Docs deployed at: https://camdenboren.github.io/chat-script<br>
 <i>Docs include: options, architecture, and reference</i>
-
-<a>
-    <img src="https://img.shields.io/badge/Powered_by_Nix-grey?logo=nixOS&logoColor=white">
-    <img src="https://img.shields.io/badge/linux-grey?logo=Linux&logoColor=white">
-    <img src="https://img.shields.io/badge/macOS-grey?logo=Apple">
-</a>
 
 ## Setup
 <b>Must install Ollama and flake-enabled Nix before running anything.</b>
