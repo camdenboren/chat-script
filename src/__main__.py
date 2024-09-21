@@ -2,9 +2,7 @@
 
 import os
 import sys
-from src import app
-from src import embeddings
-from src import options
+from src import app, embeddings, options
 
 # Directory and file names
 SCRIPTS_DIR = "~/.chat-script/scripts"
