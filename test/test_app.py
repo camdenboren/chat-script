@@ -1,6 +1,8 @@
 import unittest
-from src import app
+from src import app, options
 
 class TestApp(unittest.TestCase):
     def test_opt(self):
-        self.assertIn(True or False, opt('share'))
+        options.read()
+        share = app.opt('share')
+        self.assertTrue(isinstance(share, bool))

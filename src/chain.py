@@ -9,8 +9,7 @@ from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.chains.history_aware_retriever import create_history_aware_retriever
 from langchain.chains.retrieval import create_retrieval_chain
 from langchain_chroma import Chroma
-import options
-import multi_retriever
+from src import options, multi_retriever
 
 # Directory and file names
 EMBED_DIR = "~/.chat-script/embeddings"

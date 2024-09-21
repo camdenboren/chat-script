@@ -1,9 +1,7 @@
 """Gradio UI leveraging eponymous function in response"""
 
 import gradio as gr
-import chain
-import options
-import response
+from src import chain, options, response
 
 def opt(option_name):
     """Syntactic sugar for retrieving options"""

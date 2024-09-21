@@ -6,7 +6,7 @@ from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_text_splitters import TokenTextSplitter
 from langchain_chroma import Chroma
-import options
+from src import options
 
 # Directory and file names
 SCRIPTS_DIR = "~/.chat-script/scripts"

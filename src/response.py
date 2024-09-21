@@ -9,8 +9,7 @@ from langchain_core.runnables import RunnableLambda
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from gradio import Request
 import notify2
-import chain
-import options
+from src import chain, options
 
 # Directory and file names
 SCRIPTS_DIR = "~/.chat-script/scripts"

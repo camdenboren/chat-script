@@ -1,4 +1,5 @@
 # gitignore
 src/__pycache__/
+test/__pycache__/
 site/
 *.DS_Store
