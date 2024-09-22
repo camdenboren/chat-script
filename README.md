@@ -39,7 +39,7 @@ Executing the following will create this directory, generate embeddings (if desi
 
 Scripts can be reembedded at any time by renaming/removing the scripts directory and rerunning the above command, or by executing the following (if you don't want to run the app)
 
-    nix develop github:camdenboren/chat-script --command bash -c "python src/embeddings.py"
+    nix develop github:camdenboren/chat-script --command bash -c "python -m src.embeddings"
 
 <i>Ollama must be running in the background in order for the app to actually get a response- see <b>Setup</b> for commands. It's also worthwhile to make sure the LLMs are running on your GPU, otherwise responses are unbearably slow</i>
 
