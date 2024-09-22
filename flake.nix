@@ -48,6 +48,9 @@
 
         shellHook = ''
           echo -e "\nchat-script Development Environment via Nix Flake\n"
+          echo -e "run: python -m src.__main__"
+          echo -e "test: python -m unittest discover"
+          echo -e "docs: mkdocs build, serve, or gh-deploy\n"
           python --version
         '';
       };
