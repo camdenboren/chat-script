@@ -27,21 +27,16 @@ def opt(option_name):
     """Syntactic sugar for retrieving options"""
     return options.OPTIONS['response'][option_name]
 
-def format_context(context):
-    """Formats and yields context passed to LLM in human-readable format"""
-    if opt('print_state'):
-        print("Context: ", context, sep="")
-    formatted_context = "Relevant Sources (some may not have been used): "
-    yield "\n\n"
-    for index, chunk in enumerate(context):
-        formatted_context += f"[{str(index+1)}] {chunk.metadata['source'][SCRIPTS_DIR_LEN:]}"
-        for fmt_chunks in formatted_context.split():
-            yield f"{fmt_chunks} "
-            if (index == 0) and (fmt_chunks == "used):"):
-                yield "\n"
-            time.sleep(opt('context_stream_delay'))
-        yield "\n"
-        formatted_context = ""
+def check_question(question, request):
+    """Determines whether a response may be generated based on config and user input"""
+    if request and opt('print_state'):
+        print("\nIP address of user: ", request.client.host, sep="")
+    allow_response = True
+    if opt('moderate'):
+        moderation_chain = chain.create_moderation()
+        moderation_result = moderation_chain.invoke(question)
+        allow_response = moderation_result[2:6] == "safe"
+    return allow_response
 
 def convert_session_history(history):
     """Workaround for converting Gradio history to Langchain-compatible chat_history."""
@@ -71,36 +66,58 @@ def inspect(state):
         print("State: ", state, sep="")
     return state
 
+def prepare_rag_history() -> RunnableWithMessageHistory:
+    """Define retrieval chain w/ history"""
+    rag_history_chain = RunnableWithMessageHistory(
+        RunnableLambda(inspect) | chain.rag_chain,
+        get_session_history,
+        input_messages_key="input",
+        history_messages_key="chat_history",
+        output_messages_key="answer",
+    )
+    # Old approach for including context in state -
+    # investigate this further to prevent separate context printing
+    # retrieve_docs = (lambda x: x["input"]) | retriever
+    # chain = RunnablePassthrough.assign(
+    #   context=retrieve_docs
+    # ).assign(
+    #   answer=rag_chain_from_docs
+    # )
+    return rag_history_chain
+
+def format_context(context):
+    """Formats and yields context passed to LLM in human-readable format"""
+    if opt('print_state'):
+        print("Context: ", context, sep="")
+    formatted_context = "Relevant Sources (some may not have been used): "
+    yield "\n\n"
+    for index, chunk in enumerate(context):
+        formatted_context += f"[{str(index+1)}] {chunk.metadata['source'][SCRIPTS_DIR_LEN:]}"
+        for fmt_chunks in formatted_context.split():
+            yield f"{fmt_chunks} "
+            if (index == 0) and (fmt_chunks == "used):"):
+                yield "\n"
+            time.sleep(opt('context_stream_delay'))
+        yield "\n"
+        formatted_context = ""
+
+def reject(question, request):
+    """Display UNSAFE_RESPONSE and log, alert based on config"""
+    if opt('moderate_alert') and platform.system() == "Linux":
+        notify2.init("chat-script")
+        alert = notify2.Notification("Unsafe question received")
+        alert.show()
+    if request and not opt('print_state'):
+        print("\nIP address of user: ", request.client.host, sep="")
+    print("Unsafe question: \'", question, "\'", sep="")
+
 def generate(question,history,request: Request):
     """Creates RAG + history chain w/ local LLM and streams chain's text response"""
-    if request and opt('print_state'):
-        print("\nIP address of user: ", request.client.host, sep="")
-    allow_response = True
-    if opt('moderate'):
-        moderation_chain = chain.create_moderation()
-        check_question = moderation_chain.invoke(question)
-        allow_response = check_question[2:6] == "safe"
-    if allow_response:
+    if check_question(question, request):
         convert_session_history(history)
+        rag_history_chain = prepare_rag_history()
 
-        # Define retrieval chain w/ history
-        rag_history_chain = RunnableWithMessageHistory(
-            RunnableLambda(inspect) | chain.rag_chain,
-            get_session_history,
-            input_messages_key="input",
-            history_messages_key="chat_history",
-            output_messages_key="answer",
-        )
-        # Old approach for including context in state -
-        # investigate this further to prevent separate context printing
-        # retrieve_docs = (lambda x: x["input"]) | retriever
-        # chain = RunnablePassthrough.assign(
-        #   context=retrieve_docs
-        # ).assign(
-        #   answer=rag_chain_from_docs
-        # )
-
-        # Return/yield response and formatted context (if applicable) as a text stream
+        # Yield response and formatted context (if applicable) as a text stream
         result = rag_history_chain.stream(
             {"input": question},
             config={"configurable": {"session_id": "unused"}}
@@ -121,13 +138,8 @@ def generate(question,history,request: Request):
                 response_stream += context_chunks
                 yield response_stream
     else:
-        if opt('moderate_alert') and platform.system() == "Linux":
-            notify2.init("chat-script")
-            alert = notify2.Notification("Unsafe question received")
-            alert.show()
-        if request and not opt('print_state'):
-            print("\nIP address of user: ", request.client.host, sep="")
-        print("Unsafe question: \'", question, "\'", sep="")
+        reject(question, request)
+        # Yield unsafe response info to user
         response_stream = ""
         for chunks in UNSAFE_RESPONSE.split():
             response_stream += f"{chunks} "
