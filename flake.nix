@@ -21,7 +21,6 @@
     forEachSupportedSystem = function: nixpkgs.lib.genAttrs supportedSystems (system: function rec {
       pkgs = nixpkgs.legacyPackages.${system}.extend (import ./overlay.nix {inherit pkgs linux-share darwin-share;});
       deps = with pkgs.python311Packages; [
-        coverage
         gradio
         langchain
         langchain-core
@@ -39,6 +38,7 @@
           bashInteractive 
           python311 
         ] ++ (with pkgs.python311Packages; [
+          coverage
           mkdocs
           mkdocs-material
           mkdocstrings
