@@ -21,6 +21,7 @@
     forEachSupportedSystem = function: nixpkgs.lib.genAttrs supportedSystems (system: function rec {
       pkgs = nixpkgs.legacyPackages.${system}.extend (import ./overlay.nix {inherit pkgs linux-share darwin-share;});
       deps = with pkgs.python311Packages; [
+        coverage
         gradio
         langchain
         langchain-core
@@ -50,6 +51,7 @@
           echo -e "\nchat-script Development Environment via Nix Flake\n"
           echo -e "run: python -m src.__main__"
           echo -e "test: python -m unittest discover"
+          echo -e "cov: coverage run --source=src,test -m unittest discover"
           echo -e "docs: mkdocs build, serve, or gh-deploy\n"
           python --version
         '';

@@ -2,4 +2,6 @@
 src/__pycache__/
 test/__pycache__/
 site/
+htmlcov/
+.coverage
 *.DS_Store
