@@ -1,7 +1,7 @@
 # chat-script
 ![Static Badge](https://img.shields.io/badge/Version-1.0-blue)
 ![Static Badge](https://img.shields.io/badge/Platforms-Linux,_macOS-red)
-![Static Badge](https://img.shields.io/badge/Coverage-61%25-green)
+![Static Badge](https://img.shields.io/badge/Coverage-67%25-green)
 ![Static Badge](https://img.shields.io/badge/Powered_by_Nix-grey?logo=nixOS&logoColor=white)
 
 Chat locally with scripts (documents) of your choice with this simple python app that features
