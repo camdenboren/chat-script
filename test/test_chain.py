@@ -2,6 +2,7 @@ import unittest
 from langchain_core.embeddings.embeddings import Embeddings
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.prompts.chat import ChatPromptTemplate
+from langchain_core.runnables.base import Runnable
 from src import chain, options
 
 class TestChain(unittest.TestCase):
@@ -19,3 +20,12 @@ class TestChain(unittest.TestCase):
         qa_prompt, contextualize_q_prompt = chain.prepare_prompts()
         self.assertTrue(isinstance(qa_prompt, ChatPromptTemplate))
         self.assertTrue(isinstance(contextualize_q_prompt, ChatPromptTemplate))
+
+    def test_create(self):
+        chain.create()
+        rag_chain = chain.rag_chain
+        self.assertTrue(isinstance(rag_chain, Runnable))
+
+    def test_create_moderation(self):
+        moderation_chain = chain.create_moderation()
+        self.assertTrue(isinstance(moderation_chain, Runnable))
