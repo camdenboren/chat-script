@@ -11,6 +11,16 @@ class TestResponse(unittest.TestCase):
         print_state = response.opt('print_state')
         self.assertTrue(isinstance(print_state, bool))
 
+    def test_check_question(self):
+        class Request:
+            class Client:
+                host = "127.0.0.1"
+            client = Client()
+
+        request = Request()
+        allow_response = response.check_question("", request)
+        self.assertTrue(isinstance(allow_response, bool))
+
     def test_convert_session_history(self):
         response.convert_session_history("")
         session_history = response.session_history
@@ -32,6 +42,12 @@ class TestResponse(unittest.TestCase):
         self.assertTrue(isinstance(rag_history_chain, RunnableWithMessageHistory))
 
     def test_format_context(self):
-        empty_context = []
-        formatted = response.format_context(empty_context)
+        class Document:
+            metadata = {"source": "def"}
+            page_content = "abc"
+
+        context = [Document]
+        formatted = response.format_context(context)
+        self.assertTrue(isinstance(next(formatted), str))
+        self.assertTrue(isinstance(next(formatted), str))
         self.assertTrue(isinstance(next(formatted), str))
