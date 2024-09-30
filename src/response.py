@@ -117,6 +117,7 @@ def rejection_message():
         response_stream += f"{chunks} "
         yield response_stream
         response_stream = ""
+        time.sleep(opt('context_stream_delay'))
 
 def generate(question,history,request: Request):
     """Creates RAG + history chain w/ local LLM and streams chain's text response"""
