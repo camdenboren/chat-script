@@ -7,6 +7,15 @@ from langchain_core.runnables.utils import AddableDict
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from src import chain, response, options
 
+class Document:
+    metadata = {"source": "def"}
+    page_content = "abc"
+
+class Request:
+    class Client:
+        host = "127.0.0.1"
+    client = Client()
+
 class TestResponse(unittest.TestCase):
     def test_opt(self):
         options.read()
@@ -14,11 +23,6 @@ class TestResponse(unittest.TestCase):
         self.assertTrue(isinstance(print_state, bool))
 
     def test_check_question(self):
-        class Request:
-            class Client:
-                host = "127.0.0.1"
-            client = Client()
-
         request = Request()
         allow_response = response.check_question("", request)
         self.assertTrue(isinstance(allow_response, bool))
@@ -44,22 +48,13 @@ class TestResponse(unittest.TestCase):
         self.assertTrue(isinstance(rag_history_chain, RunnableWithMessageHistory))
 
     def test_format_context(self):
-        class Document:
-            metadata = {"source": "def"}
-            page_content = "abc"
-
         context = [Document]
         formatted = response.format_context(context)
         self.assertTrue(isinstance(next(formatted), str))
         self.assertTrue(isinstance(next(formatted), str))
         self.assertTrue(isinstance(next(formatted), str))
-    
-    def test_reject(self):
-        class Request:
-            class Client:
-                host = "127.0.0.1"
-            client = Client()
 
+    def test_reject(self):
         captured_output = io.StringIO()
         sys.stdout = captured_output
         response.reject("", Request())
