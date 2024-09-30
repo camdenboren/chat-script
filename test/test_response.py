@@ -66,7 +66,6 @@ class TestResponse(unittest.TestCase):
         sys.stdout = sys.__stdout__
         self.assertTrue(isinstance(captured_output.getvalue(), str))
 
-
     def test_rejection_message(self):
         rejection = response.rejection_message()
         self.assertTrue(isinstance(next(rejection), str))
