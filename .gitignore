@@ -1,7 +1,7 @@
 # gitignore
 src/__pycache__/
 test/__pycache__/
-site/
 htmlcov/
+site/
 .coverage
 *.DS_Store

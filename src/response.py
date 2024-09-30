@@ -101,7 +101,7 @@ def format_context(context):
         formatted_context = ""
 
 def reject(question, request):
-    """Display UNSAFE_RESPONSE and log, alert based on config"""
+    """Display log, alert based on config"""
     if opt('moderate_alert') and platform.system() == "Linux":
         notify2.init("chat-script")
         alert = notify2.Notification("Unsafe question received")
@@ -109,6 +109,14 @@ def reject(question, request):
     if request and not opt('print_state'):
         print("\nIP address of user: ", request.client.host, sep="")
     print("Unsafe question: \'", question, "\'", sep="")
+
+def rejection_message():
+    """Yield unsafe response info to user"""
+    response_stream = ""
+    for chunks in UNSAFE_RESPONSE.split():
+        response_stream += f"{chunks} "
+        yield response_stream
+        response_stream = ""
 
 def generate(question,history,request: Request):
     """Creates RAG + history chain w/ local LLM and streams chain's text response"""
@@ -138,9 +146,8 @@ def generate(question,history,request: Request):
                 yield response_stream
     else:
         reject(question, request)
-        # Yield unsafe response info to user
+        rejection = rejection_message()
         response_stream = ""
-        for chunks in UNSAFE_RESPONSE.split():
-            response_stream += f"{chunks} "
+        for reject_chunks in rejection:
+            response_stream += reject_chunks
             yield response_stream
-            time.sleep(opt('context_stream_delay'))
