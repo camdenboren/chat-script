@@ -1,4 +1,6 @@
 import unittest
+import io
+import sys
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables.utils import AddableDict
@@ -51,3 +53,20 @@ class TestResponse(unittest.TestCase):
         self.assertTrue(isinstance(next(formatted), str))
         self.assertTrue(isinstance(next(formatted), str))
         self.assertTrue(isinstance(next(formatted), str))
+    
+    def test_reject(self):
+        class Request:
+            class Client:
+                host = "127.0.0.1"
+            client = Client()
+
+        captured_output = io.StringIO()
+        sys.stdout = captured_output
+        response.reject("", Request())
+        sys.stdout = sys.__stdout__
+        self.assertTrue(isinstance(captured_output.getvalue(), str))
+
+
+    def test_rejection_message(self):
+        rejection = response.rejection_message()
+        self.assertTrue(isinstance(next(rejection), str))
