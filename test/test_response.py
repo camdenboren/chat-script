@@ -57,7 +57,8 @@ class TestResponse(unittest.TestCase):
     def test_reject(self):
         captured_output = io.StringIO()
         sys.stdout = captured_output
-        response.reject("", Request())
+        request = Request()
+        response.reject("", request)
         sys.stdout = sys.__stdout__
         self.assertTrue(isinstance(captured_output.getvalue(), str))
 
