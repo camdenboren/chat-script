@@ -43,6 +43,7 @@
           mkdocs-material
           mkdocstrings
           mkdocstrings-python
+          mockito
         ]) ++ deps;
 
         ANONYMIZED_TELEMETRY = "False";

@@ -5,6 +5,7 @@ from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables.utils import AddableDict
 from langchain_core.runnables.history import RunnableWithMessageHistory
+from mockito import when, mock
 from src import chain, response, options
 
 class Document:
@@ -16,6 +17,16 @@ class Request:
         host = "127.0.0.1"
     client = Client()
 
+class MockLLM:
+    def stream(self):
+        text = "abc def"
+        for chunk in text:
+            yield chunk
+
+    def invoke(self):
+        text = "abc def"
+        return text
+
 class TestResponse(unittest.TestCase):
     def test_opt(self):
         options.read()
@@ -23,6 +34,7 @@ class TestResponse(unittest.TestCase):
         self.assertTrue(isinstance(print_state, bool))
 
     def test_check_question(self):
+        when(chain).create_moderation().thenReturn(MockLLM)
         request = Request()
         allow_response = response.check_question("", request)
         self.assertTrue(isinstance(allow_response, bool))
