@@ -5,7 +5,8 @@ from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables.utils import AddableDict
 from langchain_core.runnables.history import RunnableWithMessageHistory
-from mockito import when, mock
+import notify2
+from mockito import when, unstub
 from src import chain, response, options
 
 class Document:
@@ -27,6 +28,10 @@ class MockLLM:
         text = "abc def"
         return text
 
+class Alert:
+    def show(self):
+        print("Alert triggered")
+
 class TestResponse(unittest.TestCase):
     def test_opt(self):
         options.read()
@@ -37,6 +42,7 @@ class TestResponse(unittest.TestCase):
         when(chain).create_moderation().thenReturn(MockLLM)
         request = Request()
         allow_response = response.check_question("", request)
+        unstub()
         self.assertTrue(isinstance(allow_response, bool))
 
     def test_convert_session_history(self):
@@ -67,11 +73,14 @@ class TestResponse(unittest.TestCase):
         self.assertTrue(isinstance(next(formatted), str))
 
     def test_reject(self):
+        alert = Alert()
+        when(notify2).Notification("Unsafe question received").thenReturn(alert)
         captured_output = io.StringIO()
         sys.stdout = captured_output
         request = Request()
         response.reject("", request)
         sys.stdout = sys.__stdout__
+        unstub()
         self.assertTrue(isinstance(captured_output.getvalue(), str))
 
     def test_rejection_message(self):
