@@ -16,14 +16,8 @@ def opt(option_name):
     """Syntactic sugar for retrieving options"""
     return options.OPTIONS['embeddings'][option_name]
 
-def create_batches(all_splits, batch_size):
-    """Breaks all_splits into batches of size <= batch_size"""
-    for i in range(0, len(all_splits), batch_size):
-        yield all_splits[i:i + batch_size]
-
-def generate():
-    """Loads, chunks, embeds, stores text documents"""
-    # Load documents
+def load():
+    """Loads documents in SCRIPTS_DIR"""
     loader = DirectoryLoader(
         path=os.path.expanduser(SCRIPTS_DIR),
         loader_cls=TextLoader,
@@ -31,20 +25,36 @@ def generate():
         use_multithreading=opt('use_multithreading')
     )
     docs = loader.load()
+    return docs
 
-    # Split documents, then divide into batches to avoid ChromaDB/SQLite batch size limitations
+def create_batches(all_splits, batch_size):
+    """Breaks all_splits into batches of size <= batch_size"""
+    for i in range(0, len(all_splits), batch_size):
+        yield all_splits[i:i + batch_size]
+
+def split(docs):
+    """Split documents, then divide into batches to avoid ChromaDB/SQLite batch size limitations"""
     text_splitter = TokenTextSplitter(
         chunk_size=opt('chunk_size'),
         chunk_overlap=opt('chunk_overlap')
     )
     all_splits = text_splitter.split_documents(docs)
     all_splits = create_batches(all_splits, opt('batch_size'))
+    return all_splits
 
-    # Set embedding function
+def prepare_model():
+    """Set and return Ollama embeddings model"""
     embeddings = OllamaEmbeddings(
         model=opt('embeddings_model'),
         show_progress=opt('show_progress')
     )
+    return embeddings
+
+def generate():
+    """Embed and store text documents"""    
+    docs = load()
+    all_splits = split(docs)
+    embeddings = prepare_model()
 
     # Remove Vector Store if it exists
     if os.path.exists(os.path.expanduser(EMBED_DIR)):
