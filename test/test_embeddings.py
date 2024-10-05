@@ -1,5 +1,7 @@
 import unittest
 from langchain_core.embeddings.embeddings import Embeddings
+from langchain_community.document_loaders import DirectoryLoader
+from mockito import when, unstub
 from src import embeddings, options
 
 class Document:
@@ -11,6 +13,15 @@ class TestEmbeddings(unittest.TestCase):
         options.read()
         show_progress = embeddings.opt('show_progress')
         self.assertTrue(isinstance(show_progress, bool))
+
+    def test_load(self):
+        doc = Document()
+        docs = [doc]
+        loader = DirectoryLoader("")
+        when(loader).load().thenReturn(docs)
+        docs_reutrn = embeddings.load()
+        unstub()
+        self.assertTrue(isinstance(docs_reutrn, list))
 
     def test_split(self):
         doc = Document()
