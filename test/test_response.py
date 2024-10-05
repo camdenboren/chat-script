@@ -1,4 +1,5 @@
 import unittest
+import time
 import io
 import sys
 from langchain_community.chat_message_histories import ChatMessageHistory
@@ -46,7 +47,9 @@ class TestResponse(unittest.TestCase):
         self.assertTrue(isinstance(allow_response, bool))
 
     def test_convert_session_history(self):
-        response.convert_session_history("")
+        history = [['how do', "To "], ['what if ', "If you onxt "], ['what is', ' In this ']]
+
+        response.convert_session_history(history)
         session_history = response.session_history
         self.assertTrue(isinstance(session_history, ChatMessageHistory))
 
@@ -66,11 +69,15 @@ class TestResponse(unittest.TestCase):
         self.assertTrue(isinstance(rag_history_chain, RunnableWithMessageHistory))
 
     def test_format_context(self):
+        def opt(option_name): 
+            """Syntactic sugar for retrieving options""" 
+            return options.OPTIONS['response'][option_name]
+ 
         context = [Document]
         formatted = response.format_context(context)
-        self.assertTrue(isinstance(next(formatted), str))
-        self.assertTrue(isinstance(next(formatted), str))
-        self.assertTrue(isinstance(next(formatted), str))
+        when(time).sleep(opt('context_stream_delay')).thenReturn(None)
+        for index in range(12):
+            self.assertTrue(isinstance(next(formatted), str))
 
     def test_reject(self):
         alert = Alert()

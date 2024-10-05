@@ -1,5 +1,4 @@
 import unittest
-from typing import List
 from langchain_core.embeddings.embeddings import Embeddings
 from src import embeddings, options
 
