@@ -42,7 +42,7 @@ def prepare_models():
         top_p=opt('top_p')
     )
 
-    return embeddings, model
+    return [embeddings, model]
 
 def prepare_prompts():
     """Define the contextualization prompt for summarizing chat history"""
@@ -73,12 +73,12 @@ def prepare_prompts():
 
 def create():
     """Set ChromaDB vectorstore (w/ opt('collection_name')) as a retriever and create rag_chain"""
-    embeddings, model = prepare_models()
+    models = prepare_models()
     qa_prompt, contextualize_q_prompt = prepare_prompts()
 
     vectorstore = Chroma(
         collection_name=opt('collection_name'),
-        embedding_function=embeddings,
+        embedding_function=models[0],
         persist_directory=os.path.expanduser(EMBED_DIR)
     )
 
@@ -86,23 +86,23 @@ def create():
         MultiQueryRetriever = multi_retriever.prepare(opt('num_queries'))
         retriever_fusion = MultiQueryRetriever.from_llm(
             retriever=vectorstore.as_retriever(search_kwargs={'k': opt('top_n_results_fusion')}),
-            llm=model,
+            llm=models[1],
             include_original=True
         )
         retriever = create_history_aware_retriever(
-            model,
+            models[1],
             retriever_fusion,
             contextualize_q_prompt
         )
     else:
         retriever = create_history_aware_retriever(
-            model,
+            models[1],
             vectorstore.as_retriever(search_kwargs={'k': opt('top_n_results')}),
             contextualize_q_prompt
         )
 
     global rag_chain
-    question_answer_chain = create_stuff_documents_chain(model, qa_prompt)
+    question_answer_chain = create_stuff_documents_chain(models[1], qa_prompt)
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
 def create_moderation():

@@ -1,6 +1,5 @@
 # gitignore
-src/__pycache__/
-test/__pycache__/
+**/__pycache__
 htmlcov/
 site/
 .coverage

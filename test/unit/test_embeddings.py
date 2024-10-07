@@ -1,8 +1,11 @@
 import unittest
+import os
 from langchain_core.embeddings.embeddings import Embeddings
-from langchain_community.document_loaders import DirectoryLoader
+from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from mockito import when, unstub
 from src import embeddings, options
+
+SCRIPTS_DIR = "~/.chat-script/scripts"
 
 class Document:
     metadata = {"source": "def"}
@@ -14,14 +17,24 @@ class TestEmbeddings(unittest.TestCase):
         show_progress = embeddings.opt('show_progress')
         self.assertTrue(isinstance(show_progress, bool))
 
-    def test_load(self):
+    def test_load(self):        
+        def opt(option_name):
+            """Syntactic sugar for retrieving options"""
+            return options.OPTIONS['embeddings'][option_name]
+
         doc = Document()
         docs = [doc]
-        loader = DirectoryLoader("")
+        loader = DirectoryLoader(
+            path=os.path.expanduser(SCRIPTS_DIR),
+            loader_cls=TextLoader,
+            show_progress=opt('show_progress'),
+            use_multithreading=opt('use_multithreading')
+        )
+
         when(loader).load().thenReturn(docs)
-        docs_reutrn = embeddings.load()
+        docs_return = embeddings.load()
         unstub()
-        self.assertTrue(isinstance(docs_reutrn, list))
+        self.assertTrue(isinstance(docs_return, list))
 
     def test_split(self):
         doc = Document()
