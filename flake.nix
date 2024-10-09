@@ -20,7 +20,7 @@
     supportedSystems = [ "x86_64-linux" "aarch64-darwin" ];
     forEachSupportedSystem = function: nixpkgs.lib.genAttrs supportedSystems (system: function rec {
       pkgs = nixpkgs.legacyPackages.${system}.extend (import ./overlay.nix {inherit pkgs linux-share darwin-share;});
-      deps = with pkgs.python311Packages; [
+      deps = with pkgs.python312Packages; [
         gradio
         langchain
         langchain-core
@@ -36,8 +36,8 @@
       default = pkgs.mkShell {
         packages = with pkgs; [ 
           bashInteractive 
-          python311 
-        ] ++ (with pkgs.python311Packages; [
+          python312 
+        ] ++ (with pkgs.python312Packages; [
           coverage
           mkdocs
           mkdocs-material
@@ -50,16 +50,16 @@
 
         shellHook = ''
           echo -e "\nchat-script Development Environment via Nix Flake\n"
-          echo -e "run: python -m src.__main__"
+          echo -e "run:  python -m src"
           echo -e "test: python -m unittest discover"
-          echo -e "cov: coverage run --source=src,test -m unittest discover"
+          echo -e "cov:  coverage run --source=src,test -m unittest discover"
           echo -e "docs: mkdocs build, serve, or gh-deploy\n"
           python --version
         '';
       };
     });
     packages = forEachSupportedSystem ({ pkgs, deps }: {
-      default = pkgs.python311Packages.buildPythonApplication {
+      default = pkgs.python312Packages.buildPythonApplication {
         pname = "chat-script";
         version = "0.1";
         src = ./.;

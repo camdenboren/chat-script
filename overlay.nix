@@ -18,8 +18,6 @@
           chmod +x $out/lib/python3.11/site-packages/gradio/frpc_darwin_arm64_v0.2
         '';
       });
-      # Adds integration pkgs not yet in nixpkgs
-      langchain-ollama = prev.python311Packages.callPackage ./lib/langchain-ollama {};
     };
   };
 })
