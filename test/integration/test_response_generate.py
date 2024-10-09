@@ -1,4 +1,5 @@
 import os
+import tempfile
 import unittest
 from typing import List
 from mockito import when, unstub
@@ -7,8 +8,6 @@ from langchain_community.chat_models import FakeListChatModel
 from langchain_community.embeddings import FakeEmbeddings
 from langchain_chroma import Chroma
 from src import response, chain, options
-
-EMBED_DIR = "~/.chat-script/embeddings"
 
 class Document:
     metadata = {"source": "def"}
@@ -58,26 +57,28 @@ class TestResponseGenerate(unittest.TestCase):
         request = Request()
         alert = Alert()
         options.read()
-        
-        vectorstore = Chroma(
-            collection_name=opt('collection_name'),
-            embedding_function=models[0],
-            persist_directory=os.path.expanduser(EMBED_DIR)
-        )
-        mock_retriever = SimpleRetriever()
 
-        when(chain).prepare_models().thenReturn([mock_embed, mock_llm])
-        when(chain).create_moderation().thenReturn(mock_mod)
-        when(notify2).Notification("Unsafe question received").thenReturn(alert)
-        when(vectorstore).as_retriever(
-            search_kwargs={'k': opt('top_n_results_fusion')}
-        ).thenReturn(mock_retriever)
-        when(vectorstore).as_retriever(
-            search_kwargs={'k': opt('top_n_results')}
-        ).thenReturn(mock_retriever)
+        with tempfile.TemporaryDirectory() as EMBED_DIR:
+            chain.EMBED_DIR = EMBED_DIR
+            vectorstore = Chroma(
+                collection_name=opt('collection_name'),
+                embedding_function=models[0],
+                persist_directory=os.path.expanduser(EMBED_DIR)
+            )
+            mock_retriever = SimpleRetriever()
 
-        chain.create()
-        generated = response.generate("", "", request)
-        for index in range(3):
-            self.assertTrue(isinstance(next(generated), str))
-        unstub()
+            when(chain).prepare_models().thenReturn([mock_embed, mock_llm])
+            when(chain).create_moderation().thenReturn(mock_mod)
+            when(notify2).Notification("Unsafe question received").thenReturn(alert)
+            when(vectorstore).as_retriever(
+                search_kwargs={'k': opt('top_n_results_fusion')}
+            ).thenReturn(mock_retriever)
+            when(vectorstore).as_retriever(
+                search_kwargs={'k': opt('top_n_results')}
+            ).thenReturn(mock_retriever)
+
+            chain.create()
+            generated = response.generate("", "", request)
+            for index in range(3):
+                self.assertTrue(isinstance(next(generated), str))
+            unstub()

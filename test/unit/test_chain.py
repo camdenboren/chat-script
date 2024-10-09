@@ -1,3 +1,5 @@
+import os
+import tempfile
 import unittest
 from langchain_core.embeddings.embeddings import Embeddings
 from langchain_core.language_models.chat_models import BaseChatModel
@@ -22,9 +24,11 @@ class TestChain(unittest.TestCase):
         self.assertTrue(isinstance(contextualize_q_prompt, ChatPromptTemplate))
 
     def test_create(self):
-        chain.create()
-        rag_chain = chain.rag_chain
-        self.assertTrue(isinstance(rag_chain, Runnable))
+        with tempfile.TemporaryDirectory() as EMBED_DIR:
+            chain.EMBED_DIR = EMBED_DIR
+            chain.create()
+            rag_chain = chain.rag_chain
+            self.assertTrue(isinstance(rag_chain, Runnable))
 
     def test_create_moderation(self):
         moderation_chain = chain.create_moderation()

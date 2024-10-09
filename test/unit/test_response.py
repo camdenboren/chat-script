@@ -1,3 +1,5 @@
+import os
+import tempfile
 import unittest
 import time
 import io
@@ -64,9 +66,11 @@ class TestResponse(unittest.TestCase):
         self.assertTrue(isinstance(session_history, BaseChatMessageHistory))
 
     def test_prepare_rag_history(self):
-        chain.create()
-        rag_history_chain = response.prepare_rag_history()
-        self.assertTrue(isinstance(rag_history_chain, RunnableWithMessageHistory))
+        with tempfile.TemporaryDirectory() as EMBED_DIR:
+            chain.EMBED_DIR = EMBED_DIR
+            chain.create()
+            rag_history_chain = response.prepare_rag_history()
+            self.assertTrue(isinstance(rag_history_chain, RunnableWithMessageHistory))
 
     def test_format_context(self):
         def opt(option_name): 
