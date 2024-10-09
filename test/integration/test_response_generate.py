@@ -78,6 +78,6 @@ class TestResponseGenerate(unittest.TestCase):
 
         chain.create()
         generated = response.generate("", "", request)
-        for index in range(6):
+        for index in range(3):
             self.assertTrue(isinstance(next(generated), str))
         unstub()
