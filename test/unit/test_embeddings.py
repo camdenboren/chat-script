@@ -16,7 +16,7 @@ class TestEmbeddings(unittest.TestCase):
         show_progress = embeddings.opt('show_progress')
         self.assertTrue(isinstance(show_progress, bool))
 
-    def test_load(self):        
+    def test_load(self):
         def opt(option_name):
             """Syntactic sugar for retrieving options"""
             return options.OPTIONS['embeddings'][option_name]

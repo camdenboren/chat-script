@@ -76,7 +76,7 @@ class TestResponse(unittest.TestCase):
         def opt(option_name): 
             """Syntactic sugar for retrieving options""" 
             return options.OPTIONS['response'][option_name]
- 
+
         context = [Document]
         formatted = response.format_context(context)
         when(time).sleep(opt('context_stream_delay')).thenReturn(None)
