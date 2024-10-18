@@ -28,6 +28,16 @@ class MockLLM:
         text = "\n\nsafe"
         return text
 
+class MockLLM_reject:
+    def stream(self, input, config):
+        text = "unsafe"
+        for chunks in text:
+            yield chunks
+
+    def invoke(self, question):
+        text = "\n\nunsafe"
+        return text
+
 class Alert:
     def show(self):
         print("Alert triggered")
@@ -51,6 +61,44 @@ class TestResponseGenerate(unittest.TestCase):
             return options.OPTIONS['chain'][option_name]
 
         mock_mod = MockLLM()
+        mock_llm = FakeListChatModel(responses=['a'])
+        mock_embed = FakeEmbeddings(size=1024)
+        models = [mock_embed, mock_llm]
+        request = Request()
+        alert = Alert()
+        options.read()
+
+        with tempfile.TemporaryDirectory() as EMBED_DIR:
+            chain.EMBED_DIR = EMBED_DIR
+            vectorstore = Chroma(
+                collection_name=opt('collection_name'),
+                embedding_function=models[0],
+                persist_directory=os.path.expanduser(EMBED_DIR)
+            )
+            mock_retriever = SimpleRetriever()
+
+            when(chain).prepare_models().thenReturn([mock_embed, mock_llm])
+            when(chain).create_moderation().thenReturn(mock_mod)
+            when(notify2).Notification("Unsafe question received").thenReturn(alert)
+            when(vectorstore).as_retriever(
+                search_kwargs={'k': opt('top_n_results_fusion')}
+            ).thenReturn(mock_retriever)
+            when(vectorstore).as_retriever(
+                search_kwargs={'k': opt('top_n_results')}
+            ).thenReturn(mock_retriever)
+
+            chain.create()
+            generated = response.generate("", "", request)
+            for index in range(3):
+                self.assertTrue(isinstance(next(generated), str))
+            unstub()
+
+    def test_generate_unsafe(self):
+        def opt(option_name):
+            """Syntactic sugar for retrieving options"""
+            return options.OPTIONS['chain'][option_name]
+
+        mock_mod = MockLLM_reject()
         mock_llm = FakeListChatModel(responses=['a'])
         mock_embed = FakeEmbeddings(size=1024)
         models = [mock_embed, mock_llm]
