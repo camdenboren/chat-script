@@ -6,20 +6,22 @@ from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from mockito import when, unstub
 from src import embeddings, options
 
+
 class Document:
     metadata = {"source": "def"}
     page_content = "abc"
 
+
 class TestEmbeddings(unittest.TestCase):
     def test_opt(self):
         options.read()
-        show_progress = embeddings.opt('show_progress')
+        show_progress = embeddings.opt("show_progress")
         self.assertTrue(isinstance(show_progress, bool))
 
     def test_load(self):
         def opt(option_name):
             """Syntactic sugar for retrieving options"""
-            return options.OPTIONS['embeddings'][option_name]
+            return options.OPTIONS["embeddings"][option_name]
 
         with tempfile.TemporaryDirectory() as SCRIPTS_DIR:
             doc = Document()
@@ -27,8 +29,8 @@ class TestEmbeddings(unittest.TestCase):
             loader = DirectoryLoader(
                 path=os.path.expanduser(SCRIPTS_DIR),
                 loader_cls=TextLoader,
-                show_progress=opt('show_progress'),
-                use_multithreading=opt('use_multithreading')
+                show_progress=opt("show_progress"),
+                use_multithreading=opt("use_multithreading"),
             )
 
             embeddings.SCRIPTS_DIR = SCRIPTS_DIR

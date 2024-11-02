@@ -12,14 +12,18 @@ import notify2
 from mockito import when, unstub
 from src import chain, response, options
 
+
 class Document:
     metadata = {"source": "def"}
     page_content = "abc"
 
+
 class Request:
     class Client:
         host = "127.0.0.1"
+
     client = Client()
+
 
 class MockLLM:
     def stream(self):
@@ -31,14 +35,16 @@ class MockLLM:
         text = "abc def"
         return text
 
+
 class Alert:
     def show(self):
         print("Alert triggered")
 
+
 class TestResponse(unittest.TestCase):
     def test_opt(self):
         options.read()
-        print_state = response.opt('print_state')
+        print_state = response.opt("print_state")
         self.assertTrue(isinstance(print_state, bool))
 
     def test_check_question(self):
@@ -49,7 +55,11 @@ class TestResponse(unittest.TestCase):
         self.assertTrue(isinstance(allow_response, bool))
 
     def test_convert_session_history(self):
-        history = [['how do', "To "], ['what if ', "If you onxt "], ['what is', ' In this ']]
+        history = [
+            ["how do", "To "],
+            ["what if ", "If you onxt "],
+            ["what is", " In this "],
+        ]
 
         response.convert_session_history(history)
         session_history = response.session_history
@@ -73,13 +83,13 @@ class TestResponse(unittest.TestCase):
             self.assertTrue(isinstance(rag_history_chain, RunnableWithMessageHistory))
 
     def test_format_context(self):
-        def opt(option_name): 
-            """Syntactic sugar for retrieving options""" 
-            return options.OPTIONS['response'][option_name]
+        def opt(option_name):
+            """Syntactic sugar for retrieving options"""
+            return options.OPTIONS["response"][option_name]
 
         context = [Document]
         formatted = response.format_context(context)
-        when(time).sleep(opt('context_stream_delay')).thenReturn(None)
+        when(time).sleep(opt("context_stream_delay")).thenReturn(None)
         for index in range(12):
             self.assertTrue(isinstance(next(formatted), str))
 

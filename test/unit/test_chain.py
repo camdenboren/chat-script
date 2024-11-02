@@ -7,10 +7,11 @@ from langchain_core.prompts.chat import ChatPromptTemplate
 from langchain_core.runnables.base import Runnable
 from src import chain, options
 
+
 class TestChain(unittest.TestCase):
     def test_opt(self):
         options.read()
-        embeddings_gpu = chain.opt('embeddings_gpu')
+        embeddings_gpu = chain.opt("embeddings_gpu")
         self.assertTrue(isinstance(embeddings_gpu, bool))
 
     def test_prepare_models(self):

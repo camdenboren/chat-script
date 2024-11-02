@@ -6,52 +6,56 @@ from configparser import ConfigParser
 CONFIG_DIR = "~/.config/chat-script"
 CONFIG_FILE = f"{CONFIG_DIR}/chat-script.ini"
 
+
 def create():
     """Create options file at ~/.config/chat-script/chat-script.ini with defaults"""
     configuration = ConfigParser()
-    configuration['APP'] = {
-        'share': 'False',
-        'server_name': '127.0.0.1',
-        'server_port': '7860',
-        'inbrowser': 'True'
+    configuration["APP"] = {
+        "share": "False",
+        "server_name": "127.0.0.1",
+        "server_port": "7860",
+        "inbrowser": "True",
     }
-    configuration['CHAIN'] = {
-        'embeddings_model': 'mxbai-embed-large',
-        'chat_model': 'mistral',
-        'moderation_model': 'xe/llamaguard3',
-        'chat_url': 'http://localhost:11434',
-        'moderation_url': 'http://localhost:11434',
-        'show_progress': 'False',
-        'keep_alive': '5m',
-        'temperature': '0.6',
-        'top_k': '30',
-        'top_p': '0.7',
-        'collection_name': 'rag-chroma',
-        'top_n_results': '3',
-        'rag_fusion': 'True',
-        'num_queries': '2',
-        'top_n_results_fusion': '2',
-        'embeddings_gpu': 'True'
+    configuration["CHAIN"] = {
+        "embeddings_model": "mxbai-embed-large",
+        "chat_model": "mistral",
+        "moderation_model": "xe/llamaguard3",
+        "chat_url": "http://localhost:11434",
+        "moderation_url": "http://localhost:11434",
+        "show_progress": "False",
+        "keep_alive": "5m",
+        "temperature": "0.6",
+        "top_k": "30",
+        "top_p": "0.7",
+        "collection_name": "rag-chroma",
+        "top_n_results": "3",
+        "rag_fusion": "True",
+        "num_queries": "2",
+        "top_n_results_fusion": "2",
+        "embeddings_gpu": "True",
     }
-    configuration['EMBEDDINGS'] = {
-        'embeddings_model': 'mxbai-embed-large',
-        'show_progress': 'True',
-        'collection_name': 'rag-chroma',
-        'use_multithreading': 'True',
-        'chunk_size': '250',
-        'chunk_overlap': '50',
-        'batch_size': '41666'
+    configuration["EMBEDDINGS"] = {
+        "embeddings_model": "mxbai-embed-large",
+        "show_progress": "True",
+        "collection_name": "rag-chroma",
+        "use_multithreading": "True",
+        "chunk_size": "250",
+        "chunk_overlap": "50",
+        "batch_size": "41666",
     }
-    configuration['RESPONSE'] = {
-        'context_stream_delay': '0.075',
-        'max_history': '2',
-        'print_state': 'True',
-        'moderate': 'False',
-        'moderate_alert': 'False'
+    configuration["RESPONSE"] = {
+        "context_stream_delay": "0.075",
+        "max_history": "2",
+        "print_state": "True",
+        "moderate": "False",
+        "moderate_alert": "False",
     }
-    with open(os.path.expanduser(CONFIG_FILE), 'w', encoding='UTF-8') as configfile:
+    with open(os.path.expanduser(CONFIG_FILE), "w", encoding="UTF-8") as configfile:
         configuration.write(configfile)
-    print(f"\nCreated CONFIG_FILE at: {CONFIG_FILE} and populated it with default settings")
+    print(
+        f"\nCreated CONFIG_FILE at: {CONFIG_FILE} and populated it with default settings"
+    )
+
 
 def read():
     """Read options from ~/.config/chat-script/chat-script.ini and save in global dict: options"""
@@ -59,172 +63,172 @@ def read():
     configuration.read(os.path.expanduser(CONFIG_FILE))
     global OPTIONS
     OPTIONS = {
-        'app': {
-            'share': configuration.getboolean(
+        "app": {
+            "share": configuration.getboolean(
                 "APP",
                 "share",
-                fallback=False
+                fallback=False,
             ),
-            'server_name': configuration.get(
+            "server_name": configuration.get(
                 "APP",
                 "server_name",
-                fallback="127.0.0.1"
+                fallback="127.0.0.1",
             ),
-            'server_port': configuration.getint(
+            "server_port": configuration.getint(
                 "APP",
                 "server_port",
-                fallback=7860
+                fallback=7860,
             ),
-            'inbrowser': configuration.getboolean(
+            "inbrowser": configuration.getboolean(
                 "APP",
                 "inbrowser",
-                fallback=True
-            )
+                fallback=True,
+            ),
         },
-        'chain': {
-            'embeddings_model': configuration.get(
+        "chain": {
+            "embeddings_model": configuration.get(
                 "CHAIN",
                 "embeddings_model",
-                fallback="mxbai-embed-large"
+                fallback="mxbai-embed-large",
             ),
-            'chat_model': configuration.get(
+            "chat_model": configuration.get(
                 "CHAIN",
                 "chat_model",
-                fallback="mistral"
+                fallback="mistral",
             ),
-            'moderation_model': configuration.get(
+            "moderation_model": configuration.get(
                 "CHAIN",
                 "moderation_model",
-                fallback="xe/llamaguard3"
+                fallback="xe/llamaguard3",
             ),
-            'chat_url': configuration.get(
+            "chat_url": configuration.get(
                 "CHAIN",
                 "chat_url",
-                fallback="http://localhost:11434"
+                fallback="http://localhost:11434",
             ),
-            'moderation_url': configuration.get(
+            "moderation_url": configuration.get(
                 "CHAIN",
                 "moderation_url",
-                fallback="http://localhost:11434"
+                fallback="http://localhost:11434",
             ),
-            'show_progress': configuration.getboolean(
+            "show_progress": configuration.getboolean(
                 "CHAIN",
                 "show_progress",
-                fallback=False
+                fallback=False,
             ),
-            'keep_alive': configuration.get(
+            "keep_alive": configuration.get(
                 "CHAIN",
                 "keep_alive",
-                fallback="5m"
+                fallback="5m",
             ),
-            'temperature': configuration.getfloat(
+            "temperature": configuration.getfloat(
                 "CHAIN",
                 "temperature",
-                fallback=0.6
+                fallback=0.6,
             ),
-            'top_k':  configuration.getint(
+            "top_k": configuration.getint(
                 "CHAIN",
                 "top_k",
-                fallback=30
+                fallback=30,
             ),
-            'top_p': configuration.getfloat(
+            "top_p": configuration.getfloat(
                 "CHAIN",
                 "top_p",
-                fallback=0.7
+                fallback=0.7,
             ),
-            'collection_name': configuration.get(
+            "collection_name": configuration.get(
                 "CHAIN",
                 "collection_name",
-                fallback="rag-chroma"
+                fallback="rag-chroma",
             ),
-            'top_n_results': configuration.getint(
+            "top_n_results": configuration.getint(
                 "CHAIN",
                 "top_n_results",
-                fallback=3
+                fallback=3,
             ),
-            'rag_fusion': configuration.getboolean(
+            "rag_fusion": configuration.getboolean(
                 "CHAIN",
                 "rag_fusion",
-                fallback=True
+                fallback=True,
             ),
-            'num_queries': configuration.getint(
+            "num_queries": configuration.getint(
                 "CHAIN",
                 "num_queries",
-                fallback=2
+                fallback=2,
             ),
-            'top_n_results_fusion': configuration.getint(
+            "top_n_results_fusion": configuration.getint(
                 "CHAIN",
                 "top_n_results_fusion",
-                fallback=2
+                fallback=2,
             ),
-            'embeddings_gpu': configuration.getboolean(
+            "embeddings_gpu": configuration.getboolean(
                 "CHAIN",
                 "embeddings_gpu",
-                fallback=True
-            )
+                fallback=True,
+            ),
         },
-        'embeddings': {
-            'embeddings_model': configuration.get(
+        "embeddings": {
+            "embeddings_model": configuration.get(
                 "EMBEDDINGS",
                 "embeddings_model",
-                fallback="mxbai-embed-large"
+                fallback="mxbai-embed-large",
             ),
-            'show_progress': configuration.getboolean(
+            "show_progress": configuration.getboolean(
                 "EMBEDDINGS",
                 "show_progress",
-                fallback=True
+                fallback=True,
             ),
-            'collection_name': configuration.get(
+            "collection_name": configuration.get(
                 "EMBEDDINGS",
                 "collection_name",
-                fallback="rag-chroma"
+                fallback="rag-chroma",
             ),
-            'use_multithreading': configuration.getboolean(
+            "use_multithreading": configuration.getboolean(
                 "EMBEDDINGS",
                 "use_multithreading",
-                fallback=True
+                fallback=True,
             ),
-            'chunk_size': configuration.getint(
+            "chunk_size": configuration.getint(
                 "EMBEDDINGS",
                 "chunk_size",
-                fallback=250
+                fallback=250,
             ),
-            'chunk_overlap': configuration.getint(
+            "chunk_overlap": configuration.getint(
                 "EMBEDDINGS",
                 "chunk_overlap",
-                fallback=50
+                fallback=50,
             ),
-            'batch_size': configuration.getint(
+            "batch_size": configuration.getint(
                 "EMBEDDINGS",
                 "batch_size",
-                fallback=41666
-            )
+                fallback=41666,
+            ),
         },
-        'response': {
-            'context_stream_delay': configuration.getfloat(
+        "response": {
+            "context_stream_delay": configuration.getfloat(
                 "RESPONSE",
                 "context_stream_delay",
-                fallback=0.075
+                fallback=0.075,
             ),
-            'max_history': configuration.getint(
+            "max_history": configuration.getint(
                 "RESPONSE",
                 "max_history",
-                fallback=2
+                fallback=2,
             ),
-            'print_state': configuration.getboolean(
+            "print_state": configuration.getboolean(
                 "RESPONSE",
                 "print_state",
-                fallback=True
+                fallback=True,
             ),
-            'moderate': configuration.getboolean(
+            "moderate": configuration.getboolean(
                 "RESPONSE",
                 "moderate",
-                fallback=False
+                fallback=False,
             ),
-            'moderate_alert': configuration.getboolean(
+            "moderate_alert": configuration.getboolean(
                 "RESPONSE",
                 "moderate_alert",
-                fallback=False
-            )
-        }
+                fallback=False,
+            ),
+        },
     }

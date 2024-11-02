@@ -22,20 +22,23 @@ if SCRIPTS_DIR[-1] != "/":
 # Message sent when unsafe question is asked and options.OPTIONS['response']['moderate'] = True
 UNSAFE_RESPONSE = "Your question is unsafe, so no response will be provided."
 
+
 def opt(option_name):
     """Syntactic sugar for retrieving options"""
-    return options.OPTIONS['response'][option_name]
+    return options.OPTIONS["response"][option_name]
+
 
 def check_question(question, request):
     """Determines whether a response may be generated based on config and user input"""
-    if request and opt('print_state'):
+    if request and opt("print_state"):
         print("\nIP address of user: ", request.client.host, sep="")
     allow_response = True
-    if opt('moderate'):
+    if opt("moderate"):
         moderation_chain = chain.create_moderation()
         moderation_result = moderation_chain.invoke(question)
         allow_response = moderation_result[2:6] == "safe"
     return allow_response
+
 
 def convert_session_history(history):
     """Workaround for converting Gradio history to Langchain-compatible chat_history."""
@@ -43,27 +46,30 @@ def convert_session_history(history):
     session_history = ChatMessageHistory()
 
     # Remove unsafe messages from history if applicable
-    if opt('moderate'):
+    if opt("moderate"):
         for msgs in history:
             if msgs[1] == f"{UNSAFE_RESPONSE} ":
                 history.remove(msgs)
 
     # Trim history before converting to langchain format
-    if len(history) > opt('max_history'):
-        history = history[-int(opt('max_history')):]
+    if len(history) > opt("max_history"):
+        history = history[-int(opt("max_history")) :]
     for msgs in history:
         session_history.add_user_message(msgs[0])
         session_history.add_ai_message(msgs[1].split("\n\nRelevant Sources")[0])
+
 
 def get_session_history() -> BaseChatMessageHistory:
     """Manage chat history"""
     return session_history
 
+
 def inspect(state):
     """Print state between runnables and pass it on (includes: input, chat_history)"""
-    if opt('print_state'):
+    if opt("print_state"):
         print("State: ", state, sep="")
     return state
+
 
 def prepare_rag_history() -> RunnableWithMessageHistory:
     """Define retrieval chain w/ history"""
@@ -84,31 +90,36 @@ def prepare_rag_history() -> RunnableWithMessageHistory:
     # )
     return rag_history_chain
 
+
 def format_context(context):
     """Formats and yields context passed to LLM in human-readable format"""
-    if opt('print_state'):
+    if opt("print_state"):
         print("Context: ", context, sep="")
     formatted_context = "Relevant Sources (some may not have been used): "
     yield "\n\n"
     for index, chunk in enumerate(context):
-        formatted_context += f"[{str(index+1)}] {chunk.metadata['source'][SCRIPTS_DIR_LEN:]}"
+        formatted_context += (
+            f"[{str(index+1)}] {chunk.metadata['source'][SCRIPTS_DIR_LEN:]}"
+        )
         for fmt_chunks in formatted_context.split():
             yield f"{fmt_chunks} "
             if (index == 0) and (fmt_chunks == "used):"):
                 yield "\n"
-            time.sleep(opt('context_stream_delay'))
+            time.sleep(opt("context_stream_delay"))
         yield "\n"
         formatted_context = ""
 
+
 def reject(question, request):
     """Display log, alert based on config"""
-    if opt('moderate_alert') and platform.system() == "Linux":
+    if opt("moderate_alert") and platform.system() == "Linux":
         notify2.init("chat-script")
         alert = notify2.Notification("Unsafe question received")
         alert.show()
-    if request and not opt('print_state'):
+    if request and not opt("print_state"):
         print("\nIP address of user: ", request.client.host, sep="")
-    print("Unsafe question: \'", question, "\'", sep="")
+    print("Unsafe question: '", question, "'", sep="")
+
 
 def rejection_message():
     """Yield unsafe response info to user"""
@@ -117,9 +128,10 @@ def rejection_message():
         response_stream += f"{chunks} "
         yield response_stream
         response_stream = ""
-        time.sleep(opt('context_stream_delay'))
+        time.sleep(opt("context_stream_delay"))
 
-def generate(question,history,request: Request):
+
+def generate(question, history, request: Request):
     """Creates RAG + history chain w/ local LLM and streams chain's text response"""
     if check_question(question, request):
         convert_session_history(history)
@@ -127,8 +139,7 @@ def generate(question,history,request: Request):
 
         # Yield response and formatted context (if applicable) as a text stream
         result = rag_history_chain.stream(
-            {"input": question},
-            config={"configurable": {"session_id": "unused"}}
+            {"input": question}, config={"configurable": {"session_id": "unused"}}
         )
         response_stream = ""
         context = None

@@ -15,64 +15,91 @@
     };
   };
 
-  outputs = { self, nixpkgs, linux-share, darwin-share }: 
-  let
-    supportedSystems = [ "x86_64-linux" "aarch64-darwin" ];
-    forEachSupportedSystem = function: nixpkgs.lib.genAttrs supportedSystems (system: function rec {
-      pkgs = nixpkgs.legacyPackages.${system}.extend (import ./overlay.nix {inherit pkgs linux-share darwin-share;});
-      deps = with pkgs.python312Packages; [
-        gradio
-        langchain
-        langchain-core
-        langchain-community
-        langchain-chroma
-        langchain-ollama
-        notify2
-        tiktoken
+  outputs =
+    {
+      self,
+      nixpkgs,
+      linux-share,
+      darwin-share,
+    }:
+    let
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-darwin"
       ];
-    });
-  in {
-    devShells = forEachSupportedSystem ({ pkgs, deps }: {
-      default = pkgs.mkShell {
-        packages = with pkgs; [ 
-          bashInteractive 
-          python312 
-        ] ++ (with pkgs.python312Packages; [
-          coverage
-          mkdocs
-          mkdocs-material
-          mkdocstrings
-          mkdocstrings-python
-          mockito
-        ]) ++ deps;
+      forEachSupportedSystem =
+        function:
+        nixpkgs.lib.genAttrs supportedSystems (
+          system:
+          function rec {
+            pkgs = nixpkgs.legacyPackages.${system}.extend (
+              import ./overlay.nix { inherit pkgs linux-share darwin-share; }
+            );
+            deps = with pkgs.python312Packages; [
+              gradio
+              langchain
+              langchain-core
+              langchain-community
+              langchain-chroma
+              langchain-ollama
+              notify2
+              tiktoken
+            ];
+          }
+        );
+    in
+    {
+      devShells = forEachSupportedSystem (
+        { pkgs, deps }:
+        {
+          default = pkgs.mkShell {
+            packages =
+              with pkgs;
+              [
+                bashInteractive
+                python312
+              ]
+              ++ (with pkgs.python312Packages; [
+                coverage
+                mkdocs
+                mkdocs-material
+                mkdocstrings
+                mkdocstrings-python
+                mockito
+              ])
+              ++ deps;
 
-        ANONYMIZED_TELEMETRY = "False";
+            ANONYMIZED_TELEMETRY = "False";
 
-        shellHook = ''
-          echo -e "\nchat-script Development Environment via Nix Flake\n"
-          echo -e "run:  python -m src"
-          echo -e "test: python -m unittest discover"
-          echo -e "cov:  coverage run --source=src,test -m unittest discover"
-          echo -e "docs: mkdocs build, serve, or gh-deploy\n"
-          python --version
-        '';
-      };
-    });
-    packages = forEachSupportedSystem ({ pkgs, deps }: {
-      default = pkgs.python312Packages.buildPythonApplication {
-        pname = "chat-script";
-        version = "0.1";
-        src = ./.;
+            shellHook = ''
+              echo -e "\nchat-script Development Environment via Nix Flake\n"
+              echo -e "run:  python -m src"
+              echo -e "test: python -m unittest discover"
+              echo -e "cov:  coverage run --source=src,test -m unittest discover"
+              echo -e "docs: mkdocs build, serve, or gh-deploy\n"
+              python --version
+            '';
+          };
+        }
+      );
+      packages = forEachSupportedSystem (
+        { pkgs, deps }:
+        {
+          default = pkgs.python312Packages.buildPythonApplication {
+            pname = "chat-script";
+            version = "0.1";
+            src = ./.;
 
-        propagatedBuildInputs = deps;
+            propagatedBuildInputs = deps;
 
-        ANONYMIZED_TELEMETRY = "False";
+            ANONYMIZED_TELEMETRY = "False";
 
-        meta = {
-          description = "Chat locally with scripts (documents) of your choice with this simple python app.";
-          maintainers = [ "camdenboren" ];
-        };
-      };
-    });
-  };
+            meta = {
+              description = "Chat locally with scripts (documents) of your choice with this simple python app.";
+              maintainers = [ "camdenboren" ];
+            };
+          };
+        }
+      );
+    };
 }

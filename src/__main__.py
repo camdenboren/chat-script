@@ -10,6 +10,7 @@ EMBED_DIR = "~/.chat-script/embeddings"
 CONFIG_DIR = "~/.config/chat-script"
 CONFIG_FILE = f"{CONFIG_DIR}/chat-script.ini"
 
+
 def main():
     """Create directories and embed scripts if needed, otw run options.read() and app.launch()"""
     if not os.path.exists(os.path.expanduser(CONFIG_FILE)):
@@ -26,10 +27,12 @@ def main():
         print("\nCreated SCRIPTS_DIR at: " + SCRIPTS_DIR)
         user_embed = None
         while not user_embed:
-            user_embed = str(input(
-                """Would you like to embed the scripts now (if yes, then add your 
+            user_embed = str(
+                input(
+                    """Would you like to embed the scripts now (if yes, then add your 
                 scripts to ~/.chat-script/scripts before submitting)? y/n: """
-            ))
+                )
+            )
             if user_embed:
                 if user_embed[0] == "y" or user_embed[0] == "Y":
                     options.read()
@@ -45,5 +48,6 @@ def main():
         options.read()
         app.launch()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     sys.exit(main())

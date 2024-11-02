@@ -3,8 +3,8 @@
 from setuptools import setup
 
 setup(
-    name='chat-script',
-    version='0.1',
+    name="chat-script",
+    version="0.1",
     packages=["src"],
     scripts=[
         "src/app.py",
@@ -12,11 +12,7 @@ setup(
         "src/embeddings.py",
         "src/multi_retriever.py",
         "src/options.py",
-        "src/response.py"
+        "src/response.py",
     ],
-    entry_points={
-        "console_scripts": [
-            "chat-script = src.__main__:main"
-        ]
-    }
+    entry_points={"console_scripts": ["chat-script = src.__main__:main"]},
 )
