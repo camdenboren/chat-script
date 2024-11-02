@@ -25,6 +25,8 @@ class TestChain(unittest.TestCase):
         self.assertTrue(isinstance(contextualize_q_prompt, ChatPromptTemplate))
 
     def test_create(self):
+        if not hasattr(options, 'OPTIONS'):
+            options.read()
         with tempfile.TemporaryDirectory() as EMBED_DIR:
             chain.EMBED_DIR = EMBED_DIR
             chain.create()
@@ -32,5 +34,7 @@ class TestChain(unittest.TestCase):
             self.assertTrue(isinstance(rag_chain, Runnable))
 
     def test_create_moderation(self):
+        if not hasattr(options, 'OPTIONS'):
+            options.read()
         moderation_chain = chain.create_moderation()
         self.assertTrue(isinstance(moderation_chain, Runnable))

@@ -48,6 +48,8 @@ class TestResponse(unittest.TestCase):
         self.assertTrue(isinstance(print_state, bool))
 
     def test_check_question(self):
+        if not hasattr(options, 'OPTIONS'):
+            options.read()
         when(chain).create_moderation().thenReturn(MockLLM)
         request = Request()
         allow_response = response.check_question("", request)
@@ -55,6 +57,8 @@ class TestResponse(unittest.TestCase):
         self.assertTrue(isinstance(allow_response, bool))
 
     def test_convert_session_history(self):
+        if not hasattr(options, 'OPTIONS'):
+            options.read()
         history = [
             ["how do", "To "],
             ["what if ", "If you onxt "],
@@ -66,11 +70,15 @@ class TestResponse(unittest.TestCase):
         self.assertTrue(isinstance(session_history, ChatMessageHistory))
 
     def test_inspect(self):
+        if not hasattr(options, 'OPTIONS'):
+            options.read()
         empty_state = AddableDict()
         state = response.inspect(empty_state)
         self.assertTrue(isinstance(state, AddableDict))
 
     def test_get_session_history(self):
+        if not hasattr(options, 'OPTIONS'):
+            options.read()
         response.convert_session_history("")
         session_history = response.get_session_history()
         self.assertTrue(isinstance(session_history, BaseChatMessageHistory))
@@ -85,6 +93,8 @@ class TestResponse(unittest.TestCase):
     def test_format_context(self):
         def opt(option_name):
             """Syntactic sugar for retrieving options"""
+            if not hasattr(options, 'OPTIONS'):
+                options.read()
             return options.OPTIONS["response"][option_name]
 
         context = [Document]
