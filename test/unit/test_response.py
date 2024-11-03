@@ -26,11 +26,6 @@ class Request:
 
 
 class MockLLM:
-    def stream(self):
-        text = "abc def"
-        for chunk in text:
-            yield chunk
-
     def invoke(self):
         text = "abc def"
         return text

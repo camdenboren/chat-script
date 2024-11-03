@@ -23,22 +23,12 @@ class Request:
 
 
 class MockLLM:
-    def stream(self, input, config):
-        text = "safe"
-        for chunks in text:
-            yield chunks
-
     def invoke(self, question):
         text = "\n\nsafe"
         return text
 
 
 class MockLLM_reject:
-    def stream(self, input, config):
-        text = "unsafe"
-        for chunks in text:
-            yield chunks
-
     def invoke(self, question):
         text = "\n\nunsafe"
         return text
@@ -52,14 +42,6 @@ class Alert:
 class SimpleRetriever:
     docs: List[Document]
     k: int = 5
-
-    def _get_relevant_documents(self, query: str) -> List[Document]:
-        """Return the first k documents from the list of documents"""
-        return self.docs[: self.k]
-
-    async def _aget_relevant_documents(self, query: str) -> List[Document]:
-        """(Optional) async native implementation."""
-        return self.docs[: self.k]
 
 
 class TestResponseGenerate(unittest.TestCase):
