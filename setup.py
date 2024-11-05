@@ -1,5 +1,9 @@
 """Declare app name, ver, scripts, and entry point"""
 
+# SPDX-FileCopyrightText: 2024 Camden Boren
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 from setuptools import setup
 
 setup(

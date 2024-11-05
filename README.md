@@ -81,4 +81,6 @@ Contributions welcome!
 
     # Seems unnecessary
     beautifulsoup4
-</details>
+
+## License
+[GPLv3](COPYING)
