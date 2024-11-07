@@ -99,7 +99,7 @@ def format_context(context):
     """Formats and yields context passed to LLM in human-readable format"""
     if opt("print_state"):
         print("Context: ", context, sep="")
-    formatted_context = "Relevant Sources (some may not have been used): "
+    formatted_context = "Relevant Sources: "
     yield "\n\n"
     for index, chunk in enumerate(context):
         formatted_context += (
@@ -107,7 +107,7 @@ def format_context(context):
         )
         for fmt_chunks in formatted_context.split():
             yield f"{fmt_chunks} "
-            if (index == 0) and (fmt_chunks == "used):"):
+            if (index == 0) and (fmt_chunks == "Sources:"):
                 yield "\n"
             time.sleep(opt("context_stream_delay"))
         yield "\n"

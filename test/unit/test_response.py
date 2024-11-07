@@ -99,7 +99,7 @@ class TestResponse(unittest.TestCase):
         context = [Document]
         formatted = response.format_context(context)
         when(time).sleep(opt("context_stream_delay")).thenReturn(None)
-        for index in range(12):
+        for index in range(6):
             self.assertTrue(isinstance(next(formatted), str))
 
     def test_reject(self):
