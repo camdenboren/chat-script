@@ -54,15 +54,13 @@ Modify files in src as desired (and add new files to setup.py and stage), then
     nix run /path/to/chat-script
 
 ## ToDo
-Contributions welcome!
 
-### Priority
+### Contributions welcome
+
 - [x] Look into RAG-fusion for improving distance-based retrieval performance
 - [x] Look into other splitting functions due to weirdness from book pdfs
 - [x] Add moderation sub-option for system alerts (Linux-only)
 - [ ] Add vectorstore indexing to avoid embeddings dupes
-
-### Nice to have
 - [ ] Add support for non-text documents (relevant packages below)
 - [ ] Add tool-call or few-shot prompting to improve citation formatting
 - [ ] Eliminate globals
