@@ -8,7 +8,7 @@ from setuptools import setup
 
 setup(
     name="chat-script",
-    version="0.1",
+    version="1.0",
     packages=["src"],
     scripts=[
         "src/app.py",

@@ -91,7 +91,7 @@
         {
           default = pkgs.python312Packages.buildPythonApplication {
             pname = "chat-script";
-            version = "0.1";
+            version = "1.0";
             src = ./.;
 
             propagatedBuildInputs = deps;
