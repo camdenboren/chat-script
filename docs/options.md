@@ -40,13 +40,14 @@ To adjust these options, edit:
 
 | Option             | Desc                                                                    | Default           |
 | ------------------ | ----------------------------------------------------------------------- | ----------------- |
-| embeddings_model   | Name of Ollama LLM used to generate embeddings                          | mxbai-embed-large |
-| show_progress      | Whether to display document loading and embeddings model batch progress | True              |
-| collection_name    | Name of local document collection                                       | rag-chroma        |
-| use_multithreading | Whether to enable CPU multithreading for loading documents              | True              |
-| chunk_size         | Number of tokens in each split document chunk                           | 250               |
-| chunk_overlap      | Number of tokens shared between consecutive split document chunks       | 50                |
-| batch_size         | Maximum number of split documents in each embeddings batch              | 41666             |
+| embeddings_model   | Name of Ollama LLM used to generate embeddings                          | mxbai-embed-large      |
+| embeddings_url     | URL of Ollama LLM used to generate embeddings                           | http://localhost:11434 |
+| show_progress      | Whether to display document loading and embeddings model batch progress | True                   |
+| collection_name    | Name of local document collection                                       | rag-chroma             |
+| use_multithreading | Whether to enable CPU multithreading for loading documents              | True                   |
+| chunk_size         | Number of tokens in each split document chunk                           | 250                    |
+| chunk_overlap      | Number of tokens shared between consecutive split document chunks       | 50                     |
+| batch_size         | Maximum number of split documents in each embeddings batch              | 41666                  |
 
 ## Response
 

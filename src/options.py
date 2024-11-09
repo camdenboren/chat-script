@@ -41,6 +41,7 @@ def create():
     }
     configuration["EMBEDDINGS"] = {
         "embeddings_model": "mxbai-embed-large",
+        "embeddings_url": "https://localhost:11434",
         "show_progress": "True",
         "collection_name": "rag-chroma",
         "use_multithreading": "True",
@@ -182,6 +183,11 @@ def read():
                 "EMBEDDINGS",
                 "embeddings_model",
                 fallback="mxbai-embed-large",
+            ),
+            "embeddings_url": configuration.get(
+                "EMBEDDINGS",
+                "embeddings_url",
+                fallback="http://localhost:11434",
             ),
             "show_progress": configuration.getboolean(
                 "EMBEDDINGS",
