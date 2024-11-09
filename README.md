@@ -60,6 +60,7 @@ Modify files in src as desired (and add new files to setup.py and stage), then
 - [x] Look into RAG-fusion for improving distance-based retrieval performance
 - [x] Look into other splitting functions due to weirdness from book pdfs
 - [x] Add moderation sub-option for system alerts (Linux-only)
+- [ ] Move to 'messages' for gradio as 'tuples' will be removed soon
 - [ ] Add vectorstore indexing to avoid embeddings dupes
 - [ ] Add support for non-text documents (relevant packages below)
 - [ ] Add tool-call or few-shot prompting to improve citation formatting
