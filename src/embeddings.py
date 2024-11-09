@@ -55,6 +55,7 @@ def prepare_model():
     """Set and return Ollama embeddings model"""
     embeddings = OllamaEmbeddings(
         model=opt("embeddings_model"),
+        base_url=options.OPTIONS["chain"]["embeddings_url"],
         show_progress=opt("show_progress"),
     )
     return embeddings
