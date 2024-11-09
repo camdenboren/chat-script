@@ -28,13 +28,13 @@ class Request:
 
 class MockLLM:
     def invoke(self, question):
-        text = "\n\nsafe"
+        text = "safe"
         return text
 
 
 class MockLLM_reject:
     def invoke(self, question):
-        text = "\n\nunsafe"
+        text = "unsafe"
         return text
 
 

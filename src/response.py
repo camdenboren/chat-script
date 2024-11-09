@@ -40,7 +40,7 @@ def check_question(question, request):
     if opt("moderate"):
         moderation_chain = chain.create_moderation()
         moderation_result = moderation_chain.invoke(question)
-        allow_response = moderation_result[2:6] == "safe"
+        allow_response = moderation_result[0:4] == "safe"
     return allow_response
 
 

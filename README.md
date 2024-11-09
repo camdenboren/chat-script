@@ -27,7 +27,7 @@ Start Ollama server (second and third commands only need to be run if models hav
     ollama serve
     ollama pull mistral
     ollama pull mxbai-embed-large
-    ollama pull xe/llamaguard3
+    ollama pull llama-guard3:1b
 
 <i>I recommend running Ollama as a system service to avoid needing to run 'ollama serve' every time I boot</i>
 

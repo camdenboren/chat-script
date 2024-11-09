@@ -23,7 +23,7 @@ def create():
     configuration["CHAIN"] = {
         "embeddings_model": "mxbai-embed-large",
         "chat_model": "mistral",
-        "moderation_model": "xe/llamaguard3",
+        "moderation_model": "llama-guard3:1b",
         "embeddings_url": "https://localhost:11434",
         "chat_url": "http://localhost:11434",
         "moderation_url": "http://localhost:11434",
@@ -104,7 +104,7 @@ def read():
             "moderation_model": configuration.get(
                 "CHAIN",
                 "moderation_model",
-                fallback="xe/llamaguard3",
+                fallback="llama-guard3:1b",
             ),
             "embeddings_url": configuration.get(
                 "CHAIN",

@@ -20,7 +20,8 @@ To adjust these options, edit:
 | -------------------- | ------------- | ---------------------- |
 | embeddings_model     | Name of Ollama LLM used to generate embeddings                                                                                     | mxbai-embed-large      |
 | chat_model           | Name of Ollama LLM used to generate responses                                                                                      | mistral                |
-| moderation_model     | Name of Ollama LLM used to moderate queries                                                                                        | xe/llamaguard3         |
+| moderation_model     | Name of Ollama LLM used to moderate queries                                                                                        | llama-guard3:1b        |
+| embeddings_url       | URL of Ollama LLM used to generate embeddings                                                                                      | http://localhost:11434 |
 | chat_url             | URL of Ollama LLM used to generate responses                                                                                       | http://localhost:11434 |
 | moderation_url       | URL of Ollama LLM used to moderate queries                                                                                         | http://localhost:11434 |
 | show_progress        | Whether to display embeddings model batch progress                                                                                 | False                  |
