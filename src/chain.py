@@ -34,6 +34,7 @@ def prepare_models():
     # Set Embedding LLM to local Ollama model
     embeddings = OllamaEmbeddings(
         model=opt("embeddings_model"),
+        base_url=opt("embeddings_url"),
         show_progress=opt("show_progress"),
         num_gpu=num_gpu,
     )

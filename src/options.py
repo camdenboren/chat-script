@@ -24,6 +24,7 @@ def create():
         "embeddings_model": "mxbai-embed-large",
         "chat_model": "mistral",
         "moderation_model": "xe/llamaguard3",
+        "embeddings_url": "https://localhost:11434",
         "chat_url": "http://localhost:11434",
         "moderation_url": "http://localhost:11434",
         "show_progress": "False",
@@ -104,6 +105,11 @@ def read():
                 "CHAIN",
                 "moderation_model",
                 fallback="xe/llamaguard3",
+            ),
+            "embeddings_url": configuration.get(
+                "CHAIN",
+                "embeddings_url",
+                fallback="http://localhost:11434",
             ),
             "chat_url": configuration.get(
                 "CHAIN",
