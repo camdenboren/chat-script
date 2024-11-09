@@ -23,9 +23,10 @@ def launch():
             bubble_full_width=False,
             scale=1,
         ),
+        type="tuples",
         fill_height=True,
         title="chat-script",
-        theme="Monochrome",
+        theme="gradio/monochrome",
         analytics_enabled=False,
         additional_inputs=[],
     ).queue()
