@@ -48,7 +48,10 @@
               langchain-ollama
               notify2
               tiktoken
-            ];
+            ]
+            ++ (with pkgs; [
+              nodejs
+            ]);
           }
         );
     in
