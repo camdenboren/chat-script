@@ -25,7 +25,7 @@ class TestEmbeddings(unittest.TestCase):
     def test_load(self):
         def opt(option_name):
             """Syntactic sugar for retrieving options"""
-            if not hasattr(options, 'OPTIONS'):
+            if not hasattr(options, "OPTIONS"):
                 options.read()
             return options.OPTIONS["embeddings"][option_name]
 

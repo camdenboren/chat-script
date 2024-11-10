@@ -39,19 +39,21 @@
             pkgs = nixpkgs.legacyPackages.${system}.extend (
               import ./overlay.nix { inherit pkgs linux-share darwin-share; }
             );
-            deps = with pkgs.python312Packages; [
-              gradio
-              langchain
-              langchain-core
-              langchain-community
-              langchain-chroma
-              langchain-ollama
-              notify2
-              tiktoken
-            ]
-            ++ (with pkgs; [
-              nodejs
-            ]);
+            deps =
+              with pkgs.python312Packages;
+              [
+                gradio
+                langchain
+                langchain-core
+                langchain-community
+                langchain-chroma
+                langchain-ollama
+                notify2
+                tiktoken
+              ]
+              ++ (with pkgs; [
+                nodejs
+              ]);
           }
         );
     in
