@@ -22,14 +22,14 @@
             "test_private_request_fail"
             "theme_builder_launches"
           ];
-        #postInstall =
-          #(old.postInstall or "")
-          #+ ''
-            #cp -f ${linux-share} $out/lib/python3.11/site-packages/gradio/frpc_linux_amd64_v0.2
-            #cp -f ${darwin-share} $out/lib/python3.11/site-packages/gradio/frpc_darwin_arm64_v0.2
-            #chmod +x $out/lib/python3.11/site-packages/gradio/frpc_linux_amd64_v0.2
-            #chmod +x $out/lib/python3.11/site-packages/gradio/frpc_darwin_arm64_v0.2
-          #'';
+        postInstall =
+          (old.postInstall or "")
+          + ''
+            cp -f ${linux-share} $out/lib/python3.12/site-packages/gradio/frpc_linux_amd64_v0.3
+            cp -f ${darwin-share} $out/lib/python3.12/site-packages/gradio/frpc_darwin_arm64_v0.3
+            chmod +x $out/lib/python3.12/site-packages/gradio/frpc_linux_amd64_v0.3
+            chmod +x $out/lib/python3.12/site-packages/gradio/frpc_darwin_arm64_v0.3
+          '';
       });
     };
   };

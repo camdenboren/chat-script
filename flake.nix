@@ -10,11 +10,11 @@
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
     linux-share = {
-      url = "https://cdn-media.huggingface.co/frpc-gradio-0.2/frpc_linux_amd64";
+      url = "https://cdn-media.huggingface.co/frpc-gradio-0.3/frpc_linux_amd64";
       flake = false;
     };
     darwin-share = {
-      url = "https://cdn-media.huggingface.co/frpc-gradio-0.2/frpc_darwin_arm64";
+      url = "https://cdn-media.huggingface.co/frpc-gradio-0.3/frpc_darwin_arm64";
       flake = false;
     };
   };
