@@ -44,6 +44,28 @@ Scripts can be reembedded at any time by renaming/removing the scripts directory
 
 <i>Ollama must be running in the background in order for the app to actually get a response- see <b>Setup</b> for commands. It's also worthwhile to make sure the LLMs are running on your GPU, otherwise responses are unbearably slow</i>
 
+### Non-Nix
+<i>Install python3.12, pip, venv, cmake, build-essential, libdbus-glib-1-dev, and libgirepository1.0-dev, before running</i>
+
+Clone this repo (or download prefered release)
+
+    git clone https://github.com/camdenboren/chat-script.git
+
+Navigate to directory, then create and activate venv
+
+    mkdir .venv
+    python -m venv .venv
+    source .venv/bin/activate
+
+Next, install dependencies
+
+    pip install -r requirements.txt
+
+Finally, run the app
+
+    python -m src
+
+
 ## Advanced Usage
 To edit the code itself
 

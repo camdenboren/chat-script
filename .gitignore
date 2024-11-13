@@ -6,3 +6,4 @@ site/
 *.DS_Store
 .vscode
 .gradio
+.venv
