@@ -35,6 +35,8 @@ Start Ollama server (second and third commands only need to be run if models hav
 Before any context can be used by the LLM, these context "scripts" must be added to ~/.chat-script/scripts
 
 ### Nix
+<b>Must install flake-enabled Nix before running</b>
+
 Executing the following will create this directory, generate embeddings (if desired), and run the app
 
     nix run github:camdenboren/chat-script
@@ -46,7 +48,7 @@ Scripts can be reembedded at any time by renaming/removing the scripts directory
 <i>Ollama must be running in the background in order for the app to actually get a response- see <b>Setup</b> for commands. It's also worthwhile to make sure the LLMs are running on your GPU, otherwise responses are unbearably slow</i>
 
 ### Non-Nix
-<i>Install python3.12, pip, venv, cmake, build-essential, libdbus-glib-1-dev, and libgirepository1.0-dev, before running</i>
+<b>Must install python3.12, pip, venv, cmake, build-essential, libdbus-glib-1-dev, and libgirepository1.0-dev, before running</b>
 
 Clone this repo (or download prefered release)
 
