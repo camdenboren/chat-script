@@ -1,7 +1,6 @@
 """Creates and reads options at ~/.config/chat-script/chat-script.ini"""
 
 # SPDX-FileCopyrightText: 2024 Camden Boren
-#
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os

@@ -1,7 +1,6 @@
 """Setup language models and multi-query retriever, define the moderation and rag chains"""
 
 # SPDX-FileCopyrightText: 2024 Camden Boren
-#
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
