@@ -46,7 +46,9 @@ Scripts can be reembedded at any time by renaming/removing the scripts directory
     nix develop github:camdenboren/chat-script --command bash -c "python -m src.embeddings"
 
 ### Non-Nix
-<b>Must install python3.12, pip, venv, cmake, build-essential, libdbus-glib-1-dev, and libgirepository1.0-dev, before running</b>
+<b>Must install python3.12, pip, and venv before running\
+On Linux, you'll also need to install build-essential, libdbus-glib-1-dev, and libgirepository1.0-dev\
+On MacOS, you'll also need dbus</b>
 
 Clone this repo (or download prefered release)
 
