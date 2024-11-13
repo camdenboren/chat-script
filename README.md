@@ -45,8 +45,6 @@ Scripts can be reembedded at any time by renaming/removing the scripts directory
 
     nix develop github:camdenboren/chat-script --command bash -c "python -m src.embeddings"
 
-<i>Ollama must be running in the background in order for the app to actually get a response- see <b>Setup</b> for commands. It's also worthwhile to make sure the LLMs are running on your GPU, otherwise responses are unbearably slow</i>
-
 ### Non-Nix
 <b>Must install python3.12, pip, venv, cmake, build-essential, libdbus-glib-1-dev, and libgirepository1.0-dev, before running</b>
 
