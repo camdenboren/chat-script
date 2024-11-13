@@ -20,7 +20,7 @@ Docs deployed at https://camdenboren.github.io/chat-script<br>
 <i>Docs cover options, architecture, and reference</i>
 
 ## Setup
-<b>Must install Ollama and flake-enabled Nix before running anything</b>
+<b>Must install Ollama before running anything</b>
 
 Start Ollama server (second and third commands only need to be run if models have not already been installed, fourth only applies if moderate is set to True)
 
@@ -34,6 +34,7 @@ Start Ollama server (second and third commands only need to be run if models hav
 ## Usage
 Before any context can be used by the LLM, these context "scripts" must be added to ~/.chat-script/scripts
 
+### Nix
 Executing the following will create this directory, generate embeddings (if desired), and run the app
 
     nix run github:camdenboren/chat-script
@@ -61,9 +62,13 @@ Next, install dependencies
 
     pip install -r requirements.txt
 
-Finally, run the app
+Finally, executing the following will create this directory, generate embeddings (if desired), and run the app
 
     python -m src
+
+Scripts can be reembedded at any time by renaming/removing the scripts directory and rerunning the above command, or by executing the following (if you don't want to run the app)
+
+    python -m src.embeddings
 
 
 ## Advanced Usage
