@@ -10,6 +10,8 @@ copyright: Copyright 2024 Camden Boren
 
 theme:
   name: "material"
+  logo: img/chat-script.png
+  favicon: img/favicon.png
   font:
     text: Quicksand
   palette:

@@ -1,8 +1,11 @@
-# chat-script
+<div align="center">
+<img src='docs/img/chat-script.png' height=96px>
+
 ![Static Badge](https://img.shields.io/badge/Version-1.0-blue)
 ![Static Badge](https://img.shields.io/badge/Platforms-Linux,_macOS-green)
 ![Static Badge](https://img.shields.io/badge/Coverage-92%25-green)
 ![Static Badge](https://img.shields.io/badge/Powered_by_Nix-grey?logo=nixOS&logoColor=white)
+</div>
 
 Chat locally with scripts (documents) of your choice with this simple python app that features
 - Streaming
