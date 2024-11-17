@@ -1,0 +1,757 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../architecture/">
+      
+      
+      <link rel="icon" href="../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+    
+    
+      
+        <title>Options - chat-script docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.8c3ca2c6.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Quicksand";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#options" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="chat-script docs" class="md-header__button md-logo" aria-label="chat-script docs" data-md-component="logo">
+      
+  <img src="../img/chat-script.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            chat-script docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Options
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/camdenboren/chat-script" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    camdenboren/chat-script
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="chat-script docs" class="md-nav__button md-logo" aria-label="chat-script docs" data-md-component="logo">
+      
+  <img src="../img/chat-script.png" alt="logo">
+
+    </a>
+    chat-script docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/camdenboren/chat-script" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    camdenboren/chat-script
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Options
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Options
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#app" class="md-nav__link">
+    <span class="md-ellipsis">
+      App
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chain
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Embeddings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#app" class="md-nav__link">
+    <span class="md-ellipsis">
+      App
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chain
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Embeddings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="options">Options</h1>
+<p>To adjust these options, edit:</p>
+<pre><code>~/.config/chat-script/chat-script.ini
+</code></pre>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">App</label><label for="__tabbed_1_2">Chain</label><label for="__tabbed_1_3">Embeddings</label><label for="__tabbed_1_4">Response</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<h2 id="app">App</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Desc</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>share</td>
+<td>Whether to create a publicly shareable link for the gradio app</td>
+<td>False</td>
+</tr>
+<tr>
+<td>server_name</td>
+<td>IP address that local app is deployed at</td>
+<td>127.0.0.1</td>
+</tr>
+<tr>
+<td>server_port</td>
+<td>Port that local app is deployed at</td>
+<td>7860</td>
+</tr>
+<tr>
+<td>inbrowser</td>
+<td>Whether to automatically launch the gradio app in a new tab on the default browser</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<h2 id="chain">Chain</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Desc</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>embeddings_model</td>
+<td>Name of Ollama LLM used to generate embeddings</td>
+<td>mxbai-embed-large</td>
+</tr>
+<tr>
+<td>chat_model</td>
+<td>Name of Ollama LLM used to generate responses</td>
+<td>mistral</td>
+</tr>
+<tr>
+<td>moderation_model</td>
+<td>Name of Ollama LLM used to moderate queries</td>
+<td>llama-guard3:1b</td>
+</tr>
+<tr>
+<td>embeddings_url</td>
+<td>URL of Ollama LLM used to generate embeddings</td>
+<td>http://localhost:11434</td>
+</tr>
+<tr>
+<td>chat_url</td>
+<td>URL of Ollama LLM used to generate responses</td>
+<td>http://localhost:11434</td>
+</tr>
+<tr>
+<td>moderation_url</td>
+<td>URL of Ollama LLM used to moderate queries</td>
+<td>http://localhost:11434</td>
+</tr>
+<tr>
+<td>show_progress</td>
+<td>Whether to display embeddings model batch progress</td>
+<td>False</td>
+</tr>
+<tr>
+<td>keep_alive</td>
+<td>How long the model will stay loaded into memory</td>
+<td>5m</td>
+</tr>
+<tr>
+<td>temperature</td>
+<td>The temperature of the chat model. Increasing the temperature will make the model answer more creatively</td>
+<td>0.6</td>
+</tr>
+<tr>
+<td>top-k</td>
+<td>Reduces the probability of generating nonsense. A higher value will give more diverse answers, while a lower value will be more conservative</td>
+<td>30</td>
+</tr>
+<tr>
+<td>top-p</td>
+<td>Works together with top-k. A higher value will lead to more diverse text, while a lower value will generate more conservative text</td>
+<td>0.7</td>
+</tr>
+<tr>
+<td>collection_name</td>
+<td>Name of local document collection</td>
+<td>rag-chroma</td>
+</tr>
+<tr>
+<td>top_n_results</td>
+<td>Amount of documents to return</td>
+<td>3</td>
+</tr>
+<tr>
+<td>rag_fusion</td>
+<td>Whether to enable rag-fusion, an advanced rag technique that may improve semantic search relevance</td>
+<td>True</td>
+</tr>
+<tr>
+<td>num_queries</td>
+<td>Number of synthetic queries to generate for rag-fusion</td>
+<td>2</td>
+</tr>
+<tr>
+<td>top_n_results_fusion</td>
+<td>Maximum amount of documents to return for rag-fusion (maximum, as unique union is taken)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>embeddings_gpu</td>
+<td>Whether to use the GPU when generating embeddings (on devices with &lt;8GB VRAM, setting to False can reduce latency)</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<h2 id="embeddings">Embeddings</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Desc</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>embeddings_model</td>
+<td>Name of Ollama LLM used to generate embeddings</td>
+<td>mxbai-embed-large</td>
+</tr>
+<tr>
+<td>embeddings_url</td>
+<td>URL of Ollama LLM used to generate embeddings</td>
+<td>http://localhost:11434</td>
+</tr>
+<tr>
+<td>show_progress</td>
+<td>Whether to display document loading and embeddings model batch progress</td>
+<td>True</td>
+</tr>
+<tr>
+<td>collection_name</td>
+<td>Name of local document collection</td>
+<td>rag-chroma</td>
+</tr>
+<tr>
+<td>use_multithreading</td>
+<td>Whether to enable CPU multithreading for loading documents</td>
+<td>True</td>
+</tr>
+<tr>
+<td>chunk_size</td>
+<td>Number of tokens in each split document chunk</td>
+<td>250</td>
+</tr>
+<tr>
+<td>chunk_overlap</td>
+<td>Number of tokens shared between consecutive split document chunks</td>
+<td>50</td>
+</tr>
+<tr>
+<td>batch_size</td>
+<td>Maximum number of split documents in each embeddings batch</td>
+<td>41666</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<h2 id="response">Response</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Desc</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>context_stream_delay</td>
+<td>Amount of time in s to delay tokens streamed for non-LLM text (sources, moderation notice)</td>
+<td>0.075</td>
+</tr>
+<tr>
+<td>max_history</td>
+<td>Maximum number of previous user messages to include as context</td>
+<td>2</td>
+</tr>
+<tr>
+<td>print_state</td>
+<td>Whether to print app state for each query. Includes: IP address, chat history, and context</td>
+<td>True</td>
+</tr>
+<tr>
+<td>moderate</td>
+<td>Whether to moderate user queries before allowing responses. Prints IP address and offending query even if print_state is false (allows for privacy-preserving moderation)</td>
+<td>False</td>
+</tr>
+<tr>
+<td>moderate_alert</td>
+<td>Whether to display system alerts when an unsafe question is received (Linux-only)</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright 2024 Camden Boren
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.525ec568.min.js"></script>
+      
+    
+  </body>
+</html>
