@@ -103,7 +103,7 @@
             ANONYMIZED_TELEMETRY = "False";
 
             meta = {
-              description = "Chat locally with scripts (documents) of your choice with this simple python app.";
+              description = "Chat with your documents using any Ollama LLM with this simple python app";
               maintainers = [ "camdenboren" ];
             };
           };

@@ -6,24 +6,19 @@
 ![Static Badge](https://img.shields.io/badge/Coverage-92%25-green)
 ![Static Badge](https://img.shields.io/badge/Powered_by_Nix-grey?logo=nixOS&logoColor=white)
 
-</div>
-
-Chat locally with scripts (documents) of your choice with this simple python app that features
-
-- Streaming
-- Chat History
-- Citations
-- Moderation
-
-This is accomplished by implementing RAG-Fusion on local LLMs via
-
-- Ollama
-- Langchain
-- ChromaDB
-- Gradio
-
+Chat with your documents using any Ollama LLM with this simple python app<br>
 Docs deployed at https://camdenboren.github.io/chat-script<br>
 <i>Docs cover options, architecture, and reference</i>
+
+| Features     |
+| ------------ |
+| RAG-Fusion   |
+| Streaming    |
+| Chat History |
+| Citations    |
+| Moderation   |
+
+</div>
 
 ## Setup
 
