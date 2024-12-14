@@ -8,7 +8,7 @@
 
 Chat with your documents using any Ollama LLM with this simple python app<br>
 Docs deployed at https://camdenboren.github.io/chat-script<br>
-<i>Docs cover options, architecture, and reference</i>
+_Docs cover options, architecture, and reference_
 
 | Features     |
 | ------------ |
@@ -22,7 +22,7 @@ Docs deployed at https://camdenboren.github.io/chat-script<br>
 
 ## Setup
 
-<b>Must install Ollama before running anything</b>
+**Must install Ollama before running anything**
 
 Start Ollama server (second and third commands only need to be run if models have not already been installed, fourth only applies if moderate is set to True)
 
@@ -31,7 +31,7 @@ Start Ollama server (second and third commands only need to be run if models hav
     ollama pull mxbai-embed-large
     ollama pull llama-guard3:1b
 
-<i>I recommend running Ollama as a system service to avoid needing to run 'ollama serve' every time I boot</i>
+_I recommend running Ollama as a system service to avoid needing to run 'ollama serve' every time I boot_
 
 ## Usage
 
@@ -39,7 +39,7 @@ Before any context can be used by the LLM, these context "scripts" must be added
 
 ### Nix
 
-<b>Must install flake-enabled Nix before running</b>
+**Must install flake-enabled Nix before running**
 
 Executing the following will create this directory, generate embeddings (if desired), and run the app
 
@@ -51,9 +51,9 @@ Scripts can be reembedded at any time by renaming/removing the scripts directory
 
 ### Non-Nix
 
-<b>Must install Python 3.12.7 and Node.js v20.18.0 before running</b>\
-<i>On Linux, you'll also need to install build-essential, libdbus-glib-1-dev, and libgirepository1.0-dev\
-On macOS, you'll also need dbus</i>
+**Must install Python 3.12.7 and Node.js v20.18.0 before running**\
+_On Linux, you'll also need to install build-essential, libdbus-glib-1-dev, and libgirepository1.0-dev\
+On macOS, you'll also need dbus_
 
 Clone this repo (or download prefered release)
 

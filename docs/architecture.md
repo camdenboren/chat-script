@@ -29,7 +29,7 @@ hide:
             ↓
     Pass User Query and Scripts to Chat Model
 
-<i>Note: History, moderation, and rag-fusion are optional. If moderation is enabled and the query is deemed unsafe, stream a refusal response, skip following stages, and remove question from history on further iterations</i>
+_Note: History, moderation, and rag-fusion are optional. If moderation is enabled and the query is deemed unsafe, stream a refusal response, skip following stages, and remove question from history on further iterations_
 
 ## Src Files
 
