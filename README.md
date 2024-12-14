@@ -51,15 +51,15 @@ Scripts can be reembedded at any time by renaming/removing the scripts directory
 
 ### Non-Nix
 
-<b>Must install python3.12, pip, venv, and node before running\
-On Linux, you'll also need to install build-essential, libdbus-glib-1-dev, and libgirepository1.0-dev\
-On MacOS, you'll also need dbus</b>
+<b>Must install Python 3.12.7 and Node.js v20.18.0 before running</b>\
+<i>On Linux, you'll also need to install build-essential, libdbus-glib-1-dev, and libgirepository1.0-dev\
+On macOS, you'll also need dbus</i>
 
 Clone this repo (or download prefered release)
 
     git clone https://github.com/camdenboren/chat-script.git
 
-Navigate to directory, then create and activate venv
+Navigate to directory, then create and activate venv (optional)
 
     mkdir .venv
     python -m venv .venv
@@ -104,16 +104,15 @@ Modify files in src as desired (and add new files to setup.py and stage), then
 
 ### Relevant pkgs:
 
-    # Needed for PDF processing - should work once paddlepaddle is updated - also need to rm loader_cls in embeddings()
-    unstructured
-    emoji
-    iso-639
-    langdetect
-    pillow-heif
-    unstructured-inference
+_Needed for PDF processing - should work once paddlepaddle is updated - also need to rm loader_cls in embeddings()_
 
-    # Seems unnecessary
-    beautifulsoup4
+- unstructured
+- emoji
+- iso-639
+- langdetect
+- pillow-heif
+- unstructured-inference
+- beautifulsoup4 (seems unnecessary)
 
 ## License
 
