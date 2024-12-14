@@ -5,9 +5,7 @@ hide:
 
 # Options
 
-To adjust these options, edit:
-
-    ~/.config/chat-script/chat-script.ini
+To adjust these options, edit: `~/.config/chat-script/chat-script.ini`
 
 === "App"
 
