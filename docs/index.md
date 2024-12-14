@@ -2,13 +2,13 @@
 
 ## What's here?
 
-* Option documentation
-* Project architecture
-* Source code reference
+- Option documentation
+- Project architecture
+- Source code reference
 
 ## What's in the README?
 
-* Basic project info
-* Setup
-* Usage
-* ToDo
+- Basic project info
+- Setup
+- Usage
+- ToDo

@@ -1,11 +1,11 @@
 # Options
 
-
 To adjust these options, edit:
 
     ~/.config/chat-script/chat-script.ini
 
 === "App"
+
     ## App
 
     | Option        | Desc                                                                               | Default       |
@@ -16,6 +16,7 @@ To adjust these options, edit:
     | inbrowser     | Whether to automatically launch the gradio app in a new tab on the default browser | True          |
 
 === "Chain"
+
     ## Chain
 
     | Option               | Desc          | Default                |
@@ -39,6 +40,7 @@ To adjust these options, edit:
     | embeddings_gpu       | Whether to use the GPU when generating embeddings (on devices with <8GB VRAM, setting to False can reduce latency)                 | True                   |
 
 === "Embeddings"
+
     ## Embeddings
 
     | Option             | Desc                                                                    | Default           |
@@ -53,6 +55,7 @@ To adjust these options, edit:
     | batch_size         | Maximum number of split documents in each embeddings batch              | 41666                  |
 
 === "Response"
+
     ## Response
 
     | Option               | Desc                                                                                                                                                                      | Default       |
