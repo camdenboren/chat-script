@@ -1,3 +1,8 @@
+---
+hide:
+  - toc
+---
+
 # Options
 
 To adjust these options, edit:

@@ -1,3 +1,8 @@
+---
+hide:
+  - toc
+---
+
 # Welcome to the docs for chat-script
 
 ## What's here?
