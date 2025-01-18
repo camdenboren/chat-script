@@ -20,10 +20,10 @@
 
   outputs =
     {
-      self,
       nixpkgs,
       linux-share,
       darwin-share,
+      ...
     }:
     let
       supportedSystems = [
@@ -74,6 +74,7 @@
                 mkdocstrings
                 mkdocstrings-python
                 mockito
+                ruff
               ])
               ++ deps;
 

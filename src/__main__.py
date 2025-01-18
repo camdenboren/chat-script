@@ -32,7 +32,7 @@ def main():
         while not user_embed:
             user_embed = str(
                 input(
-                    """Would you like to embed the scripts now (if yes, then add your 
+                    """Would you like to embed the scripts now (if yes, then add your
                 scripts to ~/.chat-script/scripts before submitting)? y/n: """
                 )
             )
