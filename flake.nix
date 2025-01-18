@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2024 Camden Boren
+# SPDX-FileCopyrightText: 2024-2025 Camden Boren
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 {
@@ -82,11 +82,15 @@
 
             shellHook = ''
               echo -e "\nchat-script Development Environment via Nix Flake\n"
-              echo -e "run:  python -m src"
-              echo -e "test: python -m unittest discover"
-              echo -e "cov:  coverage run --source=src,test -m unittest discover"
-              echo -e "docs: mkdocs build, serve, or gh-deploy\n"
-              python --version
+
+              echo -e "┌───────────────────────────────────────────────┐"
+              echo -e "│                Useful Commands                │"
+              echo -e "├──────────┬────────────────────────────────────┤"
+              echo -e "│ Run      │ $ python -m src.chat_script        │"
+              echo -e "│ Test     │ $ python -m unittest               │"
+              echo -e "│ Coverage │ $ coverage run -m unittest         │"
+              echo -e "│ Docs     │ $ mkdocs {build, serve, gh-deploy} │"
+              echo -e "└──────────┴────────────────────────────────────┘\n"
             '';
           };
         }
@@ -96,9 +100,11 @@
         {
           default = pkgs.python312Packages.buildPythonApplication {
             pname = "chat-script";
-            version = "1.0";
+            version = "1.1";
+            pyproject = true;
             src = ./.;
 
+            build-system = with pkgs.python312Packages; [ setuptools ];
             propagatedBuildInputs = deps;
 
             ANONYMIZED_TELEMETRY = "False";

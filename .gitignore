@@ -6,4 +6,7 @@ site/
 *.DS_Store
 .vscode
 .gradio
+.ropeproject
+.ruff_cache
 .venv
+.zed

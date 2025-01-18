@@ -1,6 +1,6 @@
 """Setup language models and multi-query retriever, define the moderation and rag chains"""
 
-# SPDX-FileCopyrightText: 2024 Camden Boren
+# SPDX-FileCopyrightText: 2024-2025 Camden Boren
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
@@ -12,7 +12,7 @@ from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.chains.history_aware_retriever import create_history_aware_retriever
 from langchain.chains.retrieval import create_retrieval_chain
 from langchain_chroma import Chroma
-from src import options, multi_retriever
+from chat_script import options, multi_retriever
 
 # Directory and file names
 EMBED_DIR = "~/.chat-script/embeddings"

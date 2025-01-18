@@ -1,6 +1,6 @@
 """Returns response w/ citations from RAG-enabled LLM based on user question passed from app ui"""
 
-# SPDX-FileCopyrightText: 2024 Camden Boren
+# SPDX-FileCopyrightText: 2024-2025 Camden Boren
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
@@ -12,7 +12,7 @@ from langchain_core.runnables import RunnableLambda
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from gradio import Request
 import notify2
-from src import chain, options
+from chat_script import chain, options
 
 # Directory and file names
 SCRIPTS_DIR = "~/.chat-script/scripts"

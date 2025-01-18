@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2024 Camden Boren
+# SPDX-FileCopyrightText: 2024-2025 Camden Boren
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 site_name: chat-script docs
@@ -6,7 +6,7 @@ site_name: chat-script docs
 repo_name: camdenboren/chat-script
 repo_url: https://github.com/camdenboren/chat-script
 
-copyright: Copyright 2024 Camden Boren
+copyright: Copyright 2024-2025 Camden Boren
 
 theme:
   name: "material"

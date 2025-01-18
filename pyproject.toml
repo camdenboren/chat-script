@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: 2024-2025 Camden Boren
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[build-system]
+requires = [ "setuptools" ]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chat-script"
+version = "1.1"
+
+[project.scripts]
+chat-script = "chat_script.__main__:main"
+
+[tool.coverage.run]
+source = [ "src" ]

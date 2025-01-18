@@ -1,6 +1,6 @@
 """Refreshes/generates embeddings in based on scripts"""
 
-# SPDX-FileCopyrightText: 2024 Camden Boren
+# SPDX-FileCopyrightText: 2024-2025 Camden Boren
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
@@ -9,7 +9,7 @@ from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_text_splitters import TokenTextSplitter
 from langchain_chroma import Chroma
-from src import options
+from chat_script import options
 
 # Directory and file names
 SCRIPTS_DIR = "~/.chat-script/scripts"

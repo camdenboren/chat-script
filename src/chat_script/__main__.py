@@ -1,11 +1,11 @@
 """Entry point that ensures necessary config and scripts are setup before handing off to app.py"""
 
-# SPDX-FileCopyrightText: 2024 Camden Boren
+# SPDX-FileCopyrightText: 2024-2025 Camden Boren
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
 import sys
-from src import app, embeddings, options
+from chat_script import app, embeddings, options
 
 # Directory and file names
 SCRIPTS_DIR = "~/.chat-script/scripts"

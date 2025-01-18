@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2024 Camden Boren
+# SPDX-FileCopyrightText: 2024-2025 Camden Boren
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
@@ -10,7 +10,7 @@ import notify2
 from langchain_community.chat_models import FakeListChatModel
 from langchain_community.embeddings import FakeEmbeddings
 from langchain_chroma import Chroma
-from src import response, chain, options
+from chat_script import response, chain, options
 
 
 class Document:

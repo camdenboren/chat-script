@@ -1,10 +1,10 @@
 """Gradio UI leveraging eponymous function in response"""
 
-# SPDX-FileCopyrightText: 2024 Camden Boren
+# SPDX-FileCopyrightText: 2024-2025 Camden Boren
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import gradio as gr
-from src import chain, options, response
+from chat_script import chain, options, response
 
 
 def opt(option_name):

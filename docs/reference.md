@@ -8,34 +8,34 @@ hide:
 === "\_\_main\_\_.py"
 
     ## \_\_main\_\_.py
-    ::: src.__main__
+    ::: src.chat_script.__main__
 
 === "app.py"
 
     ## app.py
-    ::: src.app
+    ::: src.chat_script.app
 
 === "chain.py"
 
     ## chain.py
-    ::: src.chain
+    ::: src.chat_script.chain
 
 === "embeddings.py"
 
     ## embeddings.py
-    ::: src.embeddings
+    ::: src.chat_script.embeddings
 
 === "multi-retriever.py"
 
     ## multi-retriever.py
-    ::: src.multi_retriever
+    ::: src.chat_script.multi_retriever
 
 === "options.py"
 
     ## options.py
-    ::: src.options
+    ::: src.chat_script.options
 
 === "response.py"
 
     ## response.py
-    ::: src.response
+    ::: src.chat_script.response

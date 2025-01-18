@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2024 Camden Boren
+# SPDX-FileCopyrightText: 2024-2025 Camden Boren
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
@@ -7,7 +7,7 @@ import unittest
 from langchain_core.embeddings.embeddings import Embeddings
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from mockito import when, unstub
-from src import embeddings, options
+from chat_script import embeddings, options
 
 
 class Document:
