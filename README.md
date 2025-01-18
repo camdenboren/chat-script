@@ -1,10 +1,10 @@
 <div align="center">
-<img src='docs/img/chat-script.png' height=96px>
+<img src='docs/img/chat-script.png' height=auto width=400px>
 
-![Static Badge](https://img.shields.io/badge/Version-1.1-blue)
-![Static Badge](https://img.shields.io/badge/Platforms-Linux,_macOS-green)
-![Static Badge](https://img.shields.io/badge/Coverage-92%25-green)
-![Static Badge](https://img.shields.io/badge/Powered_by_Nix-grey?logo=nixOS&logoColor=white)
+![Static Badge](https://img.shields.io/badge/Version-1.1-blue?style=for-the-badge)
+![Static Badge](https://img.shields.io/badge/Platforms-Linux,_macOS-forestgreen?style=for-the-badge)
+![Static Badge](https://img.shields.io/badge/Coverage-92%25-forestgreen?style=for-the-badge)
+![Static Badge](https://img.shields.io/badge/Powered_by_Nix-grey?logo=nixOS&logoColor=white&logoSize=auto&style=for-the-badge)
 
 Chat with your documents using any Ollama LLM with this simple python app<br>
 Docs deployed at https://camdenboren.github.io/chat-script<br>
