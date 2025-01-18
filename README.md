@@ -24,14 +24,18 @@ _Docs cover options, architecture, and reference_
 
 **Must install Ollama before running anything**
 
-Start Ollama server (second and third commands only need to be run if models have not already been installed, fourth only applies if moderate is set to True)
+Start Ollama server<br>
+_I recommend setting up Ollama as a system service to avoid running this all the time_
 
     ollama serve
+    
+Download the LLMs<br>
+_First and second commands only need to be run if models have not already been installed; third only applies if moderate is set to True_
+
     ollama pull mistral
     ollama pull mxbai-embed-large
     ollama pull llama-guard3:1b
 
-_I recommend running Ollama as a system service to avoid needing to run 'ollama serve' every time I boot_
 
 ## Usage
 
@@ -47,7 +51,7 @@ Executing the following will create this directory, generate embeddings (if desi
 
 Scripts can be reembedded at any time by renaming/removing the scripts directory and rerunning the above command, or by executing the following (if you don't want to run the app)
 
-    nix develop github:camdenboren/chat-script --command bash -c "python -m src.embeddings"
+    nix develop github:camdenboren/chat-script --command bash -c "python -m src.chat_script.embeddings"
 
 ### Non-Nix
 
@@ -71,11 +75,11 @@ Next, install dependencies
 
 Finally, executing the following will create this directory, generate embeddings (if desired), and run the app
 
-    python -m src
+    python -m src.chat_script
 
 Scripts can be reembedded at any time by renaming/removing the scripts directory and rerunning the above command, or by executing the following (if you don't want to run the app)
 
-    python -m src.embeddings
+    python -m src.chat_script.embeddings
 
 ## Advanced Usage
 
