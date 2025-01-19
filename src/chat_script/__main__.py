@@ -5,6 +5,7 @@
 
 import os
 import sys
+
 from chat_script import app, embeddings, options
 
 # Directory and file names

@@ -4,15 +4,17 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
-from langchain_community.embeddings import OllamaEmbeddings
-from langchain_ollama import ChatOllama
-from langchain_core.output_parsers import StrOutputParser
+
 from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.chains.history_aware_retriever import create_history_aware_retriever
 from langchain.chains.retrieval import create_retrieval_chain
+from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_chroma import Chroma
-from chat_script import options, multi_retriever
+from langchain_community.embeddings import OllamaEmbeddings
+from langchain_core.output_parsers import StrOutputParser
+from langchain_ollama import ChatOllama
+
+from chat_script import multi_retriever, options
 
 # Directory and file names
 EMBED_DIR = "~/.chat-script/embeddings"

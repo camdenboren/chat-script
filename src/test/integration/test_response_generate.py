@@ -5,12 +5,14 @@ import os
 import tempfile
 import unittest
 from typing import List
-from mockito import when, unstub
+
 import notify2
+from langchain_chroma import Chroma
 from langchain_community.chat_models import FakeListChatModel
 from langchain_community.embeddings import FakeEmbeddings
-from langchain_chroma import Chroma
-from chat_script import response, chain, options
+from mockito import unstub, when
+
+from chat_script import chain, options, response
 
 
 class Document:

@@ -4,9 +4,11 @@
 import os
 import tempfile
 import unittest
-from langchain_core.embeddings.embeddings import Embeddings
+
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
-from mockito import when, unstub
+from langchain_core.embeddings.embeddings import Embeddings
+from mockito import unstub, when
+
 from chat_script import embeddings, options
 
 

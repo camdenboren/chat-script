@@ -2,7 +2,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import unittest
+
 from langchain_core.retrievers import BaseRetriever
+
 from chat_script import multi_retriever
 
 

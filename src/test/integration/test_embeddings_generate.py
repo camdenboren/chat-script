@@ -4,10 +4,11 @@
 import os
 import tempfile
 import unittest
-from mockito import when, unstub
-from langchain_community.embeddings import FakeEmbeddings
+
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
-from langchain_chroma import Chroma
+from langchain_community.embeddings import FakeEmbeddings
+from mockito import unstub, when
+
 from chat_script import embeddings, options
 
 

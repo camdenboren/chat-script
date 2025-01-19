@@ -4,6 +4,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from typing import List
+
+from langchain.chains.llm import LLMChain
+from langchain.prompts import PromptTemplate
 from langchain_core.callbacks import CallbackManagerForRetrieverRun
 from langchain_core.documents import Document
 from langchain_core.language_models import BaseLanguageModel
@@ -11,8 +14,6 @@ from langchain_core.output_parsers import BaseOutputParser
 from langchain_core.prompts import BasePromptTemplate
 from langchain_core.retrievers import BaseRetriever
 from langchain_core.runnables import Runnable
-from langchain.chains.llm import LLMChain
-from langchain.prompts import PromptTemplate
 
 
 def prepare(num_queries):

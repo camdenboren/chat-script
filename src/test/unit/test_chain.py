@@ -1,13 +1,14 @@
 # SPDX-FileCopyrightText: 2024-2025 Camden Boren
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import os
 import tempfile
 import unittest
+
 from langchain_core.embeddings.embeddings import Embeddings
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.prompts.chat import ChatPromptTemplate
 from langchain_core.runnables.base import Runnable
+
 from chat_script import chain, options
 
 

@@ -1,19 +1,20 @@
 # SPDX-FileCopyrightText: 2024-2025 Camden Boren
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import os
-import tempfile
-import unittest
-import time
 import io
 import sys
+import tempfile
+import time
+import unittest
+
+import notify2
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
-from langchain_core.runnables.utils import AddableDict
 from langchain_core.runnables.history import RunnableWithMessageHistory
-import notify2
-from mockito import when, unstub
-from chat_script import chain, response, options
+from langchain_core.runnables.utils import AddableDict
+from mockito import unstub, when
+
+from chat_script import chain, options, response
 
 
 class Document:

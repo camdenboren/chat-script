@@ -4,8 +4,10 @@
 import os
 import tempfile
 import unittest
-from mockito import when, unstub, matchers
-from chat_script import __main__, app, options, embeddings
+
+from mockito import matchers, unstub, when
+
+from chat_script import __main__, app, embeddings, options
 
 
 class TestMainMain(unittest.TestCase):
