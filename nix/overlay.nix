@@ -2,12 +2,15 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 {
+  pkgs,
   linux-share,
   darwin-share,
   ...
 }:
 
 (final: prev: {
+  build = pkgs.callPackage ./build.nix { };
+  format = pkgs.callPackage ./format.nix { };
   python312 = prev.python312.override {
     packageOverrides = python312-final: python312-prev: {
       # Fixes share=True by adding necessary files to $out
