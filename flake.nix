@@ -92,9 +92,10 @@
                   ${pkgs.nixfmt-rfc-style}/bin/nixfmt flake.nix overlay.nix | box
 
                   echo -e "\n\033[1;33mprettier...\033[0m"
-                  ${pkgs.nodePackages.prettier}/bin/prettier\
-                   --plugin=${pkgs.nodePackages.prettier-plugin-toml}/lib/node_modules/prettier-plugin-toml/lib/index.cjs\
-                   --write **/*.yml **/*.md **/*.toml | box
+                  ${pkgs.nodePackages.prettier}/bin/prettier \
+                  --plugin=${pkgs.nodePackages.prettier-plugin-toml}\
+                  /lib/node_modules/prettier-plugin-toml/lib/index.cjs \
+                  --write **/*.yml **/*.md **/*.toml | box
                    
                   echo -e "\n\033[1;32mFormat succeeded.\033[0m"
                 '')
