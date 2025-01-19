@@ -63,9 +63,19 @@
           default = pkgs.mkShell {
             packages =
               with pkgs;
+              with nodePackages;
               [
                 bashInteractive
                 python312
+                prettier
+                (writeShellScriptBin "format" ''
+                  echo "ruff..."
+                  ruff check --fix && ruff format
+                  echo -e "\nnix..."
+                  nixfmt flake.nix overlay.nix
+                  echo -e "\nprettier..."
+                  prettier --write **/*.yml **/*.md **/*.json
+                '')
               ]
               ++ (with pkgs.python312Packages; [
                 coverage

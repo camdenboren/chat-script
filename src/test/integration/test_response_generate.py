@@ -83,7 +83,7 @@ class TestResponseGenerate(unittest.TestCase):
             ).thenReturn(mock_retriever)
 
             chain.create()
-            generated = response.generate("", "", request)
+            generated = response.generate("", "", request)  # pyright: ignore
             for index in range(3):
                 self.assertTrue(isinstance(next(generated), str))
             unstub()
@@ -121,7 +121,7 @@ class TestResponseGenerate(unittest.TestCase):
             ).thenReturn(mock_retriever)
 
             chain.create()
-            generated = response.generate("", "", request)
+            generated = response.generate("", "", request)  # pyright: ignore
             for index in range(3):
                 self.assertTrue(isinstance(next(generated), str))
             unstub()
