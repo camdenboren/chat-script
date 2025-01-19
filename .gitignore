@@ -10,3 +10,4 @@ site/
 .ruff_cache
 .venv
 .zed
+**/result*

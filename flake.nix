@@ -64,7 +64,25 @@
               [
                 bashInteractive
                 python312
+                (writeShellScriptBin "build" ''
+                  set -e
+                  set -o pipefail
+                  box() { ${pkgs.boxes}/bin/boxes -d ansi -s $(tput cols); }
+
+                  echo -e "\033[1;33mruff...\033[0m"
+                  ruff check | box
+
+                  echo -e "\n\033[1;33mcoverage...\033[0m"
+                  coverage run -m unittest 2> /dev/null | box
+
+                  echo -e "\n\033[1;33mbuild...\033[0m"
+                  nix build 2> /dev/null | box
+
+                  echo -e "\n\033[1;32mBuild succeeded.\033[0m"
+                '')
                 (writeShellScriptBin "format" ''
+                  set -e
+                  set -o pipefail
                   box() { ${pkgs.boxes}/bin/boxes -d ansi -s $(tput cols); }
 
                   echo -e "\033[1;33mruff...\033[0m"
@@ -77,6 +95,8 @@
                   ${pkgs.nodePackages.prettier}/bin/prettier\
                    --plugin=${pkgs.nodePackages.prettier-plugin-toml}/lib/node_modules/prettier-plugin-toml/lib/index.cjs\
                    --write **/*.yml **/*.md **/*.toml | box
+                   
+                  echo -e "\n\033[1;32mFormat succeeded.\033[0m"
                 '')
               ]
               ++ (with pkgs.python312Packages; [
@@ -98,6 +118,7 @@
               echo -e "┌───────────────────────────────────────────────┐"
               echo -e "│                Useful Commands                │"
               echo -e "├──────────┬────────────────────────────────────┤"
+              echo -e "│ Build    │ $ build                            │"
               echo -e "│ Run      │ $ python -m src.chat_script        │"
               echo -e "│ Test     │ $ python -m unittest               │"
               echo -e "│ Format   │ $ format                           │"
