@@ -50,9 +50,7 @@
                 notify2
                 tiktoken
               ]
-              ++ (with pkgs; [
-                nodejs
-              ]);
+              ++ (with pkgs; [ nodejs ]);
           }
         );
     in
@@ -63,19 +61,22 @@
           default = pkgs.mkShell {
             packages =
               with pkgs;
-              with nodePackages;
               [
                 bashInteractive
                 python312
-                prettier
                 (writeShellScriptBin "format" ''
                   box() { ${pkgs.boxes}/bin/boxes -d ansi -s $(tput cols); }
+
                   echo -e "\033[1;33mruff...\033[0m"
                   (ruff check --fix && ruff format) | box
+
                   echo -e "\n\033[1;33mnix...\033[0m"
-                  nixfmt flake.nix overlay.nix | box
+                  ${pkgs.nixfmt-rfc-style}/bin/nixfmt flake.nix overlay.nix | box
+
                   echo -e "\n\033[1;33mprettier...\033[0m"
-                  prettier --write **/*.yml **/*.md | box
+                  ${pkgs.nodePackages.prettier}/bin/prettier\
+                   --plugin=${pkgs.nodePackages.prettier-plugin-toml}/lib/node_modules/prettier-plugin-toml/lib/index.cjs\
+                   --write **/*.yml **/*.md **/*.toml | box
                 '')
               ]
               ++ (with pkgs.python312Packages; [
