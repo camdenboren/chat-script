@@ -69,12 +69,13 @@
                 python312
                 prettier
                 (writeShellScriptBin "format" ''
-                  echo "ruff..."
-                  ruff check --fix && ruff format
-                  echo -e "\nnix..."
-                  nixfmt flake.nix overlay.nix
-                  echo -e "\nprettier..."
-                  prettier --write **/*.yml **/*.md **/*.json
+                  box() { ${pkgs.boxes}/bin/boxes -d ansi -s $(tput cols); }
+                  echo -e "\033[1;33mruff...\033[0m"
+                  (ruff check --fix && ruff format) | box
+                  echo -e "\n\033[1;33mnix...\033[0m"
+                  nixfmt flake.nix overlay.nix | box
+                  echo -e "\n\033[1;33mprettier...\033[0m"
+                  prettier --write **/*.yml **/*.md | box
                 '')
               ]
               ++ (with pkgs.python312Packages; [
@@ -98,6 +99,7 @@
               echo -e "├──────────┬────────────────────────────────────┤"
               echo -e "│ Run      │ $ python -m src.chat_script        │"
               echo -e "│ Test     │ $ python -m unittest               │"
+              echo -e "│ Format   │ $ format                           │"
               echo -e "│ Coverage │ $ coverage run -m unittest         │"
               echo -e "│ Docs     │ $ mkdocs {build, serve, gh-deploy} │"
               echo -e "└──────────┴────────────────────────────────────┘\n"
