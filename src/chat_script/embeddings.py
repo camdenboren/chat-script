@@ -72,8 +72,7 @@ def generate():
 
     # Save to persistent ChromaDB Vector Store
     for batch in all_splits:
-        # pylint: disable=unused-variable
-        vectorstore = Chroma.from_documents(
+        vectorstore = Chroma.from_documents(  # noqa: F841
             documents=batch,
             collection_name=opt("collection_name"),
             embedding=embeddings,
