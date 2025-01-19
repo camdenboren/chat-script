@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 ''
+  export PS1="\n\[\033[1;31m\][devShell:\w]\$\[\033[0m\] "
   echo -e "\nchat-script Development Environment via Nix Flake\n"
 
   echo -e "┌───────────────────────────────────────────────┐"
