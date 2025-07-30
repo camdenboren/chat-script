@@ -104,7 +104,7 @@ def format_context(context):
     yield "\n\n"
     for index, chunk in enumerate(context):
         formatted_context += (
-            f"[{str(index+1)}] {chunk.metadata['source'][SCRIPTS_DIR_LEN:]}"
+            f"[{str(index + 1)}] {chunk.metadata['source'][SCRIPTS_DIR_LEN:]}"
         )
         for fmt_chunks in formatted_context.split():
             yield f"{fmt_chunks} "

@@ -7,6 +7,17 @@ import gradio as gr
 
 from chat_script import chain, options, response
 
+js = """
+function refresh() {
+    const url = new URL(window.location);
+
+    if (url.searchParams.get('__theme') !== 'dark') {
+        url.searchParams.set('__theme', 'dark');
+        window.location.href = url.href;
+    }
+}
+"""
+
 
 def opt(option_name):
     """Syntactic sugar for retrieving options"""
@@ -26,7 +37,8 @@ def launch():
         ),
         fill_height=True,
         title="chat-script",
-        theme="gradio/monochrome",
+        js=js if opt("force_dark") else "",
+        theme=gr.themes.Monochrome(font=gr.themes.GoogleFont("Quicksand")),  # pyright: ignore [reportPrivateImportUsage]
         analytics_enabled=False,
         additional_inputs=[],
     ).queue()

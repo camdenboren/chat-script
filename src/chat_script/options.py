@@ -18,6 +18,7 @@ def create():
         "server_name": "127.0.0.1",
         "server_port": "7860",
         "inbrowser": "True",
+        "force_dark": "True",
     }
     configuration["CHAIN"] = {
         "embeddings_model": "mxbai-embed-large",
@@ -87,6 +88,11 @@ def read():
             "inbrowser": configuration.getboolean(
                 "APP",
                 "inbrowser",
+                fallback=True,
+            ),
+            "force_dark": configuration.getboolean(
+                "APP",
+                "force_dark",
                 fallback=True,
             ),
         },

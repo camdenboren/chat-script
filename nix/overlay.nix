@@ -11,10 +11,10 @@
 (final: prev: {
   build = pkgs.callPackage ./build.nix { };
   format = pkgs.callPackage ./format.nix { };
-  python312 = prev.python312.override {
-    packageOverrides = python312-final: python312-prev: {
+  python313 = prev.python313.override {
+    packageOverrides = python313-final: python313-prev: {
       # Fixes share=True by adding necessary files to $out
-      gradio = python312-prev.gradio.overrideAttrs (old: {
+      gradio = python313-prev.gradio.overrideAttrs (old: {
         disabledTests = (old.disabledTests or [ ]) ++ [
           "test_component_example_values"
           "test_public_request_pass"
@@ -24,10 +24,10 @@
         postInstall =
           (old.postInstall or "")
           + ''
-            cp -f ${linux-share} $out/lib/python3.12/site-packages/gradio/frpc_linux_amd64_v0.3
-            cp -f ${darwin-share} $out/lib/python3.12/site-packages/gradio/frpc_darwin_arm64_v0.3
-            chmod +x $out/lib/python3.12/site-packages/gradio/frpc_linux_amd64_v0.3
-            chmod +x $out/lib/python3.12/site-packages/gradio/frpc_darwin_arm64_v0.3
+            cp -f ${linux-share} $out/lib/python3.13/site-packages/gradio/frpc_linux_amd64_v0.3
+            cp -f ${darwin-share} $out/lib/python3.13/site-packages/gradio/frpc_darwin_arm64_v0.3
+            chmod +x $out/lib/python3.13/site-packages/gradio/frpc_linux_amd64_v0.3
+            chmod +x $out/lib/python3.13/site-packages/gradio/frpc_darwin_arm64_v0.3
           '';
       });
     };

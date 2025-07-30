@@ -1,9 +1,8 @@
 <div align="center">
 <img src='docs/img/chat-script.png' height=auto width=400px>
 
-![Static Badge](https://img.shields.io/badge/Version-1.1-blue?style=for-the-badge)
 ![Static Badge](https://img.shields.io/badge/Platforms-Linux,_macOS-forestgreen?style=for-the-badge)
-![Static Badge](https://img.shields.io/badge/Coverage-92%25-forestgreen?style=for-the-badge)
+[![built with garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Fcamdenboren%2Fchat-script%3Fbranch%3Dmain&style=for-the-badge&color=grey&labelColor=grey)](https://garnix.io/repo/camdenboren/chat-script)
 ![Static Badge](https://img.shields.io/badge/Powered_by_Nix-grey?logo=nixOS&logoColor=white&logoSize=auto&style=for-the-badge)
 
 Chat with your documents using any Ollama LLM with this simple python app<br>
@@ -55,7 +54,7 @@ Scripts can be reembedded at any time by renaming/removing the scripts directory
 
 ### Non-Nix
 
-**Must install Python 3.12.7 and Node.js v20.18.0 before running**\
+**Must install Python 3.13.4 and Node.js v22.16.0 before running**\
 _On Linux, you'll also need to install build-essential, libdbus-glib-1-dev, and libgirepository1.0-dev\
 On macOS, you'll also need dbus_
 
@@ -71,7 +70,7 @@ Navigate to directory, then create and activate venv (optional)
 
 Next, install dependencies
 
-    pip install -r requirements.txt
+    pip install .
 
 Finally, executing the following will create this directory, generate embeddings (if desired), and run the app
 
@@ -98,6 +97,7 @@ Modify files in src as desired (and add new files to setup.py and stage), then
 - [x] Look into RAG-fusion for improving distance-based retrieval performance
 - [x] Look into other splitting functions due to weirdness from book pdfs
 - [x] Add moderation sub-option for system alerts (Linux-only)
+- [ ] Add type annotations to improve maintainability and reliability
 - [ ] Move to 'messages' for gradio as 'tuples' will be removed soon
 - [ ] Add vectorstore indexing to avoid embeddings dupes
 - [ ] Add support for non-text documents (relevant packages below)

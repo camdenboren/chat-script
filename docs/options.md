@@ -17,6 +17,7 @@ To adjust these options, edit: `~/.config/chat-script/chat-script.ini`
     | server_name   | IP address that local app is deployed at                                           | 127.0.0.1     |
     | server_port   | Port that local app is deployed at                                                 | 7860          |
     | inbrowser     | Whether to automatically launch the gradio app in a new tab on the default browser | True          |
+    | force_dark    | Whether to force the custom dark theme regardless of the browser setting           | True          |
 
 === "Chain"
 

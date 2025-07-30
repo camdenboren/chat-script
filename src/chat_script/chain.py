@@ -71,7 +71,7 @@ def prepare_prompts():
     )
 
     # Define the question_answer_chain
-    system_prompt = "Answer the question using the following context: " "{context}"
+    system_prompt = "Answer the question using the following context: {context}"
     qa_prompt = ChatPromptTemplate.from_messages(
         [
             ("system", system_prompt),

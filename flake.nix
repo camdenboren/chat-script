@@ -39,7 +39,7 @@
               import ./nix/overlay.nix { inherit pkgs linux-share darwin-share; }
             );
             deps =
-              with pkgs.python312Packages;
+              with pkgs.python313Packages;
               [
                 gradio
                 langchain
@@ -62,12 +62,11 @@
             packages =
               with pkgs;
               [
-                bashInteractive
-                python312
+                pyright
                 build
                 format
               ]
-              ++ (with pkgs.python312Packages; [
+              ++ (with pkgs.python313Packages; [
                 coverage
                 mkdocs
                 mkdocs-material
@@ -87,13 +86,13 @@
       packages = forEachSupportedSystem (
         { pkgs, deps }:
         {
-          default = pkgs.python312Packages.buildPythonApplication {
+          default = pkgs.python313Packages.buildPythonApplication {
             pname = "chat-script";
-            version = "1.1";
+            version = "1.1.0";
             pyproject = true;
             src = ./.;
 
-            build-system = with pkgs.python312Packages; [ setuptools ];
+            build-system = with pkgs.python313Packages; [ setuptools ];
             propagatedBuildInputs = deps;
 
             ANONYMIZED_TELEMETRY = "False";
