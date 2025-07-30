@@ -15,7 +15,7 @@ pkgs.writeShellScriptBin "format" ''
   ${pkgs.nixfmt-rfc-style}/bin/nixfmt flake.nix **/*.nix | box
 
   echo -e "\n\033[1;33mprettier...\033[0m"
-  ${pkgs.nodePackages.prettier}/bin/prettier --write **/*.yml **/*.md | box
+  ${pkgs.nodePackages.prettier}/bin/prettier --write **/*.yaml **/*.md | box
 
   echo -e "\n\033[1;33mtaplo...\033[0m"
   ${pkgs.taplo}/bin/taplo fmt 2> /dev/null | box
