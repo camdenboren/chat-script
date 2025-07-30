@@ -1,7 +1,7 @@
-"""Refreshes/generates embeddings in based on scripts"""
-
-# SPDX-FileCopyrightText: 2024-2025 Camden Boren
+# SPDX-FileCopyrightText: Camden Boren
 # SPDX-License-Identifier: GPL-3.0-or-later
+
+"""Refreshes/generates embeddings in based on scripts"""
 
 import os
 import shutil

@@ -1,7 +1,7 @@
-"""Gradio UI leveraging eponymous function in response"""
-
-# SPDX-FileCopyrightText: 2024-2025 Camden Boren
+# SPDX-FileCopyrightText: Camden Boren
 # SPDX-License-Identifier: GPL-3.0-or-later
+
+"""Gradio UI leveraging eponymous function in response"""
 
 import gradio as gr
 

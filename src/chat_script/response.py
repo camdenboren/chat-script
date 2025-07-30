@@ -1,7 +1,7 @@
-"""Returns response w/ citations from RAG-enabled LLM based on user question passed from app ui"""
-
-# SPDX-FileCopyrightText: 2024-2025 Camden Boren
+# SPDX-FileCopyrightText: Camden Boren
 # SPDX-License-Identifier: GPL-3.0-or-later
+
+"""Returns response w/ citations from RAG-enabled LLM based on user question passed from app ui"""
 
 import os
 import platform

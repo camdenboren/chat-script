@@ -1,7 +1,7 @@
-"""Entry point that ensures necessary config and scripts are setup before handing off to app.py"""
-
-# SPDX-FileCopyrightText: 2024-2025 Camden Boren
+# SPDX-FileCopyrightText: Camden Boren
 # SPDX-License-Identifier: GPL-3.0-or-later
+
+"""Entry point that ensures necessary config and scripts are setup before handing off to app.py"""
 
 import os
 import sys
