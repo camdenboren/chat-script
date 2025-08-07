@@ -3,20 +3,18 @@
 
 """Define and return the rag-fusion retirever and output parser"""
 
-from typing import List
+from typing import List, cast
 
-from langchain.chains.llm import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain_core.callbacks import CallbackManagerForRetrieverRun
 from langchain_core.documents import Document
-from langchain_core.language_models import BaseLanguageModel
 from langchain_core.output_parsers import BaseOutputParser
-from langchain_core.prompts import BasePromptTemplate
 from langchain_core.retrievers import BaseRetriever
-from langchain_core.runnables import Runnable
+from langchain_core.runnables import RunnableSequence
+from langchain_ollama import ChatOllama
 
 
-def prepare(num_queries):
+def prepare(num_queries: int):
     """Define output parser and MultiQueryRetriever"""
 
     # Define the output parser for rag-fusion. Adapted from multi_query.py
@@ -47,7 +45,7 @@ def prepare(num_queries):
         """Given a query, use an LLM to write several and retrieve unique docs."""
 
         retriever: BaseRetriever
-        llm_chain: Runnable
+        llm_chain: RunnableSequence[dict[str, str], list[str]]
         verbose: bool = True
         parser_key: str = "lines"
         include_original: bool = False
@@ -56,13 +54,16 @@ def prepare(num_queries):
         def from_llm(
             cls,
             retriever: BaseRetriever,
-            llm: BaseLanguageModel,
-            prompt: BasePromptTemplate = default_query_prompt,
+            llm: ChatOllama,
+            prompt: PromptTemplate = default_query_prompt,
             include_original: bool = False,
         ) -> "MultiQueryRetriever":
             """Initialize from llm using default template."""
             output_parser = LineListOutputParser()
-            llm_chain = prompt | llm | output_parser
+            llm_chain = cast(
+                RunnableSequence[dict[str, str], list[str]],
+                prompt | llm | output_parser,
+            )
             return cls(
                 retriever=retriever,
                 llm_chain=llm_chain,
@@ -77,16 +78,13 @@ def prepare(num_queries):
             response = self.llm_chain.invoke(
                 {"question": query}, config={"callbacks": run_manager.get_child()}
             )
-            if isinstance(self.llm_chain, LLMChain):
-                lines = response["text"]
-            else:
-                lines = response
+            lines = response
             queries = lines[: max(num_queries - 1, 0)]
             if self.include_original:
                 queries.append(query)
 
             # Retrieve and combine documents for each query
-            documents = []
+            documents: list[Document] = []
             for query in queries:
                 docs = self.retriever.invoke(
                     query, config={"callbacks": run_manager.get_child()}

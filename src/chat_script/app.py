@@ -19,12 +19,12 @@ function refresh() {
 """
 
 
-def opt(option_name):
+def opt(option_name: str) -> bool | str | int | float:
     """Syntactic sugar for retrieving options"""
     return options.OPTIONS["app"][option_name]
 
 
-def launch():
+def launch() -> None:
     """Launch app's Gradio UI"""
     chain.create()
     app = gr.ChatInterface(
@@ -43,8 +43,8 @@ def launch():
         additional_inputs=[],
     ).queue()
     app.launch(
-        share=opt("share"),
-        server_name=opt("server_name"),
-        server_port=opt("server_port"),
-        inbrowser=opt("inbrowser"),
+        share=bool(opt("share")),
+        server_name=str(opt("server_name")),
+        server_port=int(opt("server_port")),
+        inbrowser=bool(opt("inbrowser")),
     )

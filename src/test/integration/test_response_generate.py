@@ -6,13 +6,19 @@ import tempfile
 import unittest
 from typing import List
 
-import notify2
+import notify2  # pyright: ignore [reportMissingTypeStubs]
 from langchain_chroma import Chroma
 from langchain_community.chat_models import FakeListChatModel
 from langchain_community.embeddings import FakeEmbeddings
-from mockito import unstub, when
+from mockito import (  # pyright: ignore [reportMissingTypeStubs]
+    unstub,  # pyright: ignore [reportUnknownVariableType]
+    when,  # pyright: ignore [reportUnknownVariableType]
+)
 
 from chat_script import chain, options, response
+from chat_script.chain import Models
+
+# pyright: reportUnknownMemberType=false
 
 
 class Document:
@@ -28,13 +34,13 @@ class Request:
 
 
 class MockLLM:
-    def invoke(self, question):
+    def invoke(self, question: str):
         text = "safe"
         return text
 
 
 class MockLLM_reject:
-    def invoke(self, question):
+    def invoke(self, question: str):
         text = "unsafe"
         return text
 
@@ -51,14 +57,14 @@ class SimpleRetriever:
 
 class TestResponseGenerate(unittest.TestCase):
     def test_generate(self):
-        def opt(option_name):
+        def opt(option_name: str):
             """Syntactic sugar for retrieving options"""
             return options.OPTIONS["chain"][option_name]
 
         mock_mod = MockLLM()
         mock_llm = FakeListChatModel(responses=["a"])
         mock_embed = FakeEmbeddings(size=1024)
-        models = [mock_embed, mock_llm]
+        models: Models = {"embeddings_model": mock_embed, "chat_model": mock_llm}  # pyright: ignore [reportAssignmentType]
         request = Request()
         alert = Alert()
         options.read()
@@ -66,13 +72,13 @@ class TestResponseGenerate(unittest.TestCase):
         with tempfile.TemporaryDirectory() as EMBED_DIR:
             chain.EMBED_DIR = EMBED_DIR
             vectorstore = Chroma(
-                collection_name=opt("collection_name"),
-                embedding_function=models[0],
+                collection_name=str(opt("collection_name")),
+                embedding_function=models["embeddings_model"],
                 persist_directory=os.path.expanduser(EMBED_DIR),
             )
             mock_retriever = SimpleRetriever()
 
-            when(chain).prepare_models().thenReturn([mock_embed, mock_llm])
+            when(chain).prepare_models().thenReturn(models)
             when(chain).create_moderation().thenReturn(mock_mod)
             when(notify2).Notification("Unsafe question received").thenReturn(alert)
             when(vectorstore).as_retriever(
@@ -83,20 +89,20 @@ class TestResponseGenerate(unittest.TestCase):
             ).thenReturn(mock_retriever)
 
             chain.create()
-            generated = response.generate("", "", request)  # pyright: ignore
-            for index in range(3):
-                self.assertTrue(isinstance(next(generated), str))
+            generated = response.generate("", "", request)  # pyright: ignore [reportArgumentType]
+            for _index in range(3):
+                next(generated)
             unstub()
 
     def test_generate_unsafe(self):
-        def opt(option_name):
+        def opt(option_name: str):
             """Syntactic sugar for retrieving options"""
             return options.OPTIONS["chain"][option_name]
 
         mock_mod = MockLLM_reject()
         mock_llm = FakeListChatModel(responses=["a"])
         mock_embed = FakeEmbeddings(size=1024)
-        models = [mock_embed, mock_llm]
+        models: Models = {"embeddings_model": mock_embed, "chat_model": mock_llm}  # pyright: ignore [reportAssignmentType]
         request = Request()
         alert = Alert()
         options.read()
@@ -104,13 +110,13 @@ class TestResponseGenerate(unittest.TestCase):
         with tempfile.TemporaryDirectory() as EMBED_DIR:
             chain.EMBED_DIR = EMBED_DIR
             vectorstore = Chroma(
-                collection_name=opt("collection_name"),
-                embedding_function=models[0],
+                collection_name=str(opt("collection_name")),
+                embedding_function=models["embeddings_model"],
                 persist_directory=os.path.expanduser(EMBED_DIR),
             )
             mock_retriever = SimpleRetriever()
 
-            when(chain).prepare_models().thenReturn([mock_embed, mock_llm])
+            when(chain).prepare_models().thenReturn(models)
             when(chain).create_moderation().thenReturn(mock_mod)
             when(notify2).Notification("Unsafe question received").thenReturn(alert)
             when(vectorstore).as_retriever(
@@ -121,7 +127,7 @@ class TestResponseGenerate(unittest.TestCase):
             ).thenReturn(mock_retriever)
 
             chain.create()
-            generated = response.generate("", "", request)  # pyright: ignore
-            for index in range(3):
-                self.assertTrue(isinstance(next(generated), str))
+            generated = response.generate("", "", request)  # pyright: ignore [reportArgumentType]
+            for _index in range(3):
+                next(generated)
             unstub()

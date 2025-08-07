@@ -5,9 +5,15 @@ import os
 import tempfile
 import unittest
 
-from mockito import matchers, unstub, when
+from mockito import (  # pyright: ignore [reportMissingTypeStubs]
+    matchers,
+    unstub,  # pyright: ignore [reportUnknownVariableType]
+    when,  # pyright: ignore [reportUnknownVariableType]
+)
 
 from chat_script import __main__, app, embeddings, options
+
+# pyright: reportUnknownMemberType=false
 
 
 class TestMainMain(unittest.TestCase):

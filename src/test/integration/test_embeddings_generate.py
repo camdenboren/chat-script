@@ -7,7 +7,10 @@ import unittest
 
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_community.embeddings import FakeEmbeddings
-from mockito import unstub, when
+from mockito import (  # pyright: ignore [reportMissingTypeStubs]
+    unstub,  # pyright: ignore [reportUnknownVariableType]
+    when,  # pyright: ignore [reportUnknownVariableType]
+)
 
 from chat_script import embeddings, options
 
@@ -19,7 +22,7 @@ class Document:
 
 class TestEmbeddingsGenerate(unittest.TestCase):
     def test_generate(self):
-        def opt(option_name):
+        def opt(option_name: str):
             """Syntactic sugar for retrieving options"""
             return options.OPTIONS["embeddings"][option_name]
 
@@ -35,12 +38,16 @@ class TestEmbeddingsGenerate(unittest.TestCase):
             loader = DirectoryLoader(
                 path=os.path.expanduser(SCRIPTS_DIR),
                 loader_cls=TextLoader,
-                show_progress=opt("show_progress"),
-                use_multithreading=opt("use_multithreading"),
+                show_progress=bool(opt("show_progress")),
+                use_multithreading=bool(opt("use_multithreading")),
             )
 
-            when(loader).load().thenReturn(docs)
-            when(embeddings).prepare_model().thenReturn(mock_embed)
+            when(loader).load(
+                # pyright: ignore [reportUnknownMemberType]
+            ).thenReturn(docs)
+            when(embeddings).prepare_model(
+                # pyright: ignore [reportUnknownMemberType]
+            ).thenReturn(mock_embed)
 
             embeddings.generate()
             unstub()

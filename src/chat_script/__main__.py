@@ -15,7 +15,7 @@ CONFIG_DIR = "~/.config/chat-script"
 CONFIG_FILE = f"{CONFIG_DIR}/chat-script.ini"
 
 
-def main():
+def main() -> None:
     """Create directories and embed scripts if needed, otw run options.read() and app.launch()"""
     if not os.path.exists(os.path.expanduser(CONFIG_FILE)):
         if not os.path.exists(os.path.expanduser(CONFIG_DIR)):

@@ -10,7 +10,7 @@ CONFIG_DIR = "~/.config/chat-script"
 CONFIG_FILE = f"{CONFIG_DIR}/chat-script.ini"
 
 
-def create():
+def create() -> None:
     """Create options file at ~/.config/chat-script/chat-script.ini with defaults"""
     configuration = ConfigParser()
     configuration["APP"] = {
@@ -63,7 +63,7 @@ def create():
     )
 
 
-def read():
+def read() -> None:
     """Read options from ~/.config/chat-script/chat-script.ini and save in global dict: options"""
     configuration = ConfigParser()
     configuration.read(os.path.expanduser(CONFIG_FILE))
