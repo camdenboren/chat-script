@@ -26,13 +26,6 @@
     python313 = prev.python313.override {
       packageOverrides = python313-final: python313-prev: {
         gradio = python313-prev.gradio.overrideAttrs (old: {
-          disabledTests = (old.disabledTests or [ ]) ++ [
-            "test_component_example_values"
-            "test_public_request_pass"
-            "test_private_request_fail"
-            "theme_builder_launches"
-          ];
-
           # Fixes share=True by adding necessary files to $out
           postInstall =
             (old.postInstall or "")

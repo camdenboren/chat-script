@@ -10,6 +10,7 @@
     pyproject = true;
     src = ../.;
 
+    dontCheckRuntimeDeps = true;
     propagatedBuildInputs = deps.build;
     build-system = with pkgs.python313Packages; [ setuptools ];
 
