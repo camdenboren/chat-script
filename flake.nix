@@ -10,26 +10,17 @@
     nixpkgs = {
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
-    linux-share = {
-      url = "https://cdn-media.huggingface.co/frpc-gradio-0.3/frpc_linux_amd64";
-      flake = false;
-    };
-    darwin-share = {
-      url = "https://cdn-media.huggingface.co/frpc-gradio-0.3/frpc_darwin_arm64";
-      flake = false;
-    };
   };
 
   outputs =
     {
       nixpkgs,
-      linux-share,
-      darwin-share,
       ...
     }:
     let
       supportedSystems = [
         "x86_64-linux"
+        "aarch64-linux"
         "aarch64-darwin"
       ];
       forEachSupportedSystem =
@@ -37,9 +28,7 @@
         nixpkgs.lib.genAttrs supportedSystems (
           system:
           function rec {
-            pkgs = nixpkgs.legacyPackages.${system}.extend (
-              import ./nix/overlay.nix { inherit linux-share darwin-share; }
-            );
+            pkgs = nixpkgs.legacyPackages.${system}.extend (import ./nix/overlay.nix);
             deps = (import ./nix/deps.nix { inherit pkgs; });
           }
         );

@@ -1,29 +1,5 @@
 {
   "nodes": {
-    "darwin-share": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-KpJ6WspXfwDKUATEBSm2CpLCD//kyFvaJGJqBASatcA=",
-        "type": "file",
-        "url": "https://cdn-media.huggingface.co/frpc-gradio-0.3/frpc_darwin_arm64"
-      },
-      "original": {
-        "type": "file",
-        "url": "https://cdn-media.huggingface.co/frpc-gradio-0.3/frpc_darwin_arm64"
-      }
-    },
-    "linux-share": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-VY9i4vla8XmwC8jKwRxvnHduxR4dM9ixiMhFxzcAVDU=",
-        "type": "file",
-        "url": "https://cdn-media.huggingface.co/frpc-gradio-0.3/frpc_linux_amd64"
-      },
-      "original": {
-        "type": "file",
-        "url": "https://cdn-media.huggingface.co/frpc-gradio-0.3/frpc_linux_amd64"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1751792365,
@@ -42,8 +18,6 @@
     },
     "root": {
       "inputs": {
-        "darwin-share": "darwin-share",
-        "linux-share": "linux-share",
         "nixpkgs": "nixpkgs"
       }
     }
