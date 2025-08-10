@@ -47,4 +47,5 @@ def launch() -> None:
         server_name=str(opt("server_name")),
         server_port=int(opt("server_port")),
         inbrowser=bool(opt("inbrowser")),
+        favicon_path="./docs/img/favicon.png",
     )
