@@ -1,18 +1,14 @@
 <h1 align="center">
-    <img src="./docs/img/chat-script.png" width="200" alt="Logo"><br/>
-    chat-script
-</h1>
-
-<div align="center">
-    <p>
-        Chat with your documents using any Ollama LLM with this simple python app<br>
-        Docs deployed at https://camdenboren.github.io/chat-script<br>
-        _Docs cover options, architecture, and reference_
-    </p>
+    <img src="./docs/img/chat-script.png" width="200" alt="chat-script">
 
 ![Static Badge](https://img.shields.io/badge/Platforms-Linux,_macOS-forestgreen?style=for-the-badge)
 [![built with garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Fcamdenboren%2Fchat-script%3Fbranch%3Dmain&style=for-the-badge&color=grey&labelColor=grey)](https://garnix.io/repo/camdenboren/chat-script)
 ![Static Badge](https://img.shields.io/badge/Powered_by_Nix-grey?logo=nixOS&logoColor=white&logoSize=auto&style=for-the-badge)
+</h1>
+
+Chat with your documents using any Ollama LLM with this simple python app<br>
+Docs deployed at https://camdenboren.github.io/chat-script<br>
+_Docs cover options, architecture, and reference_
 
 | Features     |
 | ------------ |
