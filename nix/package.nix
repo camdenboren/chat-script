@@ -13,6 +13,10 @@
     dontCheckRuntimeDeps = true;
     propagatedBuildInputs = deps.build;
     build-system = with pkgs.python313Packages; [ setuptools ];
+    postInstall = ''
+      mkdir -p $out/docs/img
+      cp $src/docs/img/favicon.png $out/docs/img/favicon.png
+    '';
 
     ANONYMIZED_TELEMETRY = "False";
 
