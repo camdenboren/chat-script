@@ -1,5 +1,6 @@
-<h1 align="center">
-    <img src="./docs/img/chat-script.png" width="200" alt="chat-script">
+<div align="center">
+<h1>
+    <img src="./docs/img/chat-script.png" width="300" alt="chat-script">
 
 ![Static Badge](https://img.shields.io/badge/Platforms-Linux,_macOS-forestgreen?style=for-the-badge)
 [![built with garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Fcamdenboren%2Fchat-script%3Fbranch%3Dmain&style=for-the-badge&color=grey&labelColor=grey)](https://garnix.io/repo/camdenboren/chat-script)
