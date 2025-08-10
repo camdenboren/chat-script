@@ -1,13 +1,18 @@
+<h1 align="center">
+    <img src="./docs/img/chat-script.png" width="200" alt="Logo"><br/>
+    chat-script
+</h1>
+
 <div align="center">
-<img src='docs/img/chat-script.png' height=auto width=400px>
+    <p>
+        Chat with your documents using any Ollama LLM with this simple python app<br>
+        Docs deployed at https://camdenboren.github.io/chat-script<br>
+        _Docs cover options, architecture, and reference_
+    </p>
 
 ![Static Badge](https://img.shields.io/badge/Platforms-Linux,_macOS-forestgreen?style=for-the-badge)
 [![built with garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Fcamdenboren%2Fchat-script%3Fbranch%3Dmain&style=for-the-badge&color=grey&labelColor=grey)](https://garnix.io/repo/camdenboren/chat-script)
 ![Static Badge](https://img.shields.io/badge/Powered_by_Nix-grey?logo=nixOS&logoColor=white&logoSize=auto&style=for-the-badge)
-
-Chat with your documents using any Ollama LLM with this simple python app<br>
-Docs deployed at https://camdenboren.github.io/chat-script<br>
-_Docs cover options, architecture, and reference_
 
 | Features     |
 | ------------ |
@@ -97,7 +102,7 @@ Modify files in src as desired (and add new files to setup.py and stage), then
 - [x] Look into RAG-fusion for improving distance-based retrieval performance
 - [x] Look into other splitting functions due to weirdness from book pdfs
 - [x] Add moderation sub-option for system alerts (Linux-only)
-- [ ] Add type annotations to improve maintainability and reliability
+- [x] Add type annotations to improve maintainability and reliability
 - [ ] Move to 'messages' for gradio as 'tuples' will be removed soon
 - [ ] Add vectorstore indexing to avoid embeddings dupes
 - [ ] Add support for non-text documents (relevant packages below)
