@@ -16,6 +16,8 @@
     postInstall = ''
       mkdir -p $out/docs/img
       cp $src/docs/img/favicon.png $out/docs/img/favicon.png
+      wrapProgram "$out/bin/chat-script" --set \
+        ICON_DIR "$out/docs/img/favicon.png"
     '';
 
     ANONYMIZED_TELEMETRY = "False";

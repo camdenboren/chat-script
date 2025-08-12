@@ -3,11 +3,14 @@
 
 """Gradio UI leveraging eponymous function in response"""
 
+import os
+
 import gradio as gr
 
 from chat_script import chain, options, response
 
-js = """
+ICON_PATH = os.getenv("ICON_DIR", "./docs/img/favicon.png")
+JS = """
 function refresh() {
     const url = new URL(window.location);
 
@@ -37,7 +40,7 @@ def launch() -> None:
         ),
         fill_height=True,
         title="chat-script",
-        js=js if opt("force_dark") else "",
+        js=JS if opt("force_dark") else "",
         theme=gr.themes.Monochrome(font=gr.themes.GoogleFont("Quicksand")),  # pyright: ignore [reportPrivateImportUsage]
         analytics_enabled=False,
         additional_inputs=[],
@@ -47,5 +50,5 @@ def launch() -> None:
         server_name=str(opt("server_name")),
         server_port=int(opt("server_port")),
         inbrowser=bool(opt("inbrowser")),
-        favicon_path="./docs/img/favicon.png",
+        favicon_path=ICON_PATH,
     )

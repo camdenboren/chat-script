@@ -8,6 +8,7 @@
     with pkgs;
     [
       nodejs
+      makeWrapper
     ]
     ++ (with python313Packages; [
       gradio
