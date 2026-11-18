@@ -21,6 +21,14 @@ _Docs cover options, architecture, and reference_
 
 </div>
 
+> [!IMPORTANT]
+> This repo has been archived since I now leverage MCP-based tooling for RAG and third-
+> party interfaces instead of this project's bespoke RAG-pipeline + UI, so have no
+> desire to maintain dependency updates for this project (particularly since it's rather
+> involved). I personally use [open-webui](https://github.com/open-webui/open-webui) for
+> a standard chat interface, [Pi](https://github.com/earendil-works/pi) for agentic coding,
+> and [XERJ](https://github.com/xerj-org/xerj) for RAG-like search
+
 ## Setup
 
 **Must install Ollama before running anything**
